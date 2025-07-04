@@ -255,7 +255,7 @@
 
     <!-- Create Listing Modal -->
     <div class="modal fade" id="createListingModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Create a New Listing</h5>
@@ -273,6 +273,34 @@
                                     <label for="itemDescription" class="form-label">Description</label>
                                     <textarea class="form-control" id="itemDescription" rows="4" placeholder="Describe your item, its condition, and what's included..." required></textarea>
                                 </div>
+                                
+                                <!-- Upload Images Section -->
+                                <div class="mb-3">
+                                    <label for="itemImages" class="form-label">Upload Images</label>
+                                    <div class="border rounded p-3 text-center" style="border-style: dashed !important;">
+                                        <i class="bi bi-cloud-upload fs-1 text-muted"></i>
+                                        <p class="mt-2 mb-0">Drag and drop images here or click to browse</p>
+                                        <input type="file" class="form-control mt-2" id="itemImages" multiple accept="image/*">
+                                    </div>
+                                </div>
+                                
+                                <!-- Availability Section -->
+                                <div class="mb-3">
+                                    <label class="form-label">Availability</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="availableNow" checked>
+                                        <label class="form-check-label" for="availableNow">
+                                            Available now
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="availableWeekends">
+                                        <label class="form-check-label" for="availableWeekends">
+                                            Available weekends
+                                        </label>
+                                    </div>
+                                </div>
+                                
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -307,29 +335,84 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="itemImages" class="form-label">Upload Images</label>
-                                    <div class="border rounded p-3 text-center" style="border-style: dashed !important;">
-                                        <i class="bi bi-cloud-upload fs-1 text-muted"></i>
-                                        <p class="mt-2 mb-0">Drag and drop images here or click to browse</p>
-                                        <input type="file" class="form-control mt-2" id="itemImages" multiple accept="image/*">
+                                
+                                <!-- Booking System Section -->
+                                <div class="booking-section mt-4">
+                                    <h6 class="mb-3">Booking Settings</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="minRentalDays" class="form-label">Minimum Rental Days</label>
+                                                <input type="number" class="form-control" id="minRentalDays" min="1" value="1">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="maxRentalDays" class="form-label">Maximum Rental Days</label>
+                                                <input type="number" class="form-control" id="maxRentalDays" min="1" value="30">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="advanceBookingDays" class="form-label">Advance Booking (days)</label>
+                                                <input type="number" class="form-control" id="advanceBookingDays" min="0" value="7">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="cancellationPolicy" class="form-label">Cancellation Policy</label>
+                                                <select class="form-select" id="cancellationPolicy">
+                                                    <option value="flexible">Flexible (24h notice)</option>
+                                                    <option value="moderate">Moderate (48h notice)</option>
+                                                    <option value="strict">Strict (7 days notice)</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Availability</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="availableNow" checked>
-                                        <label class="form-check-label" for="availableNow">
-                                            Available now
-                                        </label>
+                            </div>
+                            <div class="col-md-4">
+                                <!-- Calendar Section -->
+                                <div class="calendar-section mt-4">
+                                    <h6 class="mb-3">Availability Calendar</h6>
+                                    <div class="calendar-container">
+                                        <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" id="prevMonth">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </button>
+                                            <h6 class="mb-0" id="currentMonth">December 2024</h6>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" id="nextMonth">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                        <div class="calendar-weekdays d-flex">
+                                            <div class="calendar-weekday">Sun</div>
+                                            <div class="calendar-weekday">Mon</div>
+                                            <div class="calendar-weekday">Tue</div>
+                                            <div class="calendar-weekday">Wed</div>
+                                            <div class="calendar-weekday">Thu</div>
+                                            <div class="calendar-weekday">Fri</div>
+                                            <div class="calendar-weekday">Sat</div>
+                                        </div>
+                                        <div class="calendar-days" id="calendarDays">
+                                            <!-- Calendar days will be populated by JavaScript -->
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="availableWeekends">
-                                        <label class="form-check-label" for="availableWeekends">
-                                            Available weekends
-                                        </label>
+                                    <div class="calendar-legend mt-3">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="legend-item available"></div>
+                                            <small class="ms-2">Available</small>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="legend-item unavailable"></div>
+                                            <small class="ms-2">Unavailable</small>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="legend-item selected"></div>
+                                            <small class="ms-2">Selected</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -345,5 +428,236 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Calendar and Booking System JavaScript -->
+    <script>
+        class RentalCalendar {
+            constructor() {
+                this.currentDate = new Date();
+                this.selectedDates = new Set();
+                this.unavailableDates = new Set();
+                this.init();
+            }
+
+            init() {
+                this.renderCalendar();
+                this.bindEvents();
+                this.setupBookingSettings();
+            }
+
+            renderCalendar() {
+                const year = this.currentDate.getFullYear();
+                const month = this.currentDate.getMonth();
+                
+                // Update month/year display
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                                  'July', 'August', 'September', 'October', 'November', 'December'];
+                document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
+
+                // Get first day of month and number of days
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const startDate = new Date(firstDay);
+                startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+                const calendarDays = document.getElementById('calendarDays');
+                calendarDays.innerHTML = '';
+
+                // Generate calendar days
+                for (let i = 0; i < 42; i++) {
+                    const date = new Date(startDate);
+                    date.setDate(startDate.getDate() + i);
+                    
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    dayElement.textContent = date.getDate();
+                    dayElement.dataset.date = date.toISOString().split('T')[0];
+
+                    // Check if it's current month
+                    if (date.getMonth() !== month) {
+                        dayElement.classList.add('other-month');
+                    }
+
+                    // Check if it's today
+                    const today = new Date();
+                    if (date.toDateString() === today.toDateString()) {
+                        dayElement.classList.add('today');
+                    }
+
+                    // Check availability
+                    if (this.unavailableDates.has(date.toISOString().split('T')[0])) {
+                        dayElement.classList.add('unavailable');
+                    } else if (date.getMonth() === month) {
+                        dayElement.classList.add('available');
+                    }
+
+                    // Check if selected
+                    if (this.selectedDates.has(date.toISOString().split('T')[0])) {
+                        dayElement.classList.add('selected');
+                    }
+
+                    calendarDays.appendChild(dayElement);
+                }
+            }
+
+            bindEvents() {
+                // Month navigation
+                document.getElementById('prevMonth').addEventListener('click', () => {
+                    this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                    this.renderCalendar();
+                });
+
+                document.getElementById('nextMonth').addEventListener('click', () => {
+                    this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                    this.renderCalendar();
+                });
+
+                // Day selection
+                document.getElementById('calendarDays').addEventListener('click', (e) => {
+                    if (e.target.classList.contains('calendar-day') && 
+                        !e.target.classList.contains('other-month') && 
+                        !e.target.classList.contains('unavailable')) {
+                        
+                        const date = e.target.dataset.date;
+                        this.toggleDateSelection(date);
+                        this.renderCalendar();
+                    }
+                });
+
+                // Booking settings changes
+                document.getElementById('minRentalDays').addEventListener('change', () => {
+                    this.updateAvailability();
+                });
+
+                document.getElementById('maxRentalDays').addEventListener('change', () => {
+                    this.updateAvailability();
+                });
+
+                document.getElementById('advanceBookingDays').addEventListener('change', () => {
+                    this.updateAvailability();
+                });
+            }
+
+            toggleDateSelection(date) {
+                if (this.selectedDates.has(date)) {
+                    this.selectedDates.delete(date);
+                } else {
+                    this.selectedDates.add(date);
+                }
+            }
+
+            setupBookingSettings() {
+                // Set some example unavailable dates (weekends for demo)
+                const today = new Date();
+                for (let i = 0; i < 90; i++) {
+                    const date = new Date(today);
+                    date.setDate(today.getDate() + i);
+                    
+                    // Make some weekends unavailable for demo
+                    if (date.getDay() === 0 || date.getDay() === 6) {
+                        this.unavailableDates.add(date.toISOString().split('T')[0]);
+                    }
+                }
+                this.updateAvailability();
+            }
+
+            updateAvailability() {
+                const minDays = parseInt(document.getElementById('minRentalDays').value) || 1;
+                const maxDays = parseInt(document.getElementById('maxRentalDays').value) || 30;
+                const advanceDays = parseInt(document.getElementById('advanceBookingDays').value) || 7;
+
+                const today = new Date();
+                const advanceDate = new Date(today);
+                advanceDate.setDate(today.getDate() + advanceDays);
+
+                // Clear previous availability
+                this.unavailableDates.clear();
+
+                // Set advance booking restriction
+                for (let i = 0; i < advanceDays; i++) {
+                    const date = new Date(today);
+                    date.setDate(today.getDate() + i);
+                    this.unavailableDates.add(date.toISOString().split('T')[0]);
+                }
+
+                // Set some example unavailable dates (weekends for demo)
+                for (let i = advanceDays; i < 90; i++) {
+                    const date = new Date(today);
+                    date.setDate(today.getDate() + i);
+                    
+                    // Make some weekends unavailable for demo
+                    if (date.getDay() === 0 || date.getDay() === 6) {
+                        this.unavailableDates.add(date.toISOString().split('T')[0]);
+                    }
+                }
+
+                this.renderCalendar();
+            }
+
+            getSelectedDates() {
+                return Array.from(this.selectedDates).sort();
+            }
+
+            getBookingData() {
+                return {
+                    selectedDates: this.getSelectedDates(),
+                    minRentalDays: parseInt(document.getElementById('minRentalDays').value) || 1,
+                    maxRentalDays: parseInt(document.getElementById('maxRentalDays').value) || 30,
+                    advanceBookingDays: parseInt(document.getElementById('advanceBookingDays').value) || 7,
+                    cancellationPolicy: document.getElementById('cancellationPolicy').value
+                };
+            }
+        }
+
+        // Initialize calendar when modal is shown
+        let rentalCalendar;
+        document.getElementById('createListingModal').addEventListener('shown.bs.modal', function () {
+            if (!rentalCalendar) {
+                rentalCalendar = new RentalCalendar();
+            }
+        });
+
+        // Handle form submission
+        document.querySelector('#createListingModal form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (rentalCalendar) {
+                const bookingData = rentalCalendar.getBookingData();
+                console.log('Booking Data:', bookingData);
+                
+                // Here you would typically send the data to your backend
+                alert('Listing created successfully! Booking system configured.');
+                
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('createListingModal'));
+                modal.hide();
+            }
+        });
+
+        // Add some interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-populate some fields for demo
+            document.getElementById('itemTitle').addEventListener('focus', function() {
+                if (!this.value) {
+                    this.placeholder = 'e.g., Professional Camera Kit, Mountain Bike, Power Tools';
+                }
+            });
+
+            // Show booking preview
+            document.getElementById('dailyRate').addEventListener('input', function() {
+                const rate = parseFloat(this.value) || 0;
+                const minDays = parseInt(document.getElementById('minRentalDays').value) || 1;
+                const maxDays = parseInt(document.getElementById('maxRentalDays').value) || 30;
+                
+                if (rate > 0) {
+                    const minTotal = (rate * minDays).toFixed(2);
+                    const maxTotal = (rate * maxDays).toFixed(2);
+                    
+                    // You could display this information somewhere in the UI
+                    console.log(`Rental range: $${minTotal} - $${maxTotal}`);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
