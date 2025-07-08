@@ -42,10 +42,6 @@
                         <a class="nav-link" href="contact.html">Contact Us</a>
                     </li>
                 </ul>
-                <form class="d-flex mx-3 navbar-search" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search rentals..." aria-label="Search">
-                    <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i></button>
-                </form>
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <button class="btn auth-button me-2" data-bs-toggle="modal" data-bs-target="#createListingModal">
@@ -633,20 +629,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Unified Calendar and Booking System JavaScript -->
     <script>
-        // Image gallery functionality
-        function changeImage(thumbnail, imageSrc) {
-            document.getElementById('mainImage').src = imageSrc;
-            
-            // Update active thumbnail
-            document.querySelectorAll('.thumbnail').forEach(thumb => {
-                thumb.classList.remove('active');
-            });
-            thumbnail.classList.add('active');
-        }
-
-        // Calendar functionality
-        class ProductCalendar {
+        class RentalCalendar {
             constructor() {
                 this.currentDate = new Date();
                 this.selectedDates = new Set();
@@ -657,64 +642,73 @@
             init() {
                 this.renderCalendar();
                 this.bindEvents();
-                this.setupAvailability();
+                this.setupBookingSettings();
             }
 
             renderCalendar() {
                 const year = this.currentDate.getFullYear();
                 const month = this.currentDate.getMonth();
-                
+                // Update month/year display
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                                  'July', 'August', 'September', 'October', 'November', 'December'];
+                document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
                 const firstDay = new Date(year, month, 1);
-                const lastDay = new Date(year, month + 1, 0);
                 const startDate = new Date(firstDay);
                 startDate.setDate(startDate.getDate() - firstDay.getDay());
-
                 const calendarDays = document.getElementById('calendarDays');
                 calendarDays.innerHTML = '';
-
                 for (let i = 0; i < 42; i++) {
                     const date = new Date(startDate);
                     date.setDate(startDate.getDate() + i);
-                    
                     const dayElement = document.createElement('div');
                     dayElement.className = 'calendar-day';
                     dayElement.textContent = date.getDate();
                     dayElement.dataset.date = date.toISOString().split('T')[0];
-
                     if (date.getMonth() !== month) {
                         dayElement.classList.add('other-month');
                     }
-
                     const today = new Date();
                     if (date.toDateString() === today.toDateString()) {
                         dayElement.classList.add('today');
                     }
-
                     if (this.unavailableDates.has(date.toISOString().split('T')[0])) {
                         dayElement.classList.add('unavailable');
                     } else if (date.getMonth() === month) {
                         dayElement.classList.add('available');
                     }
-
                     if (this.selectedDates.has(date.toISOString().split('T')[0])) {
                         dayElement.classList.add('selected');
                     }
-
                     calendarDays.appendChild(dayElement);
                 }
             }
 
             bindEvents() {
+                document.getElementById('prevMonth').addEventListener('click', () => {
+                    this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                    this.renderCalendar();
+                });
+                document.getElementById('nextMonth').addEventListener('click', () => {
+                    this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                    this.renderCalendar();
+                });
                 document.getElementById('calendarDays').addEventListener('click', (e) => {
                     if (e.target.classList.contains('calendar-day') && 
                         !e.target.classList.contains('other-month') && 
                         !e.target.classList.contains('unavailable')) {
-                        
                         const date = e.target.dataset.date;
                         this.toggleDateSelection(date);
                         this.renderCalendar();
-                        this.updateBookingSummary();
                     }
+                });
+                document.getElementById('minRentalDays').addEventListener('change', () => {
+                    this.updateAvailability();
+                });
+                document.getElementById('maxRentalDays').addEventListener('change', () => {
+                    this.updateAvailability();
+                });
+                document.getElementById('advanceBookingDays').addEventListener('change', () => {
+                    this.updateAvailability();
                 });
             }
 
@@ -726,58 +720,75 @@
                 }
             }
 
-            setupAvailability() {
+            setupBookingSettings() {
                 const today = new Date();
                 for (let i = 0; i < 90; i++) {
                     const date = new Date(today);
                     date.setDate(today.getDate() + i);
-                    
-                    // Make some dates unavailable for demo
                     if (date.getDay() === 0 || date.getDay() === 6) {
                         this.unavailableDates.add(date.toISOString().split('T')[0]);
                     }
                 }
+                this.updateAvailability();
             }
 
-            updateBookingSummary() {
-                const selectedDates = Array.from(this.selectedDates).sort();
-                const summary = document.getElementById('bookingSummary');
-                const selectedDatesSpan = document.getElementById('selectedDates');
-                const durationSpan = document.getElementById('duration');
-                const totalPriceSpan = document.getElementById('totalPrice');
-
-                if (selectedDates.length > 0) {
-                    selectedDatesSpan.textContent = selectedDates.join(', ');
-                    durationSpan.textContent = `${selectedDates.length} day(s)`;
-                    totalPriceSpan.textContent = `$${(selectedDates.length * 25).toFixed(2)}`;
-                    summary.style.display = 'block';
-                } else {
-                    summary.style.display = 'none';
+            updateAvailability() {
+                const minDays = parseInt(document.getElementById('minRentalDays').value) || 1;
+                const maxDays = parseInt(document.getElementById('maxRentalDays').value) || 30;
+                const advanceDays = parseInt(document.getElementById('advanceBookingDays').value) || 7;
+                const today = new Date();
+                const advanceDate = new Date(today);
+                advanceDate.setDate(today.getDate() + advanceDays);
+                this.unavailableDates.clear();
+                for (let i = 0; i < advanceDays; i++) {
+                    const date = new Date(today);
+                    date.setDate(today.getDate() + i);
+                    this.unavailableDates.add(date.toISOString().split('T')[0]);
                 }
+                for (let i = advanceDays; i < 90; i++) {
+                    const date = new Date(today);
+                    date.setDate(today.getDate() + i);
+                    if (date.getDay() === 0 || date.getDay() === 6) {
+                        this.unavailableDates.add(date.toISOString().split('T')[0]);
+                    }
+                }
+                this.renderCalendar();
             }
 
             getSelectedDates() {
                 return Array.from(this.selectedDates).sort();
             }
-        }
 
-        // Initialize calendar
-        let productCalendar;
-        document.addEventListener('DOMContentLoaded', function() {
-            productCalendar = new ProductCalendar();
-        });
-
-        // Booking functionality
-        function bookItem() {
-            if (productCalendar && productCalendar.getSelectedDates().length > 0) {
-                const selectedDates = productCalendar.getSelectedDates();
-                const totalPrice = (selectedDates.length * 25).toFixed(2);
-                
-                alert(`Booking confirmed for ${selectedDates.length} day(s)!\nTotal: $${totalPrice}\n\nYou will receive a confirmation email shortly.`);
-            } else {
-                alert('Please select at least one date for booking.');
+            getBookingData() {
+                return {
+                    selectedDates: this.getSelectedDates(),
+                    minRentalDays: parseInt(document.getElementById('minRentalDays').value) || 1,
+                    maxRentalDays: parseInt(document.getElementById('maxRentalDays').value) || 30,
+                    advanceBookingDays: parseInt(document.getElementById('advanceBookingDays').value) || 7,
+                    cancellationPolicy: document.getElementById('cancellationPolicy').value
+                };
             }
         }
+
+        // Initialize calendar when modal is shown
+        let rentalCalendar;
+        document.getElementById('createListingModal').addEventListener('shown.bs.modal', function () {
+            if (!rentalCalendar) {
+                rentalCalendar = new RentalCalendar();
+            }
+        });
+
+        // Handle form submission
+        document.querySelector('#createListingModal form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (rentalCalendar) {
+                const bookingData = rentalCalendar.getBookingData();
+                console.log('Booking Data:', bookingData);
+                alert('Listing created successfully! Booking system configured.');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('createListingModal'));
+                modal.hide();
+            }
+        });
     </script>
 </body>
 </html> 
