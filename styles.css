@@ -431,3 +431,40 @@ body {
 .similar-items {
     margin-top: 40px;
 }
+
+/* Navbar search bar styles */
+.navbar-search {
+    align-items: center;
+    min-width: 220px;
+}
+
+.navbar-search .form-control {
+    border-radius: 50px;
+    background: rgba(255,255,255,0.85);
+    border: none;
+    padding: 0.4rem 1.2rem;
+    font-size: 1rem;
+    min-width: 120px;
+    transition: box-shadow 0.2s;
+}
+
+.navbar-search .form-control:focus {
+    box-shadow: 0 0 0 2px var(--primary-color, #FF8800);
+    background: #fff;
+}
+
+.navbar-search .btn {
+    border-radius: 50px;
+    border: none;
+    background: var(--primary-color, #FF8800);
+    color: #fff;
+    padding: 0.4rem 1rem;
+    font-size: 1.1rem;
+    transition: background 0.2s;
+}
+
+.navbar-search .btn:hover, .navbar-search .btn:focus {
+    background: var(--secondary-color, #FFB347);
+    color: #fff;
+    outline: none;
+}
