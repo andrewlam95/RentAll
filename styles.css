@@ -87,14 +87,42 @@ body {
 }
 
 .location-picker {
-    color: var(--primary-color);
+    color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     display: inline-block;
+    transition: all 0.2s ease;
+    font-weight: 400;
+    font-size: 1rem;
+    opacity: 0.85;
 }
 
 .location-picker:hover {
+    color: white;
     text-decoration: underline;
+    opacity: 1;
+}
+
+.location-picker i {
+    margin-right: 0.4rem;
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.location-picker:hover i {
+    opacity: 1;
+}
+
+.location-picker .text-secondary {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 0.85rem;
+    margin-left: 0.3rem;
+    font-weight: 400;
+    transition: all 0.2s ease;
+}
+
+.location-picker:hover .text-secondary {
+    color: rgba(255, 255, 255, 0.9) !important;
 }
 
 .category-card {
