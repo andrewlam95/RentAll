@@ -520,3 +520,206 @@ body {
         margin-top: -70px; /* Adjust hero section margin for mobile */
     }
 }
+
+/* Hot Items Section */
+.hot-items-carousel {
+    overflow: hidden;
+    position: relative;
+}
+
+.hot-item {
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.hot-item:hover {
+    transform: translateY(-5px);
+}
+
+.hot-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.carousel-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.carousel-controls .btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.carousel-controls .btn:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+/* Top Rated Renters Section */
+.top-renters-carousel {
+    overflow: hidden;
+    position: relative;
+}
+
+.renter-card {
+    border: 1px solid #e9ecef;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.renter-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: var(--primary-color);
+}
+
+.renter-avatar {
+    position: relative;
+    display: inline-block;
+}
+
+.renter-avatar img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.verified-badge {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.renter-stats {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.renter-stats .stat {
+    text-align: center;
+}
+
+.renter-stats .stat strong {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rating i {
+    color: #ffc107;
+    font-size: 0.9rem;
+}
+
+/* Carousel Animation */
+.carousel-slide {
+    transition: transform 0.5s ease;
+}
+
+.carousel-slide.sliding {
+    transition: transform 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hot-items-carousel .col-md-3,
+    .top-renters-carousel .col-md-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .carousel-controls {
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .renter-stats {
+        flex-direction: column;
+        gap: 1rem !important;
+    }
+    
+    .renter-stats .stat {
+        flex: 1;
+    }
+}
+
+/* Animation for hot items */
+@keyframes hotPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.hot-badge {
+    animation: hotPulse 2s infinite;
+}
+
+/* Enhanced hover effects */
+.item-card.hot-item:hover .hot-badge {
+    animation: none;
+    transform: scale(1.1);
+}
+
+.renter-card:hover .verified-badge {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* Loading states for carousel */
+.carousel-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.carousel-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
