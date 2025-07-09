@@ -59,10 +59,18 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="categories.html">All Categories</a></li>
-                            <li><a class="dropdown-item" href="#">Tools & Equipment</a></li>
-                            <li><a class="dropdown-item" href="#">Sports & Outdoors</a></li>
-                            <li><a class="dropdown-item" href="#">Electronics</a></li>
-                            <li><a class="dropdown-item" href="#">Entertainment</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=tools">Tools & Equipment</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=sports">Sports & Outdoors</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=electronics">Electronics</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=entertainment">Entertainment</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=home">Home & Garden</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=vehicles">Vehicles & Transportation</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=fashion">Fashion & Accessories</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=baby">Baby & Kids</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=business">Business & Office</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=health">Health & Fitness</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=photography">Photography & Video</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=music">Music & Audio</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -97,6 +105,33 @@
         </div>
     </nav>
 
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-decoration"></div>
+        <div class="container">
+            <div class="hero-content text-center">
+                <h1 class="hero-title" id="category-title">All Categories</h1>
+                <p class="hero-subtitle">Discover amazing rentals in your community</p>
+                
+                <!-- Search Bar -->
+                <div class="search-container d-flex align-items-center">
+                    <i class="bi bi-search ms-3 text-muted"></i>
+                    <input type="text" class="search-input" placeholder="What would you like to rent?">
+                    <button class="search-button">Search</button>
+                </div>
+                
+                <!-- Location Picker -->
+                <div class="mt-3">
+                    <a href="#" class="location-picker">
+                        <i class="bi bi-geo-alt"></i>
+                        Near Ottawa, ON
+                        <span class="text-secondary">(change)</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Search Bar and Filters -->
     <div class="container mt-4">
         <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
@@ -106,7 +141,7 @@
                     <input type="text" class="form-control" placeholder="Search an item by name or keyword...">
                 </div>
             </div>
-            <button class="btn btn-outline-secondary d-flex align-items-center" type="button">
+            <button class="btn btn-outline-secondary d-flex align-items-center" type="button" data-bs-toggle="modal" data-bs-target="#filterModal">
                 <i class="bi bi-sliders me-1"></i> Filters
             </button>
         </div>
@@ -238,6 +273,169 @@
         </div>
     </div>
 
+    <!-- Filter Modal -->
+    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filterModalLabel">
+                        <i class="bi bi-sliders me-2"></i>Advanced Filters
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="filterForm">
+                        <!-- Category & Subcategory Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Category & Subcategory</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">Main Category</label>
+                                    <select class="form-select" id="mainCategory">
+                                        <option value="">All Categories</option>
+                                        <option value="tools">Tools & Equipment</option>
+                                        <option value="sports">Sports & Outdoors</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="entertainment">Entertainment</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Subcategory</label>
+                                    <select class="form-select" id="subcategory">
+                                        <option value="">All Subcategories</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Price Range Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Price Range</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">Minimum Price ($/day)</label>
+                                    <input type="number" class="form-control" id="minPrice" placeholder="0" min="0">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Maximum Price ($/day)</label>
+                                    <input type="number" class="form-control" id="maxPrice" placeholder="1000" min="0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location & Distance Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Location & Distance</h6>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="location" placeholder="Enter city or postal code">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Distance (km)</label>
+                                    <select class="form-select" id="distance">
+                                        <option value="5">5 km</option>
+                                        <option value="10" selected>10 km</option>
+                                        <option value="25">25 km</option>
+                                        <option value="50">50 km</option>
+                                        <option value="100">100 km</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Availability Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Availability</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">Start Date</label>
+                                    <input type="date" class="form-control" id="startDate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">End Date</label>
+                                    <input type="date" class="form-control" id="endDate">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Owner Rating Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Owner Rating</h6>
+                            <div class="d-flex gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="rating" id="ratingAny" value="" checked>
+                                    <label class="form-check-label" for="ratingAny">Any Rating</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="rating" id="rating4Plus" value="4">
+                                    <label class="form-check-label" for="rating4Plus">4+ Stars</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="rating" id="rating5" value="5">
+                                    <label class="form-check-label" for="rating5">5 Stars Only</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sort Options Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Sort By</h6>
+                            <select class="form-select" id="sortBy">
+                                <option value="relevance" selected>Relevance</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="distance">Distance</option>
+                                <option value="rating">Highest Rated</option>
+                                <option value="newest">Newest First</option>
+                            </select>
+                        </div>
+
+                        <!-- Additional Filters Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Additional Filters</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="verifiedOwners">
+                                        <label class="form-check-label" for="verifiedOwners">Verified Owners Only</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="instantBooking">
+                                        <label class="form-check-label" for="instantBooking">Instant Booking Available</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="freeDelivery">
+                                        <label class="form-check-label" for="freeDelivery">Free Delivery</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="weekendOnly">
+                                        <label class="form-check-label" for="weekendOnly">Weekend Rentals Only</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="longTerm">
+                                        <label class="form-check-label" for="longTerm">Long-term Rentals</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="negotiable">
+                                        <label class="form-check-label" for="negotiable">Price Negotiable</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="clearFilters()">Clear All</button>
+                    <button type="button" class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     // --- Subcategory and Category Logic ---
@@ -247,7 +445,15 @@
             tools: ['Power Tools', 'Gardening', 'Construction', 'Hand Tools', 'Automotive', 'Cleaning', 'Painting', 'Plumbing'],
             sports: ['Bikes', 'Camping', 'Fitness', 'Water Sports', 'Winter Sports', 'Team Sports', 'Hiking', 'Yoga'],
             electronics: ['Cameras', 'Audio', 'Gadgets', 'Computers', 'Gaming', 'Mobile Devices', 'Home Theater', 'Smart Home'],
-            entertainment: ['Games', 'Movies', 'Party', 'Musical Instruments', 'Board Games', 'VR Equipment', 'Karaoke', 'DJ Equipment']
+            entertainment: ['Games', 'Movies', 'Party', 'Musical Instruments', 'Board Games', 'VR Equipment', 'Karaoke', 'DJ Equipment'],
+            home: ['Furniture', 'Appliances', 'Decor', 'Garden Tools', 'Kitchen Equipment', 'Cleaning Supplies', 'Storage', 'Lighting'],
+            vehicles: ['Cars', 'Trucks', 'Motorcycles', 'Scooters', 'Trailers', 'Bikes', 'Boats', 'Recreational Vehicles'],
+            fashion: ['Formal Wear', 'Costumes', 'Jewelry', 'Handbags', 'Accessories', 'Shoes', 'Watches', 'Sunglasses'],
+            baby: ['Strollers', 'Car Seats', 'Baby Gear', 'Toys', 'Educational Materials', 'Nursery Equipment', 'Safety Items', 'Feeding Supplies'],
+            business: ['Office Equipment', 'Presentation Tools', 'Meeting Furniture', 'Business Supplies', 'Computers', 'Printers', 'Conference Equipment', 'Office Decor'],
+            health: ['Exercise Equipment', 'Yoga Mats', 'Fitness Trackers', 'Massage Chairs', 'Wellness Products', 'Medical Equipment', 'Rehabilitation', 'Sports Medicine'],
+            photography: ['Professional Cameras', 'Lenses', 'Lighting Equipment', 'Tripods', 'Video Production', 'Studio Equipment', 'Accessories', 'Editing Tools'],
+            music: ['Musical Instruments', 'Sound Systems', 'Microphones', 'Amplifiers', 'Recording Equipment', 'DJ Equipment', 'Studio Gear', 'Accessories']
         };
         // Get query param
         function getQueryParam(name) {
@@ -285,11 +491,243 @@
             }
             header.innerHTML = text;
         }
+        
+        // Update hero title
+        function updateHeroTitle(category) {
+            const heroTitle = document.getElementById('category-title');
+            if (category) {
+                const categoryNames = {
+                    'tools': 'Tools & Equipment',
+                    'sports': 'Sports & Outdoors', 
+                    'electronics': 'Electronics',
+                    'entertainment': 'Entertainment',
+                    'home': 'Home & Garden',
+                    'vehicles': 'Vehicles & Transportation',
+                    'fashion': 'Fashion & Accessories',
+                    'baby': 'Baby & Kids',
+                    'business': 'Business & Office',
+                    'health': 'Health & Fitness',
+                    'photography': 'Photography & Video',
+                    'music': 'Music & Audio'
+                };
+                heroTitle.textContent = categoryNames[category] || cap(category.replace(/_/g, ' '));
+            } else {
+                heroTitle.textContent = 'All Categories';
+            }
+        }
+        // Sample data for each category
+        const samplePosts = {
+            tools: [
+                { title: 'Professional Drill Set', price: 25, owner: 'Mike T', image: 'https://images.unsplash.com/photo-1581147036324-c1c89c2c8b5c?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Garden Power Tools Kit', price: 30, owner: 'Sarah L', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Complete Hand Tool Set', price: 15, owner: 'John D', image: 'https://images.unsplash.com/photo-1581147036324-c1c89c2c8b5c?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Paint Sprayer Professional', price: 40, owner: 'Alex P', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' }
+            ],
+            sports: [
+                { title: 'Mountain Bike Premium', price: 20, owner: 'Emma R', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Camping Tent 4-Person', price: 35, owner: 'David K', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Yoga Equipment Set', price: 12, owner: 'Lisa M', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Fitness Equipment Bundle', price: 28, owner: 'Tom W', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' }
+            ],
+            electronics: [
+                { title: 'Professional Camera Kit', price: 45, owner: 'Jane D', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=400&q=80' },
+                { title: '4K Smart Projector', price: 60, owner: 'Ted S', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Gaming Console Bundle', price: 25, owner: 'Mark L', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Home Theater System', price: 50, owner: 'Rachel K', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80' }
+            ],
+            entertainment: [
+                { title: 'Board Game Collection', price: 8, owner: 'Chris T', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Karaoke Machine Pro', price: 22, owner: 'Anna M', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80' },
+                { title: 'VR Gaming Headset', price: 35, owner: 'Paul R', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Party Equipment Set', price: 40, owner: 'Sophie L', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80' }
+            ],
+            home: [
+                { title: 'Modern Furniture Set', price: 45, owner: 'Maria G', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Kitchen Appliance Bundle', price: 30, owner: 'Kevin H', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Garden Tools Collection', price: 18, owner: 'Laura B', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Home Decor Package', price: 25, owner: 'Ryan M', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' }
+            ],
+            vehicles: [
+                { title: 'Compact Car Rental', price: 80, owner: 'Auto Rentals', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Motorcycle Sport', price: 45, owner: 'Bike Rentals', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Utility Trailer', price: 35, owner: 'Trailer Co', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Electric Scooter', price: 15, owner: 'Scooter Rent', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80' }
+            ],
+            fashion: [
+                { title: 'Formal Suit Collection', price: 35, owner: 'Fashion Rent', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Wedding Dress Set', price: 120, owner: 'Bridal Rentals', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Jewelry Collection', price: 25, owner: 'Luxury Rent', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Costume Party Set', price: 40, owner: 'Party Costumes', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=400&q=80' }
+            ],
+            baby: [
+                { title: 'Baby Stroller Premium', price: 20, owner: 'Baby Gear', image: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Car Seat Safety', price: 15, owner: 'Safety First', image: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Educational Toys Set', price: 12, owner: 'Learning Toys', image: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Nursery Equipment', price: 30, owner: 'Baby Essentials', image: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=400&q=80' }
+            ],
+            business: [
+                { title: 'Conference Room Setup', price: 100, owner: 'Office Rentals', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Presentation Equipment', price: 45, owner: 'Business Tools', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Office Furniture Set', price: 60, owner: 'Furniture Co', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Printer & Scanner', price: 25, owner: 'Tech Rentals', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80' }
+            ],
+            health: [
+                { title: 'Treadmill Professional', price: 40, owner: 'Fitness Rent', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Yoga Equipment Set', price: 15, owner: 'Wellness Co', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Massage Chair', price: 50, owner: 'Relax Rent', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Medical Equipment', price: 80, owner: 'Health Rent', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' }
+            ],
+            photography: [
+                { title: 'DSLR Camera Kit', price: 55, owner: 'Photo Rent', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Professional Lighting', price: 40, owner: 'Studio Gear', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Video Production Kit', price: 75, owner: 'Video Rent', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Studio Equipment Set', price: 90, owner: 'Pro Studio', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80' }
+            ],
+            music: [
+                { title: 'Guitar Collection', price: 25, owner: 'Music Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Sound System Pro', price: 60, owner: 'Audio Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
+                { title: 'DJ Equipment Set', price: 80, owner: 'DJ Rentals', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
+                { title: 'Recording Studio Kit', price: 120, owner: 'Studio Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' }
+            ]
+        };
+
+        // Function to render sample posts
+        function renderSamplePosts(category) {
+            const postsContainer = document.querySelector('.row.row-cols-1.row-cols-md-2.row-cols-lg-4.g-4');
+            if (!postsContainer || !samplePosts[category]) return;
+            
+            postsContainer.innerHTML = '';
+            samplePosts[category].forEach(post => {
+                const postHtml = `
+                    <div class="col">
+                        <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
+                            <img src="${post.image}" class="card-img-top" alt="${post.title}" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">${post.title}</h5>
+                                <p class="card-text mb-1"><b>$${post.price}.00</b> <span class="text-muted">/ day</span></p>
+                                <p class="card-text small">Owner: ${post.owner}</p>
+                                <button class="btn btn-primary w-100" onclick="event.stopPropagation();">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                postsContainer.innerHTML += postHtml;
+            });
+        }
+
         // Init
         const category = getQueryParam('category');
         renderHeader(category);
-        if (category) renderSubcategories(category);
+        updateHeroTitle(category);
+        if (category) {
+            renderSubcategories(category);
+            renderSamplePosts(category);
+        }
+        
+        // Initialize filter modal functionality
+        initializeFilters();
     })();
+    
+    // Filter Modal Functions
+    function initializeFilters() {
+        const mainCategory = document.getElementById('mainCategory');
+        const subcategory = document.getElementById('subcategory');
+        
+        // Update subcategories when main category changes
+        mainCategory.addEventListener('change', function() {
+            updateSubcategoryOptions(this.value);
+        });
+        
+        // Set initial category if present in URL
+        const urlCategory = getQueryParam('category');
+        if (urlCategory) {
+            mainCategory.value = urlCategory;
+            updateSubcategoryOptions(urlCategory);
+        }
+    }
+    
+    function updateSubcategoryOptions(category) {
+        const subcategory = document.getElementById('subcategory');
+        subcategory.innerHTML = '<option value="">All Subcategories</option>';
+        
+        if (category && subcategories[category]) {
+            subcategories[category].forEach(sub => {
+                const option = document.createElement('option');
+                option.value = sub;
+                option.textContent = sub;
+                subcategory.appendChild(option);
+            });
+        }
+    }
+    
+    function applyFilters() {
+        const filters = {
+            category: document.getElementById('mainCategory').value,
+            subcategory: document.getElementById('subcategory').value,
+            minPrice: document.getElementById('minPrice').value,
+            maxPrice: document.getElementById('maxPrice').value,
+            location: document.getElementById('location').value,
+            distance: document.getElementById('distance').value,
+            startDate: document.getElementById('startDate').value,
+            endDate: document.getElementById('endDate').value,
+            rating: document.querySelector('input[name="rating"]:checked').value,
+            sortBy: document.getElementById('sortBy').value,
+            verifiedOwners: document.getElementById('verifiedOwners').checked,
+            instantBooking: document.getElementById('instantBooking').checked,
+            freeDelivery: document.getElementById('freeDelivery').checked,
+            weekendOnly: document.getElementById('weekendOnly').checked,
+            longTerm: document.getElementById('longTerm').checked,
+            negotiable: document.getElementById('negotiable').checked
+        };
+        
+        // Here you would typically send these filters to your backend
+        console.log('Applied filters:', filters);
+        
+        // Update the results count (example)
+        const resultsCount = document.querySelector('.mb-2.text-muted.small');
+        if (resultsCount) {
+            resultsCount.innerHTML = `Filtered results in the <b>Ottawa</b> area`;
+        }
+        
+        // Close the modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('filterModal'));
+        modal.hide();
+        
+        // Show a success message
+        showFilterAppliedMessage();
+    }
+    
+    function clearFilters() {
+        document.getElementById('filterForm').reset();
+        updateSubcategoryOptions('');
+        
+        // Reset to default values
+        document.getElementById('distance').value = '10';
+        document.getElementById('sortBy').value = 'relevance';
+        document.getElementById('ratingAny').checked = true;
+        
+        console.log('Filters cleared');
+    }
+    
+    function showFilterAppliedMessage() {
+        // Create a temporary success message
+        const message = document.createElement('div');
+        message.className = 'alert alert-success alert-dismissible fade show position-fixed';
+        message.style.cssText = 'top: 20px; right: 20px; z-index: 9999;';
+        message.innerHTML = `
+            <i class="bi bi-check-circle me-2"></i>
+            Filters applied successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(message);
+        
+        // Remove the message after 3 seconds
+        setTimeout(() => {
+            if (message.parentNode) {
+                message.remove();
+            }
+        }, 3000);
+    }
     </script>
 </body>
 </html> 
