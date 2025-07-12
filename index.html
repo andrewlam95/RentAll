@@ -689,6 +689,94 @@
                                     </div>
                                 </div>
                                 
+                                <!-- Categories Section -->
+                                <div class="mb-3">
+                                    <label class="form-label">Categories</label>
+                                    <div class="mb-2">
+                                        <small class="text-muted fw-medium">Click to select/deselect categories that best describe your item</small>
+                                    </div>
+                                    <div class="categories-container border rounded p-3" style="max-height: 300px; overflow-y: auto;">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="tools">
+                                                    <i class="bi bi-tools me-1"></i>Tools & Equipment
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="sports">
+                                                    <i class="bi bi-bicycle me-1"></i>Sports & Outdoors
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="electronics">
+                                                    <i class="bi bi-camera me-1"></i>Electronics
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="entertainment">
+                                                    <i class="bi bi-controller me-1"></i>Entertainment
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="home">
+                                                    <i class="bi bi-house me-1"></i>Home & Garden
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="vehicles">
+                                                    <i class="bi bi-car-front me-1"></i>Vehicles & Transportation
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="fashion">
+                                                    <i class="bi bi-bag me-1"></i>Fashion & Accessories
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="baby">
+                                                    <i class="bi bi-heart me-1"></i>Baby & Kids
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="business">
+                                                    <i class="bi bi-briefcase me-1"></i>Business & Office
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="health">
+                                                    <i class="bi bi-activity me-1"></i>Health & Fitness
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="photography">
+                                                    <i class="bi bi-camera-video me-1"></i>Photography & Video
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="music">
+                                                    <i class="bi bi-music-note me-1"></i>Music & Audio
+                                                </button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="party">
+                                                    <i class="bi bi-cup-hot me-1"></i>Party & Events
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="outdoor">
+                                                    <i class="bi bi-tree me-1"></i>Outdoor & Camping
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="fitness">
+                                                    <i class="bi bi-heart-pulse me-1"></i>Fitness Equipment
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="gaming">
+                                                    <i class="bi bi-joystick me-1"></i>Gaming & VR
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="audio">
+                                                    <i class="bi bi-speaker me-1"></i>Audio & Sound
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="lighting">
+                                                    <i class="bi bi-lightbulb me-1"></i>Lighting & Decor
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="kitchen">
+                                                    <i class="bi bi-cup-straw me-1"></i>Kitchen & Appliances
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="crafts">
+                                                    <i class="bi bi-palette me-1"></i>Crafts & Hobbies
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="pet">
+                                                    <i class="bi bi-heart me-1"></i>Pet Supplies
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="automotive">
+                                                    <i class="bi bi-wrench me-1"></i>Automotive Tools
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="musical">
+                                                    <i class="bi bi-music-note-beamed me-1"></i>Musical Instruments
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="other">
+                                                    <i class="bi bi-three-dots me-1"></i>Other
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <!-- Availability Section -->
                                 <div class="mb-3">
                                     <label class="form-label">Availability</label>
@@ -709,34 +797,6 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="dailyRate" class="form-label">Daily Rate ($)</label>
-                                            <input type="number" class="form-control" id="dailyRate" min="1" step="0.01" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="category" class="form-label">Category</label>
-                                            <select class="form-select" id="category" required>
-                                                <option value="">Select a category</option>
-                                                <option value="tools">Tools & Equipment</option>
-                                                <option value="sports">Sports & Outdoors</option>
-                                                <option value="electronics">Electronics</option>
-                                                <option value="entertainment">Entertainment</option>
-                                                <option value="home">Home & Garden</option>
-                                                <option value="vehicles">Vehicles & Transportation</option>
-                                                <option value="fashion">Fashion & Accessories</option>
-                                                <option value="baby">Baby & Kids</option>
-                                                <option value="business">Business & Office</option>
-                                                <option value="health">Health & Fitness</option>
-                                                <option value="photography">Photography & Video</option>
-                                                <option value="music">Music & Audio</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
                                             <label for="location" class="form-label">Location</label>
                                             <input type="text" class="form-control" id="location" placeholder="City, Province" required>
                                         </div>
@@ -745,6 +805,16 @@
                                         <div class="mb-3">
                                             <label for="contactPhone" class="form-label">Contact Phone</label>
                                             <input type="tel" class="form-control" id="contactPhone" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Daily Rate Section -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="dailyRate" class="form-label">Daily Rate ($)</label>
+                                            <input type="number" class="form-control" id="dailyRate" min="1" step="0.01" required>
                                         </div>
                                     </div>
                                 </div>
@@ -841,379 +911,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Location Services JavaScript -->
-    <script>
-        class LocationService {
-            constructor() {
-                this.currentLocation = {
-                    city: 'Richmond',
-                    province: 'BC',
-                    coordinates: null
-                };
-                this.init();
-            }
-
-            init() {
-                this.bindLocationEvents();
-                this.loadSavedLocation();
-                this.updateLocationDisplay();
-            }
-
-            bindLocationEvents() {
-                // Location picker click event
-                const locationPicker = document.querySelector('.location-picker');
-                if (locationPicker) {
-                    locationPicker.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        this.showLocationModal();
-                    });
-                }
-
-                // Search functionality with location
-                const searchInput = document.querySelector('.search-input');
-                const searchButton = document.querySelector('.search-button');
-                
-                if (searchButton) {
-                    searchButton.addEventListener('click', () => {
-                        this.performSearch();
-                    });
-                }
-
-                if (searchInput) {
-                    searchInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') {
-                            this.performSearch();
-                        }
-                    });
-                }
-            }
-
-            showLocationModal() {
-                // Create location modal dynamically
-                const modalHtml = `
-                    <div class="modal fade" id="locationModal" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Choose Your Location</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <button class="btn btn-outline-primary w-100 mb-2" id="detectLocation">
-                                            <i class="bi bi-geo-alt"></i> Detect My Location
-                                        </button>
-                                        <div id="locationStatus" class="text-muted small"></div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="locationCity" class="form-label">City</label>
-                                        <input type="text" class="form-control" id="locationCity" placeholder="Enter city name">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="locationProvince" class="form-label">Province</label>
-                                        <select class="form-select" id="locationProvince">
-                                            <option value="AB">Alberta</option>
-                                            <option value="BC">British Columbia</option>
-                                            <option value="MB">Manitoba</option>
-                                            <option value="NB">New Brunswick</option>
-                                            <option value="NL">Newfoundland and Labrador</option>
-                                            <option value="NS">Nova Scotia</option>
-                                            <option value="NT">Northwest Territories</option>
-                                            <option value="NU">Nunavut</option>
-                                            <option value="ON">Ontario</option>
-                                            <option value="PE">Prince Edward Island</option>
-                                            <option value="QC">Quebec</option>
-                                            <option value="SK">Saskatchewan</option>
-                                            <option value="YT">Yukon</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="locationRadius" class="form-label">Search Radius</label>
-                                        <select class="form-select" id="locationRadius">
-                                            <option value="5">5 km</option>
-                                            <option value="10" selected>10 km</option>
-                                            <option value="25">25 km</option>
-                                            <option value="50">50 km</option>
-                                            <option value="100">100 km</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary" id="saveLocation">Save Location</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                // Remove existing modal if any
-                const existingModal = document.getElementById('locationModal');
-                if (existingModal) {
-                    existingModal.remove();
-                }
-
-                // Add modal to body
-                document.body.insertAdjacentHTML('beforeend', modalHtml);
-
-                // Show modal
-                const modal = new bootstrap.Modal(document.getElementById('locationModal'));
-                modal.show();
-
-                // Bind modal events
-                this.bindModalEvents();
-            }
-
-            bindModalEvents() {
-                // Detect location button
-                const detectBtn = document.getElementById('detectLocation');
-                const statusDiv = document.getElementById('locationStatus');
-                
-                if (detectBtn) {
-                    detectBtn.addEventListener('click', () => {
-                        this.detectUserLocation(statusDiv, detectBtn);
-                    });
-                }
-
-                // Save location button
-                const saveBtn = document.getElementById('saveLocation');
-                if (saveBtn) {
-                    saveBtn.addEventListener('click', () => {
-                        this.saveLocation();
-                    });
-                }
-
-                // Load current location into form
-                this.populateLocationForm();
-            }
-
-            detectUserLocation(statusDiv, detectBtn) {
-                if (!navigator.geolocation) {
-                    statusDiv.innerHTML = '<span class="text-danger">Geolocation is not supported by this browser.</span>';
-                    return;
-                }
-
-                detectBtn.disabled = true;
-                detectBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Detecting...';
-                statusDiv.innerHTML = 'Requesting location...';
-
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
-                        this.currentLocation.coordinates = { latitude, longitude };
-                        
-                        // Reverse geocoding to get city name
-                        this.reverseGeocode(latitude, longitude, statusDiv, detectBtn);
-                    },
-                    (error) => {
-                        let errorMessage = 'Unable to retrieve your location.';
-                        switch (error.code) {
-                            case error.PERMISSION_DENIED:
-                                errorMessage = 'Location access denied. Please enable location services.';
-                                break;
-                            case error.POSITION_UNAVAILABLE:
-                                errorMessage = 'Location information unavailable.';
-                                break;
-                            case error.TIMEOUT:
-                                errorMessage = 'Location request timed out.';
-                                break;
-                        }
-                        statusDiv.innerHTML = `<span class="text-danger">${errorMessage}</span>`;
-                        detectBtn.disabled = false;
-                        detectBtn.innerHTML = '<i class="bi bi-geo-alt"></i> Detect My Location';
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 60000
-                    }
-                );
-            }
-
-            reverseGeocode(latitude, longitude, statusDiv, detectBtn) {
-                // Using a free reverse geocoding service
-                const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10`;
-                
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        const address = data.address;
-                        const city = address.city || address.town || address.village || address.county || 'Unknown City';
-                        const province = address.state || 'Unknown Province';
-                        
-                        // Update form fields
-                        document.getElementById('locationCity').value = city;
-                        document.getElementById('locationProvince').value = this.getProvinceCode(province);
-                        
-                        statusDiv.innerHTML = `<span class="text-success">Location detected: ${city}, ${province}</span>`;
-                        detectBtn.disabled = false;
-                        detectBtn.innerHTML = '<i class="bi bi-geo-alt"></i> Detect My Location';
-                        
-                        // Update current location
-                        this.currentLocation.city = city;
-                        this.currentLocation.province = this.getProvinceCode(province);
-                        this.currentLocation.coordinates = { latitude, longitude };
-                    })
-                    .catch(error => {
-                        statusDiv.innerHTML = '<span class="text-danger">Failed to get location details. Please enter manually.</span>';
-                        detectBtn.disabled = false;
-                        detectBtn.innerHTML = '<i class="bi bi-geo-alt"></i> Detect My Location';
-                    });
-            }
-
-            getProvinceCode(provinceName) {
-                const provinceMap = {
-                    'Alberta': 'AB',
-                    'British Columbia': 'BC',
-                    'Manitoba': 'MB',
-                    'New Brunswick': 'NB',
-                    'Newfoundland and Labrador': 'NL',
-                    'Nova Scotia': 'NS',
-                    'Northwest Territories': 'NT',
-                    'Nunavut': 'NU',
-                    'Ontario': 'ON',
-                    'Prince Edward Island': 'PE',
-                    'Quebec': 'QC',
-                    'Saskatchewan': 'SK',
-                    'Yukon': 'YT'
-                };
-                return provinceMap[provinceName] || 'BC';
-            }
-
-            populateLocationForm() {
-                const cityInput = document.getElementById('locationCity');
-                const provinceSelect = document.getElementById('locationProvince');
-                
-                if (cityInput) cityInput.value = this.currentLocation.city;
-                if (provinceSelect) provinceSelect.value = this.currentLocation.province;
-            }
-
-            saveLocation() {
-                const city = document.getElementById('locationCity').value;
-                const province = document.getElementById('locationProvince').value;
-                const radius = document.getElementById('locationRadius').value;
-
-                if (!city.trim()) {
-                    alert('Please enter a city name.');
-                    return;
-                }
-
-                // Update current location
-                this.currentLocation.city = city;
-                this.currentLocation.province = province;
-                this.currentLocation.radius = parseInt(radius);
-
-                // Save to localStorage
-                localStorage.setItem('rentall_location', JSON.stringify(this.currentLocation));
-
-                // Update display
-                this.updateLocationDisplay();
-
-                // Close modal
-                const modal = bootstrap.Modal.getInstance(document.getElementById('locationModal'));
-                modal.hide();
-
-                // Show success message
-                this.showLocationUpdateMessage();
-            }
-
-            loadSavedLocation() {
-                const saved = localStorage.getItem('rentall_location');
-                if (saved) {
-                    try {
-                        this.currentLocation = { ...this.currentLocation, ...JSON.parse(saved) };
-                    } catch (e) {
-                        console.error('Error loading saved location:', e);
-                    }
-                }
-            }
-
-            updateLocationDisplay() {
-                const locationPicker = document.querySelector('.location-picker');
-                if (locationPicker) {
-                    locationPicker.innerHTML = `
-                        <i class="bi bi-geo-alt"></i>
-                        Near ${this.currentLocation.city}, ${this.currentLocation.province}
-                        <span class="text-secondary">(change)</span>
-                    `;
-                }
-            }
-
-            showLocationUpdateMessage() {
-                // Create a temporary success message
-                const message = document.createElement('div');
-                message.className = 'alert alert-success alert-dismissible fade show position-fixed';
-                message.style.cssText = 'top: 20px; right: 20px; z-index: 9999; max-width: 300px;';
-                message.innerHTML = `
-                    <i class="bi bi-check-circle"></i> Location updated to ${this.currentLocation.city}, ${this.currentLocation.province}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                `;
-                
-                document.body.appendChild(message);
-                
-                // Auto-remove after 3 seconds
-                setTimeout(() => {
-                    if (message.parentNode) {
-                        message.remove();
-                    }
-                }, 3000);
-            }
-
-            performSearch() {
-                const searchInput = document.querySelector('.search-input');
-                const searchTerm = searchInput ? searchInput.value.trim() : '';
-                
-                if (!searchTerm) {
-                    alert('Please enter a search term.');
-                    return;
-                }
-
-                // Create search URL with location parameters
-                const searchParams = new URLSearchParams({
-                    q: searchTerm,
-                    location: `${this.currentLocation.city}, ${this.currentLocation.province}`,
-                    radius: this.currentLocation.radius || 10
-                });
-
-                // For demo purposes, show search results in console
-                console.log('Search performed:', {
-                    term: searchTerm,
-                    location: `${this.currentLocation.city}, ${this.currentLocation.province}`,
-                    radius: this.currentLocation.radius || 10,
-                    url: `search.html?${searchParams.toString()}`
-                });
-
-                // In a real application, you would redirect to search results page
-                // window.location.href = `search.html?${searchParams.toString()}`;
-                
-                // For demo, show an alert
-                alert(`Searching for "${searchTerm}" near ${this.currentLocation.city}, ${this.currentLocation.province}`);
-            }
-
-            getCurrentLocation() {
-                return this.currentLocation;
-            }
-
-            // Method to get nearby items based on location
-            getNearbyItems() {
-                // This would typically make an API call to get items near the current location
-                return {
-                    location: this.currentLocation,
-                    items: [] // Would be populated from API
-                };
-            }
-        }
-
-        // Initialize location service
-        let locationService;
-        document.addEventListener('DOMContentLoaded', function() {
-            locationService = new LocationService();
-        });
-    </script>
+    <script src="location-service.js"></script>
     
     <!-- Calendar and Booking System JavaScript -->
     <script>
@@ -1407,12 +1105,38 @@
         document.querySelector('#createListingModal form').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            // Get selected categories
+            const selectedCategories = [];
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            categoryButtons.forEach(button => {
+                if (button.classList.contains('btn-primary')) {
+                    selectedCategories.push(button.dataset.category);
+                }
+            });
+            
+            // Validate that at least one category is selected
+            if (selectedCategories.length === 0) {
+                alert('Please select at least one category for your item.');
+                return;
+            }
+            
             if (rentalCalendar) {
                 const bookingData = rentalCalendar.getBookingData();
-                console.log('Booking Data:', bookingData);
+                const formData = {
+                    title: document.getElementById('itemTitle').value,
+                    description: document.getElementById('itemDescription').value,
+                    categories: selectedCategories,
+                    dailyRate: document.getElementById('dailyRate').value,
+                    location: document.getElementById('location').value,
+                    contactPhone: document.getElementById('contactPhone').value,
+                    bookingData: bookingData
+                };
+                
+                console.log('Form Data:', formData);
+                console.log('Selected Categories:', selectedCategories);
                 
                 // Here you would typically send the data to your backend
-                alert('Listing created successfully! Booking system configured.');
+                alert(`Listing created successfully! Categories: ${selectedCategories.join(', ')}`);
                 
                 // Close modal
                 const modal = bootstrap.Modal.getInstance(document.getElementById('createListingModal'));
@@ -1443,6 +1167,82 @@
                     console.log(`Rental range: $${minTotal} - $${maxTotal}`);
                 }
             });
+
+            // Add category button functionality
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Toggle button state
+                    if (this.classList.contains('btn-outline-primary')) {
+                        this.classList.remove('btn-outline-primary');
+                        this.classList.add('btn-primary');
+                    } else {
+                        this.classList.remove('btn-primary');
+                        this.classList.add('btn-outline-primary');
+                    }
+                    
+                    // Update visual feedback
+                    updateCategorySelectionFeedback();
+                });
+            });
+
+            // Add "Select All" and "Clear All" functionality
+            const categoriesContainer = document.querySelector('.categories-container');
+            if (categoriesContainer) {
+                const selectAllBtn = document.createElement('button');
+                selectAllBtn.type = 'button';
+                selectAllBtn.className = 'btn btn-sm btn-outline-primary me-2';
+                selectAllBtn.textContent = 'Select All';
+                selectAllBtn.addEventListener('click', function() {
+                    categoryButtons.forEach(button => {
+                        button.classList.remove('btn-outline-primary');
+                        button.classList.add('btn-primary');
+                    });
+                    updateCategorySelectionFeedback();
+                });
+
+                const clearAllBtn = document.createElement('button');
+                clearAllBtn.type = 'button';
+                clearAllBtn.className = 'btn btn-sm btn-outline-secondary';
+                clearAllBtn.textContent = 'Clear All';
+                clearAllBtn.addEventListener('click', function() {
+                    categoryButtons.forEach(button => {
+                        button.classList.remove('btn-primary');
+                        button.classList.add('btn-outline-primary');
+                    });
+                    updateCategorySelectionFeedback();
+                });
+
+                // Insert buttons before the categories container
+                const label = categoriesContainer.previousElementSibling;
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'mb-2';
+                buttonContainer.appendChild(selectAllBtn);
+                buttonContainer.appendChild(clearAllBtn);
+                label.parentNode.insertBefore(buttonContainer, label.nextSibling);
+            }
+
+            // Function to update visual feedback
+            function updateCategorySelectionFeedback() {
+                const selectedCategories = [];
+                categoryButtons.forEach(button => {
+                    if (button.classList.contains('btn-primary')) {
+                        selectedCategories.push(button.dataset.category);
+                    }
+                });
+                
+                // Update visual feedback
+                const container = document.querySelector('.categories-container');
+                if (selectedCategories.length > 0) {
+                    container.style.borderColor = '#198754'; // Green border when categories selected
+                    container.style.backgroundColor = '#f8fff9';
+                } else {
+                    container.style.borderColor = '#dee2e6'; // Default border
+                    container.style.backgroundColor = 'transparent';
+                }
+                
+                console.log('Selected categories:', selectedCategories);
+            }
         });
     </script>
     

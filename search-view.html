@@ -27,6 +27,30 @@
             border-radius: 12px;
             border: 1px solid #eee;
         }
+        .featured-card {
+            transition: transform 0.2s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .featured-card:hover {
+            transform: translateY(-5px);
+            border-color: #007bff;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+        }
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .carousel-control-prev {
+            left: -20px;
+        }
+        .carousel-control-next {
+            right: -20px;
+        }
         @media (max-width: 991px) {
             .search-map-container {
                 flex-direction: column;
@@ -34,6 +58,10 @@
             .map-section {
                 max-width: 100%;
                 margin-top: 2rem;
+            }
+            .carousel-control-prev,
+            .carousel-control-next {
+                display: none;
             }
         }
     </style>
@@ -124,7 +152,7 @@
                 <div class="mt-3">
                     <a href="#" class="location-picker">
                         <i class="bi bi-geo-alt"></i>
-                        Near Ottawa, ON
+                        Near Richmond, BC
                         <span class="text-secondary">(change)</span>
                     </a>
                 </div>
@@ -145,7 +173,7 @@
                 <i class="bi bi-sliders me-1"></i> Filters
             </button>
         </div>
-        <div class="mb-2 text-muted small">1411 Rental opportunities in the <b>Ottawa</b> area</div>
+        <div class="mb-2 text-muted small">1411 Rental opportunities in the <b>Richmond</b> area</div>
     </div>
 
     <!-- Results and Map -->
@@ -153,117 +181,33 @@
         <div class="results-grid">
             <!-- Subcategory Buttons (injected by JS) -->
             <div id="subcategory-row" class="mb-3"></div>
+            
+            <!-- Featured Items Slider -->
+            <div class="mb-4">
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-star-fill text-warning me-2"></i>Featured Items
+                </h5>
+                <div id="featured-carousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <!-- Featured items will be injected here by JavaScript -->
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#featured-carousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#featured-carousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            
             <!-- Results Header -->
             <div id="results-header" class="mb-3 fw-bold"></div>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-                <!-- Example Posting 1 -->
-                <div class="col">
-                    <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
-                        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Projector">
-                        <div class="card-body">
-                            <h5 class="card-title">Royale R-1000 4k Led Smart Projector</h5>
-                            <p class="card-text mb-1"><b>$60.00</b> <span class="text-muted">/ day</span></p>
-                            <p class="card-text small">Owner: Ted S</p>
-                            <button class="btn btn-primary w-100" onclick="event.stopPropagation();">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Example Posting 2 -->
-                <div class="col">
-                    <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
-                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Grill">
-                        <div class="card-body">
-                            <h5 class="card-title">Compact Charcoal Grill Rental</h5>
-                            <p class="card-text mb-1"><b>$50.00</b> <span class="text-muted">/ day</span></p>
-                            <p class="card-text small">Owner: Ted S</p>
-                            <button class="btn btn-primary w-100" onclick="event.stopPropagation();">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Example Posting 3 -->
-                <div class="col">
-                    <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
-                        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Camera Kit">
-                        <div class="card-body">
-                            <h5 class="card-title">Professional Camera Kit</h5>
-                            <p class="card-text mb-1"><b>$25.00</b> <span class="text-muted">/ day</span></p>
-                            <p class="card-text small">Owner: Jane D</p>
-                            <button class="btn btn-primary w-100" onclick="event.stopPropagation();">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Example Posting 4 -->
-                <div class="col">
-                    <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
-                        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Mountain Bike">
-                        <div class="card-body">
-                            <h5 class="card-title">Mountain Bike</h5>
-                            <p class="card-text mb-1"><b>$15.00</b> <span class="text-muted">/ day</span></p>
-                            <p class="card-text small">Owner: Alex P</p>
-                            <button class="btn btn-primary w-100" onclick="event.stopPropagation();">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Example Posting 5 -->
-                <div class="col">
-                    <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
-                        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Tent">
-                        <div class="card-body">
-                            <h5 class="card-title">4-Person Camping Tent</h5>
-                            <p class="card-text mb-1"><b>$18.00</b> <span class="text-muted">/ day</span></p>
-                            <p class="card-text small">Owner: Sam R</p>
-                            <button class="btn btn-primary w-100" onclick="event.stopPropagation();">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Example Posting 6 -->
-                <div class="col">
-                    <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
-                        <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Lawn Mower">
-                        <div class="card-body">
-                            <h5 class="card-title">Electric Lawn Mower</h5>
-                            <p class="card-text mb-1"><b>$22.00</b> <span class="text-muted">/ day</span></p>
-                            <p class="card-text small">Owner: Chris L</p>
-                            <button class="btn btn-primary w-100" onclick="event.stopPropagation();">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Example Posting 7 -->
-                <div class="col">
-                    <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
-                        <img src="https://images.unsplash.com/photo-1519121789249-bc1c1f1c7c93?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Party Speaker">
-                        <div class="card-body">
-                            <h5 class="card-title">Bluetooth Party Speaker</h5>
-                            <p class="card-text mb-1"><b>$12.00</b> <span class="text-muted">/ day</span></p>
-                            <p class="card-text small">Owner: Dana W</p>
-                            <button class="btn btn-primary w-100" onclick="event.stopPropagation();">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Example Posting 8 -->
-                <div class="col">
-                    <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
-                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="GoPro Camera">
-                        <div class="card-body">
-                            <h5 class="card-title">GoPro Hero Action Camera</h5>
-                            <p class="card-text mb-1"><b>$20.00</b> <span class="text-muted">/ day</span></p>
-                            <p class="card-text small">Owner: Mike T</p>
-                            <button class="btn btn-primary w-100" onclick="event.stopPropagation();">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Example Posting 9 -->
-                <div class="col">
-                    <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
-                        <img src="https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Power Drill">
-                        <div class="card-body">
-                            <h5 class="card-title">Cordless Power Drill Set</h5>
-                            <p class="card-text mb-1"><b>$10.00</b> <span class="text-muted">/ day</span></p>
-                            <p class="card-text small">Owner: Lisa M</p>
-                            <button class="btn btn-primary w-100" onclick="event.stopPropagation();">Book Now</button>
-                        </div>
-                    </div>
-                </div>
+            
+            <!-- Dynamic Posts Container -->
+            <div id="posts-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                <!-- Posts will be dynamically generated here -->
             </div>
         </div>
         <!-- Map Section -->
@@ -437,6 +381,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="location-service.js"></script>
     <script>
     // --- Subcategory and Category Logic ---
     (function() {
@@ -474,6 +419,7 @@
                 btn.onclick = function() {
                     renderSubcategories(category, sub);
                     renderHeader(category, sub);
+                    renderSamplePosts(category, sub);
                 };
                 row.appendChild(btn);
             });
@@ -515,89 +461,235 @@
                 heroTitle.textContent = 'All Categories';
             }
         }
-        // Sample data for each category
-        const samplePosts = {
+        // Featured items data for each category
+        const featuredItems = {
             tools: [
-                { title: 'Professional Drill Set', price: 25, owner: 'Mike T', image: 'https://images.unsplash.com/photo-1581147036324-c1c89c2c8b5c?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Garden Power Tools Kit', price: 30, owner: 'Sarah L', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Complete Hand Tool Set', price: 15, owner: 'John D', image: 'https://images.unsplash.com/photo-1581147036324-c1c89c2c8b5c?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Paint Sprayer Professional', price: 40, owner: 'Alex P', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' }
+                { title: 'Professional Drill Set', price: 25, owner: 'Mike T', image: 'https://images.unsplash.com/photo-1581147036324-c1c89c2c8b5c?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'Garden Power Tools Kit', price: 30, owner: 'Sarah L', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80', rating: 4.9, featured: true },
+                { title: 'Complete Hand Tool Set', price: 15, owner: 'John D', image: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80', rating: 4.7, featured: true }
             ],
             sports: [
-                { title: 'Mountain Bike Premium', price: 20, owner: 'Emma R', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Camping Tent 4-Person', price: 35, owner: 'David K', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Yoga Equipment Set', price: 12, owner: 'Lisa M', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Fitness Equipment Bundle', price: 28, owner: 'Tom W', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' }
+                { title: 'Mountain Bike Premium', price: 20, owner: 'Emma R', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80', rating: 4.9, featured: true },
+                { title: 'Camping Tent 4-Person', price: 35, owner: 'David K', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'Yoga Equipment Set', price: 12, owner: 'Lisa M', image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=400&q=80', rating: 4.6, featured: true }
             ],
             electronics: [
-                { title: 'Professional Camera Kit', price: 45, owner: 'Jane D', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=400&q=80' },
-                { title: '4K Smart Projector', price: 60, owner: 'Ted S', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Gaming Console Bundle', price: 25, owner: 'Mark L', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Home Theater System', price: 50, owner: 'Rachel K', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80' }
+                { title: 'Professional Camera Kit', price: 45, owner: 'Jane D', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80', rating: 4.9, featured: true },
+                { title: '4K Smart Projector', price: 60, owner: 'Ted S', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'Gaming Console Bundle', price: 25, owner: 'Mark L', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=400&q=80', rating: 4.7, featured: true }
             ],
             entertainment: [
-                { title: 'Board Game Collection', price: 8, owner: 'Chris T', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Karaoke Machine Pro', price: 22, owner: 'Anna M', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80' },
-                { title: 'VR Gaming Headset', price: 35, owner: 'Paul R', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Party Equipment Set', price: 40, owner: 'Sophie L', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80' }
+                { title: 'Board Game Collection', price: 8, owner: 'Chris T', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80', rating: 4.6, featured: true },
+                { title: 'Karaoke Machine Pro', price: 22, owner: 'Anna M', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'VR Gaming Headset', price: 35, owner: 'Paul R', image: 'https://images.unsplash.com/photo-1519121789249-bc1c1f1c7c93?auto=format&fit=crop&w=400&q=80', rating: 4.9, featured: true }
             ],
             home: [
-                { title: 'Modern Furniture Set', price: 45, owner: 'Maria G', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Kitchen Appliance Bundle', price: 30, owner: 'Kevin H', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Garden Tools Collection', price: 18, owner: 'Laura B', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Home Decor Package', price: 25, owner: 'Ryan M', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' }
+                { title: 'Modern Furniture Set', price: 45, owner: 'Maria G', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'Kitchen Appliance Bundle', price: 30, owner: 'Kevin H', image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80', rating: 4.7, featured: true },
+                { title: 'Garden Tools Collection', price: 18, owner: 'Laura B', image: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80', rating: 4.6, featured: true }
             ],
             vehicles: [
-                { title: 'Compact Car Rental', price: 80, owner: 'Auto Rentals', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Motorcycle Sport', price: 45, owner: 'Bike Rentals', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Utility Trailer', price: 35, owner: 'Trailer Co', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Electric Scooter', price: 15, owner: 'Scooter Rent', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80' }
+                { title: 'Compact Car Rental', price: 80, owner: 'Auto Rentals', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80', rating: 4.9, featured: true },
+                { title: 'Motorcycle Sport', price: 45, owner: 'Bike Rentals', image: 'https://images.unsplash.com/photo-1558981806-ec527fa84a39?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'Electric Scooter', price: 15, owner: 'Scooter Rent', image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=400&q=80', rating: 4.7, featured: true }
             ],
             fashion: [
-                { title: 'Formal Suit Collection', price: 35, owner: 'Fashion Rent', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Wedding Dress Set', price: 120, owner: 'Bridal Rentals', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Jewelry Collection', price: 25, owner: 'Luxury Rent', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Costume Party Set', price: 40, owner: 'Party Costumes', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=400&q=80' }
+                { title: 'Formal Suit Collection', price: 35, owner: 'Fashion Rent', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'Wedding Dress Set', price: 120, owner: 'Bridal Rentals', image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=400&q=80', rating: 4.9, featured: true },
+                { title: 'Jewelry Collection', price: 25, owner: 'Luxury Rent', image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=400&q=80', rating: 4.7, featured: true }
             ],
             baby: [
-                { title: 'Baby Stroller Premium', price: 20, owner: 'Baby Gear', image: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Car Seat Safety', price: 15, owner: 'Safety First', image: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Educational Toys Set', price: 12, owner: 'Learning Toys', image: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Nursery Equipment', price: 30, owner: 'Baby Essentials', image: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=400&q=80' }
+                { title: 'Baby Stroller Premium', price: 20, owner: 'Baby Gear', image: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'Car Seat Safety', price: 15, owner: 'Safety First', image: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=400&q=80', rating: 4.9, featured: true },
+                { title: 'Educational Toys Set', price: 12, owner: 'Learning Toys', image: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&w=400&q=80', rating: 4.6, featured: true }
             ],
             business: [
-                { title: 'Conference Room Setup', price: 100, owner: 'Office Rentals', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Presentation Equipment', price: 45, owner: 'Business Tools', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Office Furniture Set', price: 60, owner: 'Furniture Co', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Printer & Scanner', price: 25, owner: 'Tech Rentals', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80' }
+                { title: 'Conference Room Setup', price: 100, owner: 'Office Rentals', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80', rating: 4.9, featured: true },
+                { title: 'Presentation Equipment', price: 45, owner: 'Business Tools', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'Office Furniture Set', price: 60, owner: 'Furniture Co', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80', rating: 4.7, featured: true }
             ],
             health: [
-                { title: 'Treadmill Professional', price: 40, owner: 'Fitness Rent', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Yoga Equipment Set', price: 15, owner: 'Wellness Co', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Massage Chair', price: 50, owner: 'Relax Rent', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Medical Equipment', price: 80, owner: 'Health Rent', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' }
+                { title: 'Treadmill Professional', price: 40, owner: 'Fitness Rent', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'Yoga Equipment Set', price: 15, owner: 'Wellness Co', image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=400&q=80', rating: 4.7, featured: true },
+                { title: 'Massage Chair', price: 50, owner: 'Relax Rent', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80', rating: 4.9, featured: true }
             ],
             photography: [
-                { title: 'DSLR Camera Kit', price: 55, owner: 'Photo Rent', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Professional Lighting', price: 40, owner: 'Studio Gear', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Video Production Kit', price: 75, owner: 'Video Rent', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Studio Equipment Set', price: 90, owner: 'Pro Studio', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80' }
+                { title: 'DSLR Camera Kit', price: 55, owner: 'Photo Rent', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80', rating: 4.9, featured: true },
+                { title: 'Professional Lighting', price: 40, owner: 'Studio Gear', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'Video Production Kit', price: 75, owner: 'Video Rent', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80', rating: 4.7, featured: true }
             ],
             music: [
-                { title: 'Guitar Collection', price: 25, owner: 'Music Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Sound System Pro', price: 60, owner: 'Audio Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
-                { title: 'DJ Equipment Set', price: 80, owner: 'DJ Rentals', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
-                { title: 'Recording Studio Kit', price: 120, owner: 'Studio Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' }
+                { title: 'Guitar Collection', price: 25, owner: 'Music Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80', rating: 4.8, featured: true },
+                { title: 'Sound System Pro', price: 60, owner: 'Audio Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80', rating: 4.9, featured: true },
+                { title: 'DJ Equipment Set', price: 80, owner: 'DJ Rentals', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80', rating: 4.7, featured: true }
             ]
         };
 
+        // Sample data for each category and subcategory
+        const samplePosts = {
+            tools: {
+                'Power Tools': [
+                    { title: 'Professional Drill Set', price: 25, owner: 'Mike T', image: 'https://images.unsplash.com/photo-1581147036324-c1c89c2c8b5c?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Circular Saw Pro', price: 30, owner: 'Sarah L', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Impact Driver Kit', price: 20, owner: 'John D', image: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Angle Grinder', price: 15, owner: 'Alex P', image: 'https://images.unsplash.com/photo-1581147036324-c1c89c2c8b5c?auto=format&fit=crop&w=400&q=80' }
+                ],
+                'Gardening': [
+                    { title: 'Garden Power Tools Kit', price: 30, owner: 'Sarah L', image: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Lawn Mower Electric', price: 25, owner: 'Mike T', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Hedge Trimmer', price: 18, owner: 'John D', image: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Leaf Blower', price: 12, owner: 'Alex P', image: 'https://images.unsplash.com/photo-1581147036324-c1c89c2c8b5c?auto=format&fit=crop&w=400&q=80' }
+                ],
+                'Construction': [
+                    { title: 'Concrete Mixer', price: 50, owner: 'Construction Co', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Scaffolding Set', price: 80, owner: 'Build Rent', image: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Jackhammer', price: 45, owner: 'Demolition Rent', image: 'https://images.unsplash.com/photo-1581147036324-c1c89c2c8b5c?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Cement Mixer', price: 35, owner: 'Concrete Co', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' }
+                ],
+                'Hand Tools': [
+                    { title: 'Complete Hand Tool Set', price: 15, owner: 'John D', image: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Socket Set Professional', price: 20, owner: 'Mike T', image: 'https://images.unsplash.com/photo-1581147036324-c1c89c2c8b5c?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Wrench Collection', price: 12, owner: 'Sarah L', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Screwdriver Set', price: 8, owner: 'Alex P', image: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80' }
+                ]
+            },
+            sports: {
+                'Bikes': [
+                    { title: 'Mountain Bike Premium', price: 20, owner: 'Emma R', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Road Bike Pro', price: 25, owner: 'David K', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Electric Bike', price: 35, owner: 'Bike Rent', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'BMX Bike', price: 15, owner: 'Tom W', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=80' }
+                ],
+                'Camping': [
+                    { title: 'Camping Tent 4-Person', price: 35, owner: 'David K', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Sleeping Bag Set', price: 12, owner: 'Lisa M', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Camping Stove', price: 18, owner: 'Tom W', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Hiking Backpack', price: 10, owner: 'Emma R', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' }
+                ],
+                'Fitness': [
+                    { title: 'Yoga Equipment Set', price: 12, owner: 'Lisa M', image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Treadmill Professional', price: 40, owner: 'Fitness Rent', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Weight Bench Set', price: 25, owner: 'Gym Rent', image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Elliptical Machine', price: 30, owner: 'Health Co', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' }
+                ]
+            },
+            electronics: {
+                'Cameras': [
+                    { title: 'Professional Camera Kit', price: 45, owner: 'Jane D', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'GoPro Hero Action', price: 20, owner: 'Mike T', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'DSLR Camera Kit', price: 55, owner: 'Photo Rent', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Video Camera Pro', price: 40, owner: 'Video Rent', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80' }
+                ],
+                'Audio': [
+                    { title: 'Bluetooth Speaker Pro', price: 15, owner: 'Audio Rent', image: 'https://images.unsplash.com/photo-1519121789249-bc1c1f1c7c93?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'DJ Equipment Set', price: 80, owner: 'DJ Rentals', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Microphone Kit', price: 25, owner: 'Studio Gear', image: 'https://images.unsplash.com/photo-1519121789249-bc1c1f1c7c93?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Sound System Pro', price: 60, owner: 'Audio Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' }
+                ],
+                'Gadgets': [
+                    { title: 'Gaming Console Bundle', price: 25, owner: 'Mark L', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'VR Gaming Headset', price: 35, owner: 'Paul R', image: 'https://images.unsplash.com/photo-1519121789249-bc1c1f1c7c93?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Smart Watch', price: 18, owner: 'Tech Rent', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Tablet Pro', price: 30, owner: 'Device Rent', image: 'https://images.unsplash.com/photo-1519121789249-bc1c1f1c7c93?auto=format&fit=crop&w=400&q=80' }
+                ]
+            },
+            entertainment: {
+                'Games': [
+                    { title: 'Board Game Collection', price: 8, owner: 'Chris T', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Video Game Console', price: 20, owner: 'Game Rent', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Puzzle Collection', price: 5, owner: 'Brain Games', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Card Game Set', price: 3, owner: 'Card Rent', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=400&q=80' }
+                ],
+                'Party': [
+                    { title: 'Karaoke Machine Pro', price: 22, owner: 'Anna M', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Party Equipment Set', price: 40, owner: 'Sophie L', image: 'https://images.unsplash.com/photo-1519121789249-bc1c1f1c7c93?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'DJ Equipment Set', price: 80, owner: 'DJ Rentals', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Photo Booth', price: 50, owner: 'Party Pro', image: 'https://images.unsplash.com/photo-1519121789249-bc1c1f1c7c93?auto=format&fit=crop&w=400&q=80' }
+                ],
+                'Musical Instruments': [
+                    { title: 'Guitar Collection', price: 25, owner: 'Music Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Piano Rental', price: 100, owner: 'Piano Co', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Drum Set Pro', price: 45, owner: 'Drum Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Violin Rental', price: 35, owner: 'String Rent', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80' }
+                ]
+            }
+        };
+
+        // Function to render featured carousel
+        function renderFeaturedCarousel(category) {
+            const carouselInner = document.querySelector('#featured-carousel .carousel-inner');
+            if (!carouselInner || !featuredItems[category]) return;
+            
+            carouselInner.innerHTML = '';
+            const items = featuredItems[category];
+            
+            // Group items into slides (3 items per slide)
+            for (let i = 0; i < items.length; i += 3) {
+                const slideItems = items.slice(i, i + 3);
+                const isActive = i === 0 ? 'active' : '';
+                
+                const slideHtml = `
+                    <div class="carousel-item ${isActive}">
+                        <div class="row g-3">
+                            ${slideItems.map(item => `
+                                <div class="col-md-4">
+                                    <div class="card h-100 featured-card" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
+                                        <div class="position-relative">
+                                            <img src="${item.image}" class="card-img-top" alt="${item.title}" style="height: 200px; object-fit: cover;">
+                                            <div class="position-absolute top-0 end-0 m-2">
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="bi bi-star-fill"></i> ${item.rating}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <h6 class="card-title">${item.title}</h6>
+                                            <p class="card-text mb-1"><b>$${item.price}.00</b> <span class="text-muted">/ day</span></p>
+                                            <p class="card-text small">Owner: ${item.owner}</p>
+                                            <button class="btn btn-primary btn-sm w-100" onclick="event.stopPropagation();">Book Now</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                carouselInner.innerHTML += slideHtml;
+            }
+        }
+
         // Function to render sample posts
-        function renderSamplePosts(category) {
-            const postsContainer = document.querySelector('.row.row-cols-1.row-cols-md-2.row-cols-lg-4.g-4');
-            if (!postsContainer || !samplePosts[category]) return;
+        function renderSamplePosts(category, subcategory = null) {
+            const postsContainer = document.getElementById('posts-container');
+            if (!postsContainer) return;
+            
+            let posts = [];
+            
+            if (subcategory && samplePosts[category] && samplePosts[category][subcategory]) {
+                // Show posts for specific subcategory
+                posts = samplePosts[category][subcategory];
+            } else if (samplePosts[category]) {
+                // Show all posts for category (flatten subcategories)
+                Object.values(samplePosts[category]).forEach(subPosts => {
+                    posts = posts.concat(subPosts);
+                });
+            } else {
+                // Default posts if no category data
+                posts = [
+                    { title: 'Royale R-1000 4k Led Smart Projector', price: 60, owner: 'Ted S', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Compact Charcoal Grill Rental', price: 50, owner: 'Ted S', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Professional Camera Kit', price: 25, owner: 'Jane D', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Mountain Bike', price: 15, owner: 'Alex P', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=80' },
+                    { title: '4-Person Camping Tent', price: 18, owner: 'Sam R', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Electric Lawn Mower', price: 22, owner: 'Chris L', image: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Bluetooth Party Speaker', price: 12, owner: 'Dana W', image: 'https://images.unsplash.com/photo-1519121789249-bc1c1f1c7c93?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'GoPro Hero Action Camera', price: 20, owner: 'Mike T', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80' },
+                    { title: 'Cordless Power Drill Set', price: 10, owner: 'Lisa M', image: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80' }
+                ];
+            }
             
             postsContainer.innerHTML = '';
-            samplePosts[category].forEach(post => {
+            posts.forEach(post => {
                 const postHtml = `
                     <div class="col">
                         <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='product-details.html'">
@@ -621,7 +713,12 @@
         updateHeroTitle(category);
         if (category) {
             renderSubcategories(category);
+            renderFeaturedCarousel(category);
             renderSamplePosts(category);
+        } else {
+            // Show default posts and featured items for all categories
+            renderSamplePosts();
+            renderFeaturedCarousel('tools'); // Default featured items
         }
         
         // Initialize filter modal functionality
