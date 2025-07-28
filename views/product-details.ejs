@@ -1,34 +1,72 @@
 <%- include('partials/header') %>
 
-<div class="container py-5">
+<div class="container rental-container py-5">
     <div class="row">
-        <!-- Product Images -->
+        <!-- Product Images Gallery -->
         <div class="col-md-6">
-            <div class="product-images">
-                <img src="<%= item.image %>" class="img-fluid rounded" alt="<%= item.title %>">
+            <div class="product-gallery">
+                <!-- Main Image Container -->
+                <div class="main-image-container position-relative">
+                    <img src="<%= item.image %>" class="main-image img-fluid rounded" alt="<%= item.title %>" id="mainImage">
+                    
+                    <!-- Navigation Arrows -->
+                    <button class="gallery-nav-btn gallery-nav-prev" onclick="changeImage(-1)">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button class="gallery-nav-btn gallery-nav-next" onclick="changeImage(1)">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                    
+                    <!-- Image Counter -->
+                    <div class="image-counter">
+                        <span id="currentImageIndex">1</span>/<span id="totalImages">4</span>
+                    </div>
+                </div>
+                
+                <!-- Thumbnail Gallery -->
+                <div class="thumbnail-gallery mt-3">
+                    <div class="thumbnail-container">
+                        <div class="thumbnail active" onclick="selectImage(0)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                        <div class="thumbnail" onclick="selectImage(1)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                        <div class="thumbnail" onclick="selectImage(2)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                        <div class="thumbnail" onclick="selectImage(3)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                        <div class="thumbnail" onclick="selectImage(4)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                        <div class="thumbnail" onclick="selectImage(5)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                        <div class="thumbnail" onclick="selectImage(6)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                        <div class="thumbnail" onclick="selectImage(7)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                        <div class="thumbnail" onclick="selectImage(8)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                        <div class="thumbnail" onclick="selectImage(9)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                        <div class="thumbnail" onclick="selectImage(10)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                        <div class="thumbnail" onclick="selectImage(11)" data-image="<%= item.image %>">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <!-- Product Info -->
-        <div class="col-md-6">
-            <h1 class="mb-3"><%= item.title %></h1>
-            <div class="mb-3">
-                <span class="badge bg-primary fs-6"><%= item.category %></span>
-                <span class="text-muted ms-2"><i class="bi bi-geo-alt"></i> <%= item.location %></span>
-            </div>
-            
-            <div class="price-section mb-4">
-                <h2 class="text-primary">$<%= item.price %>/day</h2>
-                <p class="text-muted">Rental price per day</p>
-            </div>
-
-            <div class="description mb-4">
-                <h5>Description</h5>
-                <p><%= item.description %></p>
-            </div>
-
-            <!-- Owner Info -->
-            <div class="owner-info mb-4">
+            <!-- Owner Info moved here -->
+            <div class="owner-info mb-4 mt-4">
                 <h5>Owner</h5>
                 <div class="d-flex align-items-center">
                     <div class="avatar me-3">
@@ -49,6 +87,25 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6">
+            <h1 class="mb-3"><%= item.title %></h1>
+            <div class="mb-3">
+                <span class="badge bg-primary fs-6"><%= item.category %></span>
+                <span class="text-muted ms-2"><i class="bi bi-geo-alt"></i> <%= item.location %></span>
+            </div>
+            
+            <div class="price-section mb-4">
+                <h2 class="text-primary">$<%= item.price %>/day</h2>
+                <p class="text-muted">Rental price per day</p>
+            </div>
+
+            <div class="description mb-4">
+                <h5>Description</h5>
+                <p><%= item.description %></p>
             </div>
 
             <!-- Booking Form -->
@@ -166,4 +223,5 @@
 
 <%- include('partials/create-listing-modal') %>
 <script src="/js/calendar.js"></script>
+<script src="/js/gallery.js"></script>
 <%- include('partials/footer') %> 

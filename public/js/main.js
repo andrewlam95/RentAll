@@ -1,6 +1,38 @@
 // main.js - Consolidated JavaScript for RentAll application
 
 // ============================================================================
+// NAVBAR SCROLL EFFECT
+// ============================================================================
+
+function setupNavbarScrollEffect() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+
+    let lastScrollTop = 0;
+    const scrollThreshold = 50;
+
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Add scrolled class for enhanced styling
+        if (scrollTop > scrollThreshold) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+
+        // Optional: Hide/show navbar on scroll (uncomment if desired)
+        // if (scrollTop > lastScrollTop && scrollTop > 100) {
+        //     navbar.style.transform = 'translateY(-100%)';
+        // } else {
+        //     navbar.style.transform = 'translateY(0)';
+        // }
+        
+        lastScrollTop = scrollTop;
+    });
+}
+
+// ============================================================================
 // RENTAL CALENDAR CLASS
 // ============================================================================
 
@@ -376,6 +408,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup interactive features
     setupInteractiveFeatures();
+
+    // Setup navbar scroll effect
+    setupNavbarScrollEffect();
     
     console.log('RentAll JavaScript initialized');
 });

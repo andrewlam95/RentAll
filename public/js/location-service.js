@@ -16,26 +16,52 @@ class LocationService {
     }
 
     bindLocationEvents() {
-        // Location picker click event - bind to all location pickers on the page
-        const locationPickers = document.querySelectorAll('.location-picker');
+        // Only bind to elements in the hero section to avoid conflicts with header
+        const heroSection = document.querySelector('.hero-section');
+        if (!heroSection) return;
+        
+        // Find elements within the hero section only
+        const locationPickers = heroSection.querySelectorAll('.location-picker');
+        const searchInputs = heroSection.querySelectorAll('.search-input');
+        const searchButtons = heroSection.querySelectorAll('.search-button');
+        
+        // Remove existing listeners by cloning and replacing elements
         locationPickers.forEach(locationPicker => {
+            const newLocationPicker = locationPicker.cloneNode(true);
+            locationPicker.parentNode.replaceChild(newLocationPicker, locationPicker);
+        });
+        
+        searchInputs.forEach(searchInput => {
+            const newSearchInput = searchInput.cloneNode(true);
+            searchInput.parentNode.replaceChild(newSearchInput, searchInput);
+        });
+        
+        searchButtons.forEach(searchButton => {
+            const newSearchButton = searchButton.cloneNode(true);
+            searchButton.parentNode.replaceChild(newSearchButton, searchButton);
+        });
+        
+        // Re-query elements after cloning (within hero section)
+        const newLocationPickers = heroSection.querySelectorAll('.location-picker');
+        const newSearchInputs = heroSection.querySelectorAll('.search-input');
+        const newSearchButtons = heroSection.querySelectorAll('.search-button');
+        
+        // Location picker click event - bind to location pickers in hero section
+        newLocationPickers.forEach(locationPicker => {
             locationPicker.addEventListener('click', (e) => {
                 e.preventDefault();
                 this.showLocationModal();
             });
         });
 
-        // Search functionality with location
-        const searchInputs = document.querySelectorAll('.search-input');
-        const searchButtons = document.querySelectorAll('.search-button');
-        
-        searchButtons.forEach(searchButton => {
+        // Search functionality with location - bind to search elements in hero section
+        newSearchButtons.forEach(searchButton => {
             searchButton.addEventListener('click', () => {
                 this.performSearch();
             });
         });
 
-        searchInputs.forEach(searchInput => {
+        newSearchInputs.forEach(searchInput => {
             searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     this.performSearch();
@@ -293,15 +319,18 @@ class LocationService {
     }
 
     updateLocationDisplay() {
-        // Update all location pickers on the page
-        const locationPickers = document.querySelectorAll('.location-picker');
-        locationPickers.forEach(locationPicker => {
-            locationPicker.innerHTML = `
-                <i class="bi bi-geo-alt"></i>
-                Near ${this.currentLocation.city}, ${this.currentLocation.province}
-                <span class="text-secondary">(change)</span>
-            `;
-        });
+        // Update location pickers in hero section only
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+            const locationPickers = heroSection.querySelectorAll('.location-picker');
+            locationPickers.forEach(locationPicker => {
+                locationPicker.innerHTML = `
+                    <i class="bi bi-geo-alt"></i>
+                    Near ${this.currentLocation.city}, ${this.currentLocation.province}
+                    <span class="text-secondary">(change)</span>
+                `;
+            });
+        }
 
         // Update any location-dependent content
         this.updateLocationDependentContent();
@@ -349,10 +378,14 @@ class LocationService {
     }
 
     performSearch() {
-        const searchInputs = document.querySelectorAll('.search-input');
+        // Only get search term from hero section
+        const heroSection = document.querySelector('.hero-section');
+        if (!heroSection) return;
+        
+        const searchInputs = heroSection.querySelectorAll('.search-input');
         let searchTerm = '';
         
-        // Get search term from any search input
+        // Get search term from search input in hero section
         searchInputs.forEach(input => {
             if (input.value.trim()) {
                 searchTerm = input.value.trim();
@@ -411,7 +444,10 @@ class LocationService {
 // Initialize location service when DOM is loaded
 let locationService;
 document.addEventListener('DOMContentLoaded', function() {
-    locationService = new LocationService();
+    // Only initialize if not already initialized
+    if (!locationService) {
+        locationService = new LocationService();
+    }
 });
 
 // Export for use in other scripts
