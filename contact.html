@@ -29,10 +29,18 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="categories.html">All Categories</a></li>
-                            <li><a class="dropdown-item" href="#">Tools & Equipment</a></li>
-                            <li><a class="dropdown-item" href="#">Sports & Outdoors</a></li>
-                            <li><a class="dropdown-item" href="#">Electronics</a></li>
-                            <li><a class="dropdown-item" href="#">Entertainment</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=tools">Tools & Equipment</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=sports">Sports & Outdoors</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=electronics">Electronics</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=entertainment">Entertainment</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=home">Home & Garden</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=vehicles">Vehicles & Transportation</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=fashion">Fashion & Accessories</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=baby">Baby & Kids</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=business">Business & Office</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=health">Health & Fitness</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=photography">Photography & Video</a></li>
+                            <li><a class="dropdown-item" href="search-view.html?category=music">Music & Audio</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -367,6 +375,95 @@
                                         <input type="file" class="form-control mt-2" id="itemImages" multiple accept="image/*">
                                     </div>
                                 </div>
+                                
+                                <!-- Categories Section -->
+                                <div class="mb-3">
+                                    <label class="form-label">Categories</label>
+                                    <div class="mb-2">
+                                        <small class="text-muted fw-medium">Click to select/deselect categories that best describe your item</small>
+                                    </div>
+                                    <div class="categories-container border rounded p-3" style="max-height: 300px; overflow-y: auto;">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="tools">
+                                                    <i class="bi bi-tools me-1"></i>Tools & Equipment
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="sports">
+                                                    <i class="bi bi-bicycle me-1"></i>Sports & Outdoors
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="electronics">
+                                                    <i class="bi bi-camera me-1"></i>Electronics
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="entertainment">
+                                                    <i class="bi bi-controller me-1"></i>Entertainment
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="home">
+                                                    <i class="bi bi-house me-1"></i>Home & Garden
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="vehicles">
+                                                    <i class="bi bi-car-front me-1"></i>Vehicles & Transportation
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="fashion">
+                                                    <i class="bi bi-bag me-1"></i>Fashion & Accessories
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="baby">
+                                                    <i class="bi bi-heart me-1"></i>Baby & Kids
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="business">
+                                                    <i class="bi bi-briefcase me-1"></i>Business & Office
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="health">
+                                                    <i class="bi bi-activity me-1"></i>Health & Fitness
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="photography">
+                                                    <i class="bi bi-camera-video me-1"></i>Photography & Video
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="music">
+                                                    <i class="bi bi-music-note me-1"></i>Music & Audio
+                                                </button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="party">
+                                                    <i class="bi bi-cup-hot me-1"></i>Party & Events
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="outdoor">
+                                                    <i class="bi bi-tree me-1"></i>Outdoor & Camping
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="fitness">
+                                                    <i class="bi bi-heart-pulse me-1"></i>Fitness Equipment
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="gaming">
+                                                    <i class="bi bi-joystick me-1"></i>Gaming & VR
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="audio">
+                                                    <i class="bi bi-speaker me-1"></i>Audio & Sound
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="lighting">
+                                                    <i class="bi bi-lightbulb me-1"></i>Lighting & Decor
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="kitchen">
+                                                    <i class="bi bi-cup-straw me-1"></i>Kitchen & Appliances
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="crafts">
+                                                    <i class="bi bi-palette me-1"></i>Crafts & Hobbies
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="pet">
+                                                    <i class="bi bi-heart me-1"></i>Pet Supplies
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="automotive">
+                                                    <i class="bi bi-wrench me-1"></i>Automotive Tools
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="musical">
+                                                    <i class="bi bi-music-note-beamed me-1"></i>Musical Instruments
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="other">
+                                                    <i class="bi bi-three-dots me-1"></i>Other
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <!-- Availability Section -->
                                 <div class="mb-3">
                                     <label class="form-label">Availability</label>
@@ -383,26 +480,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="dailyRate" class="form-label">Daily Rate ($)</label>
-                                            <input type="number" class="form-control" id="dailyRate" min="1" step="0.01" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="category" class="form-label">Category</label>
-                                            <select class="form-select" id="category" required>
-                                                <option value="">Select a category</option>
-                                                <option value="tools">Tools & Equipment</option>
-                                                <option value="sports">Sports & Outdoors</option>
-                                                <option value="electronics">Electronics</option>
-                                                <option value="entertainment">Entertainment</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -414,6 +492,16 @@
                                         <div class="mb-3">
                                             <label for="contactPhone" class="form-label">Contact Phone</label>
                                             <input type="tel" class="form-control" id="contactPhone" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Daily Rate Section -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="dailyRate" class="form-label">Daily Rate ($)</label>
+                                            <input type="number" class="form-control" id="dailyRate" min="1" step="0.01" required>
                                         </div>
                                     </div>
                                 </div>

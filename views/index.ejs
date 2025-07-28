@@ -1,0 +1,407 @@
+<%- include('partials/header') %>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-decoration"></div>
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1 class="hero-title">Share More, Own Less</h1>
+            <p class="hero-subtitle">Your community marketplace for renting anything you need</p>
+            
+            <!-- Search Bar -->
+            <div class="search-container d-flex align-items-center">
+                <i class="bi bi-search ms-3 text-muted"></i>
+                <input type="text" class="search-input" placeholder="What would you like to rent?">
+                <button class="search-button">Search</button>
+            </div>
+            
+            <!-- Location Picker -->
+            <div class="mt-3">
+                <a href="#" class="location-picker">
+                    <i class="bi bi-geo-alt"></i>
+                    Near Richmond, BC
+                    <span class="text-secondary">(change)</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="container rental-container py-5">
+    <!-- Categories Section -->
+    <h3 class="mb-4">Popular Categories</h3>
+    <div class="row g-4">
+        <% categories.forEach(category => { %>
+            <div class="col-md-3">
+                <a href="/search?category=<%= category.slug %>" class="text-decoration-none">
+                    <div class="card category-card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi <%= category.icon %> fs-1 mb-3"></i>
+                            <h5 class="card-title"><%= category.name %></h5>
+                            <p class="card-text">Find great <%= category.name.toLowerCase() %> rentals</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        <% }); %>
+    </div>
+
+    <!-- Featured Items -->
+    <h3 class="mt-5 mb-4">Featured Items</h3>
+    <div class="row">
+        <% featuredItems.forEach(item => { %>
+            <div class="col-md-4">
+                <a href="/product/<%= item.id %>" class="text-decoration-none">
+                    <div class="card item-card">
+                        <img src="<%= item.image %>" class="card-img-top item-image" alt="<%= item.title %>">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= item.title %></h5>
+                            <p class="card-text">$<%= item.price %>/day - <%= item.description %></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-primary"><%= item.category %></span>
+                                <span class="btn btn-sm btn-outline-primary">View Details</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Login to Your Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="loginEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                    </div>
+                    <button type="submit" class="btn auth-button w-100">Login</button>
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-decoration-none">Forgot password?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create an Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="registerFirstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="registerFirstName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerLastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="registerLastName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="registerEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerPhone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="registerPhone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="registerPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="termsAgreement" required>
+                        <label class="form-check-label" for="termsAgreement">
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn auth-button w-100">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Listing Modal -->
+<div class="modal fade" id="createListingModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create a New Listing</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="itemTitle" class="form-label">Item Title</label>
+                                <input type="text" class="form-control" id="itemTitle" placeholder="e.g., Professional Camera Kit" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="itemDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="itemDescription" rows="4" placeholder="Describe your item, its condition, and what's included..." required></textarea>
+                            </div>
+                            
+                            <!-- Upload Images Section -->
+                            <div class="mb-3">
+                                <label for="itemImages" class="form-label">Upload Images</label>
+                                <div class="border rounded p-3 text-center" style="border-style: dashed !important;">
+                                    <i class="bi bi-cloud-upload fs-1 text-muted"></i>
+                                    <p class="mt-2 mb-0">Drag and drop images here or click to browse</p>
+                                    <input type="file" class="form-control mt-2" id="itemImages" multiple accept="image/*">
+                                </div>
+                            </div>
+                            
+                            <!-- Categories Section -->
+                            <div class="mb-3">
+                                <label class="form-label">Categories</label>
+                                <div class="mb-2">
+                                    <small class="text-muted fw-medium">Click to select/deselect categories that best describe your item</small>
+                                </div>
+                                <div class="categories-container border rounded p-3" style="max-height: 300px; overflow-y: auto;">
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="tools">
+                                                <i class="bi bi-tools me-1"></i>Tools & Equipment
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="sports">
+                                                <i class="bi bi-bicycle me-1"></i>Sports & Outdoors
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="electronics">
+                                                <i class="bi bi-camera me-1"></i>Electronics
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="entertainment">
+                                                <i class="bi bi-controller me-1"></i>Entertainment
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="home">
+                                                <i class="bi bi-house me-1"></i>Home & Garden
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="vehicles">
+                                                <i class="bi bi-car-front me-1"></i>Vehicles & Transportation
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="fashion">
+                                                <i class="bi bi-bag me-1"></i>Fashion & Accessories
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="baby">
+                                                <i class="bi bi-heart me-1"></i>Baby & Kids
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="business">
+                                                <i class="bi bi-briefcase me-1"></i>Business & Office
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="health">
+                                                <i class="bi bi-activity me-1"></i>Health & Fitness
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="photography">
+                                                <i class="bi bi-camera-video me-1"></i>Photography & Video
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="music">
+                                                <i class="bi bi-music-note me-1"></i>Music & Audio
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="party">
+                                                <i class="bi bi-cup-hot me-1"></i>Party & Events
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="outdoor">
+                                                <i class="bi bi-tree me-1"></i>Outdoor & Camping
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="fitness">
+                                                <i class="bi bi-heart-pulse me-1"></i>Fitness Equipment
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="gaming">
+                                                <i class="bi bi-joystick me-1"></i>Gaming & VR
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="audio">
+                                                <i class="bi bi-speaker me-1"></i>Audio & Sound
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="lighting">
+                                                <i class="bi bi-lightbulb me-1"></i>Lighting & Decor
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="kitchen">
+                                                <i class="bi bi-cup-straw me-1"></i>Kitchen & Appliances
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="crafts">
+                                                <i class="bi bi-palette me-1"></i>Crafts & Hobbies
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="pet">
+                                                <i class="bi bi-heart me-1"></i>Pet Supplies
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="automotive">
+                                                <i class="bi bi-wrench me-1"></i>Automotive Tools
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="musical">
+                                                <i class="bi bi-music-note-beamed me-1"></i>Musical Instruments
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary category-btn w-100 mb-2" data-category="other">
+                                                <i class="bi bi-three-dots me-1"></i>Other
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Availability Section -->
+                            <div class="mb-3">
+                                <label class="form-label">Availability</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="availableNow" checked>
+                                    <label class="form-check-label" for="availableNow">
+                                        Available now
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="availableWeekends">
+                                    <label class="form-check-label" for="availableWeekends">
+                                        Available weekends
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="location" class="form-label">Location</label>
+                                        <input type="text" class="form-control" id="location" placeholder="City, Province" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="contactPhone" class="form-label">Contact Phone</label>
+                                        <input type="tel" class="form-control" id="contactPhone" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Daily Rate Section -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dailyRate" class="form-label">Daily Rate ($)</label>
+                                        <input type="number" class="form-control" id="dailyRate" min="1" step="0.01" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Booking System Section -->
+                            <div class="booking-section mt-4">
+                                <h6 class="mb-3">Booking Settings</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="minRentalDays" class="form-label">Minimum Rental Days</label>
+                                            <input type="number" class="form-control" id="minRentalDays" min="1" value="1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="maxRentalDays" class="form-label">Maximum Rental Days</label>
+                                            <input type="number" class="form-control" id="maxRentalDays" min="1" value="30">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="advanceBookingDays" class="form-label">Advance Booking (days)</label>
+                                            <input type="number" class="form-control" id="advanceBookingDays" min="0" value="7">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="cancellationPolicy" class="form-label">Cancellation Policy</label>
+                                            <select class="form-select" id="cancellationPolicy">
+                                                <option value="flexible">Flexible (24h notice)</option>
+                                                <option value="moderate">Moderate (48h notice)</option>
+                                                <option value="strict">Strict (7 days notice)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <!-- Calendar Section -->
+                            <div class="calendar-section mt-4">
+                                <h6 class="mb-3">Availability Calendar</h6>
+                                <div class="calendar-container">
+                                    <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="prevMonth">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </button>
+                                        <h6 class="mb-0" id="currentMonth">December 2024</h6>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="nextMonth">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                    <div class="calendar-weekdays d-flex">
+                                        <div class="calendar-weekday">Sun</div>
+                                        <div class="calendar-weekday">Mon</div>
+                                        <div class="calendar-weekday">Tue</div>
+                                        <div class="calendar-weekday">Wed</div>
+                                        <div class="calendar-weekday">Thu</div>
+                                        <div class="calendar-weekday">Fri</div>
+                                        <div class="calendar-weekday">Sat</div>
+                                    </div>
+                                    <div class="calendar-days" id="calendarDays">
+                                        <!-- Calendar days will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                                <div class="calendar-legend mt-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="legend-item available"></div>
+                                        <small class="ms-2">Available</small>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="legend-item unavailable"></div>
+                                        <small class="ms-2">Unavailable</small>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="legend-item selected"></div>
+                                        <small class="ms-2">Selected</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn auth-button">Create Listing</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main JavaScript -->
+<script src="/js/main.js"></script>
+
+<%- include('partials/footer') %> 

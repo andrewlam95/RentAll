@@ -1,0 +1,392 @@
+<%- include('partials/header') %>
+
+<style>
+    .search-map-container {
+        display: flex;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    .results-grid {
+        flex: 2;
+    }
+    .map-section {
+        flex: 1;
+        min-width: 320px;
+        max-width: 400px;
+    }
+    .map-embed {
+        width: 100%;
+        height: 400px;
+        border-radius: 12px;
+        border: 1px solid #eee;
+    }
+    .featured-card {
+        transition: transform 0.2s ease-in-out;
+        border: 2px solid transparent;
+    }
+    .featured-card:hover {
+        transform: translateY(-5px);
+        border-color: #007bff;
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+    }
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 40px;
+        height: 40px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .carousel-control-prev {
+        left: -20px;
+    }
+    .carousel-control-next {
+        right: -20px;
+    }
+    @media (max-width: 991px) {
+        .search-map-container {
+            flex-direction: column;
+        }
+        .map-section {
+            max-width: 100%;
+            margin-top: 2rem;
+        }
+        .carousel-control-prev,
+        .carousel-control-next {
+            display: none;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-decoration"></div>
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1 class="hero-title" id="category-title">
+                <% if (searchQuery) { %>
+                    Search Results for "<%= searchQuery %>"
+                <% } else if (selectedCategory) { %>
+                    <%= selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1) %> Items
+                <% } else { %>
+                    All Categories
+                <% } %>
+            </h1>
+            <p class="hero-subtitle">Discover amazing rentals in your community</p>
+            
+            <!-- Search Bar -->
+            <div class="search-container d-flex align-items-center">
+                <i class="bi bi-search ms-3 text-muted"></i>
+                <input type="text" class="search-input" placeholder="What would you like to rent?" value="<%= searchQuery || '' %>">
+                <button class="search-button">Search</button>
+            </div>
+            
+            <!-- Location Picker -->
+            <div class="mt-3">
+                <a href="#" class="location-picker">
+                    <i class="bi bi-geo-alt"></i>
+                    Near Richmond, BC
+                    <span class="text-secondary">(change)</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Bar and Filters -->
+<div class="container mt-4">
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+        <div class="flex-grow-1">
+            <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control" placeholder="Search an item by name or keyword..." value="<%= searchQuery || '' %>">
+            </div>
+        </div>
+        <button class="btn btn-outline-secondary d-flex align-items-center" type="button" data-bs-toggle="modal" data-bs-target="#filterModal">
+            <i class="bi bi-sliders me-1"></i> Filters
+        </button>
+    </div>
+    <div class="mb-2 text-muted small"><%= items.length %> Rental opportunities in the <b>Richmond</b> area</div>
+</div>
+
+<!-- Results and Map -->
+<div class="container search-map-container">
+    <div class="results-grid">
+        <!-- Subcategory Buttons -->
+        <div id="subcategory-row" class="mb-3">
+            <% if (selectedCategory && subcategories && subcategories[selectedCategory]) { %>
+                <% subcategories[selectedCategory].forEach(sub => { %>
+                    <button class="btn btn-outline-primary btn-sm me-2 mb-2" onclick="filterBySubcategory('<%= sub %>')">
+                        <%= sub %>
+                    </button>
+                <% }); %>
+            <% } %>
+        </div>
+        
+        <!-- Featured Items Slider -->
+        <% if (featuredItems && featuredItems.length > 0) { %>
+        <div class="mb-4">
+            <h5 class="fw-bold mb-3">
+                <i class="bi bi-star-fill text-warning me-2"></i>Featured Items
+            </h5>
+            <div id="featured-carousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <% for (let i = 0; i < featuredItems.length; i += 3) { %>
+                        <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                            <div class="row g-3">
+                                <% featuredItems.slice(i, i + 3).forEach(item => { %>
+                                    <div class="col-md-4">
+                                        <div class="card h-100 featured-card" style="cursor: pointer;" onclick="window.location.href='/product/<%= item.id %>'">
+                                            <div class="position-relative">
+                                                <img src="<%= item.image %>" class="card-img-top" alt="<%= item.title %>" style="height: 200px; object-fit: cover;">
+                                                <div class="position-absolute top-0 end-0 m-2">
+                                                    <span class="badge bg-warning text-dark">
+                                                        <i class="bi bi-star-fill"></i> 4.5
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <h6 class="card-title"><%= item.title %></h6>
+                                                <p class="card-text mb-1"><b>$<%= item.price %>.00</b> <span class="text-muted">/ day</span></p>
+                                                <p class="card-text small">Owner: <a href="/user/1" class="text-decoration-none text-primary">John Doe</a></p>
+                                                <button class="btn btn-primary btn-sm w-100" onclick="event.stopPropagation();">Book Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#featured-carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#featured-carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <% } %>
+        
+        <!-- Results Header -->
+        <div id="results-header" class="mb-3 fw-bold">
+            <% if (searchQuery) { %>
+                Showing results for: <span class="text-primary"><%= searchQuery %></span>
+            <% } else if (selectedCategory) { %>
+                Showing results for: <span class="text-primary"><%= selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1) %></span>
+            <% } else { %>
+                Showing all results
+            <% } %>
+        </div>
+        
+        <!-- Dynamic Posts Container -->
+        <div id="posts-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            <% if (items.length === 0) { %>
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-search fs-1 text-muted mb-3"></i>
+                    <h4>No items found</h4>
+                    <p class="text-muted">Try adjusting your search criteria or browse all categories.</p>
+                    <a href="/categories" class="btn btn-primary">Browse Categories</a>
+                </div>
+            <% } else { %>
+                <% items.forEach(item => { %>
+                    <div class="col">
+                        <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='/product/<%= item.id %>'">
+                            <img src="<%= item.image %>" class="card-img-top" alt="<%= item.title %>" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= item.title %></h5>
+                                <p class="card-text mb-1"><b>$<%= item.price %>.00</b> <span class="text-muted">/ day</span></p>
+                                <p class="card-text small">Owner: <a href="/user/1" class="text-decoration-none text-primary">John Doe</a></p>
+                                <button class="btn btn-primary w-100" onclick="event.stopPropagation();">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+    </div>
+    
+    <!-- Map Section -->
+    <div class="map-section">
+        <div class="mb-2 fw-bold"><i class="bi bi-geo-alt"></i> Map of Listings</div>
+        <iframe class="map-embed" src="https://www.openstreetmap.org/export/embed.html?bbox=-75.9%2C45.2%2C-75.5%2C45.5&amp;layer=mapnik" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">
+                    <i class="bi bi-sliders me-2"></i>Advanced Filters
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="filterForm">
+                    <!-- Category & Subcategory Section -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3">Category & Subcategory</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Main Category</label>
+                                <select class="form-select" id="mainCategory">
+                                    <option value="">All Categories</option>
+                                    <option value="tools">Tools & Equipment</option>
+                                    <option value="sports">Sports & Outdoors</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="entertainment">Entertainment</option>
+                                    <option value="home">Home & Garden</option>
+                                    <option value="vehicles">Vehicles & Transportation</option>
+                                    <option value="fashion">Fashion & Accessories</option>
+                                    <option value="baby">Baby & Kids</option>
+                                    <option value="business">Business & Office</option>
+                                    <option value="health">Health & Fitness</option>
+                                    <option value="photography">Photography & Video</option>
+                                    <option value="music">Music & Audio</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Subcategory</label>
+                                <select class="form-select" id="subcategory">
+                                    <option value="">All Subcategories</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Range Section -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3">Price Range</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Minimum Price ($/day)</label>
+                                <input type="number" class="form-control" id="minPrice" placeholder="0" min="0">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Maximum Price ($/day)</label>
+                                <input type="number" class="form-control" id="maxPrice" placeholder="1000" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location & Distance Section -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3">Location & Distance</h6>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label class="form-label">Location</label>
+                                <input type="text" class="form-control" id="location" placeholder="Enter city or postal code">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Distance (km)</label>
+                                <select class="form-select" id="distance">
+                                    <option value="5">5 km</option>
+                                    <option value="10" selected>10 km</option>
+                                    <option value="25">25 km</option>
+                                    <option value="50">50 km</option>
+                                    <option value="100">100 km</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Availability Section -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3">Availability</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="startDate">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">End Date</label>
+                                <input type="date" class="form-control" id="endDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Owner Rating Section -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3">Owner Rating</h6>
+                        <div class="d-flex gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rating" id="ratingAny" value="" checked>
+                                <label class="form-check-label" for="ratingAny">Any Rating</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rating" id="rating4Plus" value="4">
+                                <label class="form-check-label" for="rating4Plus">4+ Stars</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rating" id="rating5" value="5">
+                                <label class="form-check-label" for="rating5">5 Stars Only</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sort Options Section -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3">Sort By</h6>
+                        <select class="form-select" id="sortBy">
+                            <option value="relevance" selected>Relevance</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="distance">Distance</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="newest">Newest First</option>
+                        </select>
+                    </div>
+
+                    <!-- Additional Filters Section -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3">Additional Filters</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="verifiedOwners">
+                                    <label class="form-check-label" for="verifiedOwners">Verified Owners Only</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="instantBooking">
+                                    <label class="form-check-label" for="instantBooking">Instant Booking Available</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="freeDelivery">
+                                    <label class="form-check-label" for="freeDelivery">Free Delivery</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="weekendOnly">
+                                    <label class="form-check-label" for="weekendOnly">Weekend Rentals Only</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="longTerm">
+                                    <label class="form-check-label" for="longTerm">Long-term Rentals</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="negotiable">
+                                    <label class="form-check-label" for="negotiable">Price Negotiable</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="clearFilters()">Clear All</button>
+                <button type="button" class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/create-listing-modal') %>
+<script src="/js/main.js"></script>
+<%- include('partials/footer') %> 
