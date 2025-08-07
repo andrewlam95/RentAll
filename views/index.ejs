@@ -111,26 +111,26 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="/registerSubmit" method="POST">
                     <div class="mb-3">
                         <label for="registerFirstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="registerFirstName" required>
+                        <input name="registerFirstName" type="text" class="form-control" id="registerFirstName" required>
                     </div>
                     <div class="mb-3">
                         <label for="registerLastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="registerLastName" required>
+                        <input name="registerLastName" type="text" class="form-control" id="registerLastName" required>
                     </div>
                     <div class="mb-3">
                         <label for="registerEmail" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="registerEmail" required>
+                        <input name="registerEmail" type="email" class="form-control" id="registerEmail" required>
                     </div>
                     <div class="mb-3">
                         <label for="registerPhone" class="form-label">Phone Number</label>
-                        <input type="tel" class="form-control" id="registerPhone" required>
+                        <input name="registerPhone" type="tel" class="form-control" id="registerPhone" required>
                     </div>
                     <div class="mb-3">
                         <label for="registerPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="registerPassword" required>
+                        <input name="registerPassword" type="password" class="form-control" id="registerPassword" required>
                     </div>
                     <div class="mb-3">
                         <label for="confirmPassword" class="form-label">Confirm Password</label>

@@ -1,9 +1,32 @@
+// DB test
+require("./utils.js");
+require('dotenv').config();
+
 const express = require('express');
+
+// DB test
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+
 const path = require('path');
 const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+/* secret information section */
+const mongodb_host = process.env.MONGODB_HOST;
+const mongodb_user = process.env.MONGODB_USER;
+const mongodb_password = process.env.MONGODB_PASSWORD;
+const mongodb_database = process.env.MONGODB_DATABASE;
+const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
+
+const node_session_secret = process.env.NODE_SESSION_SECRET;
+/* END secret section */
+
+// DB TEST
+var {database} = include('databaseConnection');
+const userCollection = database.db(mongodb_database).collection('users');
 
 // Set EJS as templating engine
 app.set('view engine', 'ejs');
@@ -13,6 +36,26 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// DB test
+app.use(express.urlencoded({extended: true}));
+
+// DB test
+var mongoStore = MongoStore.create({
+	mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
+	crypto: {
+		secret: mongodb_session_secret
+	}
+})
+
+// DB test
+app.use(session({ 
+    secret: node_session_secret,
+	store: mongoStore, //default is memory store 
+	saveUninitialized: false, 
+	resave: true
+}
+));
 
 // Sample data (replace with database later)
 const sampleItems = [
@@ -150,6 +193,29 @@ app.get('/', (req, res) => {
         user: null, // Will be replaced with actual user data later
         path: '/'
     });
+});
+
+// Register info to DB
+app.post('/registerSubmit', async (req, res) => {
+    var firstName = req.body.registerFirstName;
+    var lastName = req.body.registerLastName;
+    var email = req.body.registerEmail;
+    var phone = req.body.registerPhone;
+    var pass = req.body.registerPassword;
+
+    // console.log("Name:", req.body.registerFirstName);
+    // console.log("Email:", req.body.registerEmail);
+    // console.log("Password:", req.body.registerPassword);
+
+    await userCollection.insertOne({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        password: pass
+    });
+
+    res.redirect('/');
 });
 
 app.get('/categories', (req, res) => {
