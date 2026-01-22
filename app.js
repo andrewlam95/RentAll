@@ -57,6 +57,38 @@ app.use(session({
 }
 ));
 
+// Signup
+app.post('/api/signup', async (req, res) => {
+    try {
+        const { firstName, lastName, email, phone, password } = req.body;
+
+        // Basic validation
+        if (!firstName || !lastName || !email || !phone || !password) {
+            return res.status(400).send('All fields are required.');
+        }
+
+        // Call Xano signup endpoint
+        const xanoRes = await fetch(`${process.env.XANO_API_URL}/auth/signup`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ firstName, lastName, email, phone, password })
+        });
+
+        const data = await xanoRes.json();
+
+        // If Xano returns an error, forward it to the client
+        if (!xanoRes.ok) {
+            return res.status(xanoRes.status).json(data);
+        }
+
+        return res.status(201).json(data);
+    } catch (err) {
+        console.error('Signup error:', err);
+        return res.status(500).json({ error: 'Internal server error.' });
+    }
+});
+
+
 // Sample data (replace with database later)
 const sampleItems = [
     {
@@ -197,25 +229,54 @@ app.get('/', (req, res) => {
 
 // Register info to DB
 app.post('/registerSubmit', async (req, res) => {
-    var firstName = req.body.registerFirstName;
-    var lastName = req.body.registerLastName;
-    var email = req.body.registerEmail;
-    var phone = req.body.registerPhone;
-    var pass = req.body.registerPassword;
+    try {
+        const {
+            registerFirstName,
+            registerLastName,
+            registerEmail,
+            registerPhone,
+            registerPassword,
+            confirmPassword,
+            termsAgreement
+        } = req.body;
 
-    // console.log("Name:", req.body.registerFirstName);
-    // console.log("Email:", req.body.registerEmail);
-    // console.log("Password:", req.body.registerPassword);
+        // Check for terms of agreement and password confirmation
+        if (!termsAgreement) {
+            return res.status(400).send('You must agree to the Terms of Service and Privacy Policy.');
+        }
+        if(registerPassword !== confirmPassword) {
+            return res.status(400).send('Passwords do not match.');
+        }
 
-    await userCollection.insertOne({
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phone,
-        password: pass
-    });
+        // Call Xano signup endpoint
+        const xanoRes = await fetch(`${process.env.XANO_BASE_URL}/auth/signup`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                first_name: registerFirstName, 
+                last_name: registerLastName, 
+                email: registerEmail,
+                phone_number: registerPhone,
+                password: registerPassword,
+            })
+        });
 
-    res.redirect('/');
+        // Parse response
+        const data = await xanoRes.json().catch(() => ({}));
+
+        // If Xano returns an error, forward it to the client
+        if (!xanoRes.ok) {
+            console.log("Xano status:", xanoRes.status);
+            console.log("Xano body:", data);
+            return res.status(xanoRes.status).send(data.message || data.error ||'Signup failed.');
+        }
+        // On success, redirect to homepage
+        return res.redirect('/');
+
+    } catch (err) {
+        console.error('Registration error:', err);
+        return res.status(500).send('Server error during signup.');
+    }
 });
 
 app.get('/categories', (req, res) => {
