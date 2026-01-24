@@ -57,38 +57,6 @@ app.use(session({
 }
 ));
 
-// Signup
-app.post('/api/signup', async (req, res) => {
-    try {
-        const { firstName, lastName, email, phone, password } = req.body;
-
-        // Basic validation
-        if (!firstName || !lastName || !email || !phone || !password) {
-            return res.status(400).send('All fields are required.');
-        }
-
-        // Call Xano signup endpoint
-        const xanoRes = await fetch(`${process.env.XANO_API_URL}/auth/signup`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ firstName, lastName, email, phone, password })
-        });
-
-        const data = await xanoRes.json();
-
-        // If Xano returns an error, forward it to the client
-        if (!xanoRes.ok) {
-            return res.status(xanoRes.status).json(data);
-        }
-
-        return res.status(201).json(data);
-    } catch (err) {
-        console.error('Signup error:', err);
-        return res.status(500).json({ error: 'Internal server error.' });
-    }
-});
-
-
 // Sample data (replace with database later)
 const sampleItems = [
     {
@@ -227,7 +195,7 @@ app.get('/', (req, res) => {
     });
 });
 
-// Register info to DB
+// Signup and register info to DB
 app.post('/registerSubmit', async (req, res) => {
     try {
         const {
@@ -276,6 +244,37 @@ app.post('/registerSubmit', async (req, res) => {
     } catch (err) {
         console.error('Registration error:', err);
         return res.status(500).send('Server error during signup.');
+    }
+});
+
+// Login route
+app.post('/loginSubmit', async (req, res) => {
+    try {
+        const { loginEmail, loginPassword } = req.body;
+
+        console.log("req.body:", req.body);
+        
+        const xanoRes = await fetch(`${process.env.XANO_BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                email: loginEmail,
+                password: loginPassword
+            })
+        });
+
+        const data = await xanoRes.json().catch(() => ({}));
+
+        if (!xanoRes.ok) {
+            console.log("Xano status:", xanoRes.status);
+            console.log("Xano body:", data);
+            return res.status(xanoRes.status).send(data.message || data.error || 'Login failed.');
+        }
+        // On success, redirect to homepage
+        return res.redirect('/');
+    } catch (err) {
+        console.error('Login error:', err);
+        return res.status(500).send('Server error during login.');
     }
 });
 
