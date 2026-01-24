@@ -250,10 +250,12 @@ app.post('/registerSubmit', async (req, res) => {
 // Login route
 app.post('/loginSubmit', async (req, res) => {
     try {
+        // Extract login credentials
         const { loginEmail, loginPassword } = req.body;
 
         console.log("req.body:", req.body);
         
+        // Call Xano login endpoint
         const xanoRes = await fetch(`${process.env.XANO_BASE_URL}/auth/login`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -263,8 +265,10 @@ app.post('/loginSubmit', async (req, res) => {
             })
         });
 
+        // Parse response from Xano
         const data = await xanoRes.json().catch(() => ({}));
 
+        // If Xano returns an error, forward it to the client
         if (!xanoRes.ok) {
             console.log("Xano status:", xanoRes.status);
             console.log("Xano body:", data);
