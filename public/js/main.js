@@ -382,14 +382,23 @@ function setupInteractiveFeatures() {
 function initializeCalendar() {
     const modal = document.getElementById('createListingModal');
     if (modal) {
-        modal.addEventListener('shown.bs.modal', function () {
+        // Remove any existing listeners to avoid duplicates
+        const newModal = modal.cloneNode(true);
+        modal.parentNode.replaceChild(newModal, modal);
+        
+        newModal.addEventListener('shown.bs.modal', function () {
             if (!window.rentalCalendar) {
                 window.rentalCalendar = new RentalCalendar();
             } else {
+                // Reset calendar state when modal opens
+                window.rentalCalendar.startDate = null;
+                window.rentalCalendar.endDate = null;
+                window.rentalCalendar.selectedDates.clear();
                 window.rentalCalendar.renderCalendar();
             }
         });
     }
+    window.rentalCalendarInitialized = true;
 }
 
 // ============================================================================

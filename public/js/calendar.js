@@ -5,6 +5,8 @@ class RentalCalendar {
         this.currentDate = new Date();
         this.selectedDates = new Set();
         this.unavailableDates = new Set();
+        this.startDate = null;
+        this.endDate = null;
         this.init();
     }
 
@@ -51,9 +53,29 @@ class RentalCalendar {
             } else if (date.getMonth() === month) {
                 dayElement.classList.add('available');
             }
-            if (this.selectedDates.has(date.toISOString().split('T')[0])) {
+            
+            // Check if date is in selected range
+            const dateStr = date.toISOString().split('T')[0];
+            if (this.startDate && this.endDate) {
+                const start = new Date(this.startDate);
+                const end = new Date(this.endDate);
+                const current = new Date(dateStr);
+                
+                if (current >= start && current <= end) {
+                    dayElement.classList.add('in-range');
+                }
+                if (dateStr === this.startDate || dateStr === this.endDate) {
+                    dayElement.classList.add('selected');
+                }
+            } else if (this.startDate && dateStr === this.startDate) {
                 dayElement.classList.add('selected');
             }
+            
+            // Legacy support for individual selected dates
+            if (this.selectedDates.has(dateStr)) {
+                dayElement.classList.add('selected');
+            }
+            
             calendarDays.appendChild(dayElement);
         }
     }
@@ -78,13 +100,38 @@ class RentalCalendar {
             calendarDays.addEventListener('click', (e) => {
                 if (e.target.classList.contains('calendar-day') && e.target.classList.contains('available')) {
                     const date = e.target.dataset.date;
-                    if (this.selectedDates.has(date)) {
-                        this.selectedDates.delete(date);
-                        e.target.classList.remove('selected');
-                    } else {
+                    const clickedDate = new Date(date);
+                    
+                    // Range selection logic
+                    if (!this.startDate || (this.startDate && this.endDate)) {
+                        // Start a new selection
+                        this.startDate = date;
+                        this.endDate = null;
+                        this.selectedDates.clear();
                         this.selectedDates.add(date);
-                        e.target.classList.add('selected');
+                    } else if (this.startDate && !this.endDate) {
+                        // Set end date
+                        const start = new Date(this.startDate);
+                        if (clickedDate < start) {
+                            // If clicked date is before start, make it the new start
+                            this.endDate = this.startDate;
+                            this.startDate = date;
+                        } else {
+                            // Set as end date
+                            this.endDate = date;
+                        }
+                        
+                        // Add all dates in range to selectedDates
+                        this.selectedDates.clear();
+                        const rangeStart = new Date(this.startDate);
+                        const rangeEnd = new Date(this.endDate);
+                        for (let d = new Date(rangeStart); d <= rangeEnd; d.setDate(d.getDate() + 1)) {
+                            this.selectedDates.add(d.toISOString().split('T')[0]);
+                        }
                     }
+                    
+                    // Re-render calendar to show the range
+                    this.renderCalendar();
                 }
             });
         }
@@ -112,19 +159,23 @@ class RentalCalendar {
     }
 }
 
-// Only initialize when modal is shown
-let rentalCalendar;
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('createListingModal');
-    if (modal) {
-        modal.addEventListener('shown.bs.modal', function () {
-            if (!rentalCalendar) {
-                rentalCalendar = new RentalCalendar();
-            } else {
-                rentalCalendar.renderCalendar();
-            }
-        });
-    }
+// Only initialize when modal is shown (if not already initialized by main.js)
+if (!window.rentalCalendarInitialized) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('createListingModal');
+        if (modal) {
+            modal.addEventListener('shown.bs.modal', function () {
+                if (!window.rentalCalendar) {
+                    window.rentalCalendar = new RentalCalendar();
+                } else {
+                    // Reset calendar state when modal opens
+                    window.rentalCalendar.startDate = null;
+                    window.rentalCalendar.endDate = null;
+                    window.rentalCalendar.selectedDates.clear();
+                    window.rentalCalendar.renderCalendar();
+                }
+            });
+        }
     // Handle form submission
     const createListingForm = document.querySelector('#createListingModal form');
     if (createListingForm) {
@@ -143,8 +194,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Please select at least one category for your item.');
                 return;
             }
-            if (rentalCalendar) {
-                const bookingData = rentalCalendar.getBookingData();
+            if (window.rentalCalendar) {
+                const bookingData = window.rentalCalendar.getBookingData();
                 const formData = {
                     title: document.getElementById('itemTitle').value,
                     description: document.getElementById('itemDescription').value,
@@ -227,4 +278,5 @@ document.addEventListener('DOMContentLoaded', function() {
             container.style.backgroundColor = 'transparent';
         }
     }
-}); 
+    });
+} 

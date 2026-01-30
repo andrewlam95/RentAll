@@ -68,23 +68,34 @@
             <!-- Owner Info moved here -->
             <div class="owner-info mb-4 mt-4">
                 <h5>Owner</h5>
-                <div class="d-flex align-items-center">
-                    <div class="avatar me-3">
-                        <i class="bi bi-person-circle fs-2"></i>
-                    </div>
-                    <div>
-                        <a href="/user/1" class="text-decoration-none">
-                            <h6 class="mb-1 text-primary">John Doe</h6>
-                        </a>
-                        <p class="text-muted mb-0">Member since 2023</p>
-                        <div class="rating">
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star text-warning"></i>
-                            <span class="ms-2">4.8 (15 reviews)</span>
+                <div class="d-flex align-items-start justify-content-between">
+                    <div class="d-flex align-items-start flex-grow-1">
+                        <div class="avatar me-3">
+                            <i class="bi bi-person-circle fs-2"></i>
                         </div>
+                        <div class="flex-grow-1">
+                            <a href="/user/1" class="text-decoration-none">
+                                <h6 class="mb-1 text-primary">John Doe</h6>
+                            </a>
+                            <div class="d-flex align-items-center flex-wrap gap-2">
+                                <p class="text-muted mb-0">Member since 2023</p>
+                                <div class="rating d-flex align-items-center">
+                                    <div class="d-flex align-items-center me-2">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star text-warning"></i>
+                                    </div>
+                                    <span>4.8 (15 reviews)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message-owner-wrapper ms-3">
+                        <button type="button" class="btn btn-outline-primary message-owner-btn" data-bs-toggle="modal" data-bs-target="#messageOwnerModal">
+                            <i class="bi bi-envelope me-1"></i> Message Owner
+                        </button>
                     </div>
                 </div>
             </div>
@@ -109,28 +120,88 @@
             </div>
 
             <!-- Booking Form -->
-            <div class="booking-form">
-                <h5>Book This Item</h5>
-                <form>
+            <div class="booking-form" id="bookingFormContainer">
+                <h5 class="mb-3">Book This Item</h5>
+                <form id="bookingForm">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Start Date</label>
-                            <input type="date" class="form-control" required>
+                            <input type="date" class="form-control" id="startDate" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">End Date</label>
-                            <input type="date" class="form-control" required>
+                            <input type="date" class="form-control" id="endDate" required>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Number of Days</label>
-                        <input type="number" class="form-control" value="1" min="1" max="30">
+                        <input type="number" class="form-control" id="numDays" value="1" min="1" max="30" readonly>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Total Price</label>
                         <div class="input-group">
                             <span class="input-group-text">$</span>
-                            <input type="text" class="form-control" value="<%= item.price %>" readonly>
+                            <input type="text" class="form-control" id="totalPrice" value="<%= item.price %>" readonly>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="bi bi-calendar-check"></i> Book Now
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sticky Booking Bar (shown when minimized or on mobile) -->
+<div class="sticky-booking-bar" id="stickyBookingBar">
+    <div class="sticky-booking-content">
+        <div class="sticky-booking-info">
+            <div class="sticky-price-section">
+                <div class="sticky-price-amount">$<span id="stickyTotalPrice"><%= item.price %></span> CAD</div>
+                <div class="sticky-price-label">total</div>
+            </div>
+            <div class="sticky-dates-section" id="stickyBookingDates">
+                <span class="sticky-dates-text">Select dates</span>
+            </div>
+        </div>
+        <div class="sticky-booking-actions">
+            <button type="button" class="btn btn-primary sticky-reserve-btn" id="stickyReserveBtn">
+                Reserve
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Booking Modal -->
+<div class="modal fade" id="mobileBookingModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Book This Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="mobileBookingForm">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="mobileStartDate" required>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="mobileEndDate" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Number of Days</label>
+                        <input type="number" class="form-control" id="mobileNumDays" value="1" min="1" max="30" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Total Price</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="text" class="form-control" id="mobileTotalPrice" value="<%= item.price %>" readonly>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-lg w-100">
@@ -222,6 +293,401 @@
 </div>
 
 <%- include('partials/create-listing-modal') %>
+
+<!-- Message Owner Modal -->
+<div class="modal fade" id="messageOwnerModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-envelope me-2"></i>Message Owner
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="owner-preview mb-3 p-3 bg-light rounded">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <i class="bi bi-person-circle fs-3 text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">John Doe</h6>
+                            <p class="text-muted mb-0 small">Owner of this listing</p>
+                        </div>
+                    </div>
+                </div>
+                <form id="messageOwnerForm">
+                    <div class="mb-3">
+                        <label for="messageSubject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="messageSubject" placeholder="e.g., Question about availability" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="messageContent" class="form-label">Message</label>
+                        <textarea class="form-control" id="messageContent" rows="6" placeholder="Write your message to the owner here..." required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="includeBookingDetails" checked>
+                            <label class="form-check-label" for="includeBookingDetails">
+                                Include booking details (if dates are selected)
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-send me-2"></i>Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="/js/calendar.js"></script>
 <script src="/js/gallery.js"></script>
+<script>
+    // Booking form scroll-based sticky bar functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const startDateInput = document.getElementById('startDate');
+        const endDateInput = document.getElementById('endDate');
+        const numDaysInput = document.getElementById('numDays');
+        const totalPriceInput = document.getElementById('totalPrice');
+        const stickyTotalPrice = document.getElementById('stickyTotalPrice');
+        const stickyBookingDates = document.getElementById('stickyBookingDates');
+        const stickyReserveBtn = document.getElementById('stickyReserveBtn');
+        const bookingForm = document.getElementById('bookingForm');
+        const bookingFormContainer = document.getElementById('bookingFormContainer');
+        const stickyBookingBar = document.getElementById('stickyBookingBar');
+        const dailyPrice = <%= item.price %>;
+
+        // Check if screen is mobile/small
+        function isMobileScreen() {
+            return window.innerWidth <= 991.98;
+        }
+
+        // Calculate number of days between two dates
+        function calculateDays(startDate, endDate) {
+            if (!startDate || !endDate) {
+                return 1;
+            }
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            
+            // Check if end date is before start date
+            if (end < start) {
+                return 1;
+            }
+            
+            // Calculate difference in milliseconds, then convert to days
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Add 1 to include both start and end days (inclusive)
+            return diffDays + 1;
+        }
+
+        // Update number of days based on selected dates
+        function updateNumberOfDays() {
+            const startDate = startDateInput ? startDateInput.value : '';
+            const endDate = endDateInput ? endDateInput.value : '';
+            const calculatedDays = calculateDays(startDate, endDate);
+            
+            // Update main form
+            if (numDaysInput) {
+                numDaysInput.value = calculatedDays;
+            }
+            
+            // Update mobile form
+            const mobileNumDays = document.getElementById('mobileNumDays');
+            if (mobileNumDays) {
+                mobileNumDays.value = calculatedDays;
+            }
+            
+            return calculatedDays;
+        }
+
+        // Update sticky booking bar display
+        function updateStickyBookingBar() {
+            const startDate = startDateInput.value;
+            const endDate = endDateInput.value;
+            const numDays = updateNumberOfDays();
+            const totalPrice = dailyPrice * numDays;
+
+            // Update total price
+            if (stickyTotalPrice) {
+                stickyTotalPrice.textContent = totalPrice;
+            }
+            if (totalPriceInput) {
+                totalPriceInput.value = totalPrice;
+            }
+
+            // Update dates display
+            if (stickyBookingDates) {
+                if (startDate && endDate) {
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    const options = { month: 'short', day: 'numeric' };
+                    const startStr = start.toLocaleDateString('en-US', options);
+                    const endStr = end.toLocaleDateString('en-US', options);
+                    stickyBookingDates.innerHTML = `<span class="sticky-dates-text">${startStr} - ${endStr}</span>`;
+                } else if (startDate) {
+                    const start = new Date(startDate);
+                    const options = { month: 'short', day: 'numeric' };
+                    const startStr = start.toLocaleDateString('en-US', options);
+                    stickyBookingDates.innerHTML = `<span class="sticky-dates-text">${startStr} - Select end date</span>`;
+                } else {
+                    stickyBookingDates.innerHTML = '<span class="sticky-dates-text">Select dates</span>';
+                }
+            }
+        }
+
+        // Check if booking form is visible in viewport
+        function isBookingFormVisible() {
+            if (!bookingFormContainer) return true;
+            const rect = bookingFormContainer.getBoundingClientRect();
+            const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+            // Consider form visible if any part is in the viewport
+            return rect.top < windowHeight && rect.bottom > 0;
+        }
+
+        // Handle scroll-based sticky bar visibility
+        function handleStickyBarVisibility() {
+            if (isMobileScreen()) {
+                // On mobile, hide full booking form but keep sticky bar always visible
+                if (bookingFormContainer) {
+                    bookingFormContainer.style.display = 'none';
+                }
+                if (stickyBookingBar) {
+                    stickyBookingBar.classList.add('active');
+                }
+            } else {
+                // On desktop, show booking form and manage sticky bar based on scroll
+                if (bookingFormContainer) {
+                    bookingFormContainer.style.display = '';
+                }
+                // Show sticky bar when booking form is not visible
+                if (isBookingFormVisible()) {
+                    stickyBookingBar.classList.remove('active');
+                } else {
+                    stickyBookingBar.classList.add('active');
+                }
+            }
+        }
+
+        // Initialize
+        updateStickyBookingBar();
+        handleStickyBarVisibility();
+
+        // Update when dates change (automatically calculate days)
+        if (startDateInput) {
+            startDateInput.addEventListener('change', function() {
+                updateNumberOfDays();
+                updateStickyBookingBar();
+            });
+        }
+        if (endDateInput) {
+            endDateInput.addEventListener('change', function() {
+                updateNumberOfDays();
+                updateStickyBookingBar();
+            });
+        }
+
+        // Mobile booking modal elements
+        const mobileBookingModal = document.getElementById('mobileBookingModal');
+        const mobileStartDate = document.getElementById('mobileStartDate');
+        const mobileEndDate = document.getElementById('mobileEndDate');
+        const mobileNumDays = document.getElementById('mobileNumDays');
+        const mobileTotalPrice = document.getElementById('mobileTotalPrice');
+        const mobileBookingForm = document.getElementById('mobileBookingForm');
+
+        // Sync mobile form with main form
+        function syncMobileForm() {
+            if (startDateInput && mobileStartDate) {
+                mobileStartDate.value = startDateInput.value;
+            }
+            if (endDateInput && mobileEndDate) {
+                mobileEndDate.value = endDateInput.value;
+            }
+            if (numDaysInput && mobileNumDays) {
+                mobileNumDays.value = numDaysInput.value;
+            }
+            if (totalPriceInput && mobileTotalPrice) {
+                mobileTotalPrice.value = totalPriceInput.value;
+            }
+        }
+
+        // Sync main form with mobile form
+        function syncMainForm() {
+            if (mobileStartDate && startDateInput) {
+                startDateInput.value = mobileStartDate.value;
+            }
+            if (mobileEndDate && endDateInput) {
+                endDateInput.value = mobileEndDate.value;
+            }
+            // Calculate and update days automatically
+            updateNumberOfDays();
+            updateStickyBookingBar();
+        }
+
+        // Update mobile form total price
+        function updateMobileFormPrice() {
+            if (mobileStartDate && mobileEndDate && mobileTotalPrice) {
+                const numDays = calculateDays(mobileStartDate.value, mobileEndDate.value);
+                const totalPrice = dailyPrice * numDays;
+                mobileTotalPrice.value = totalPrice;
+                // Update mobile numDays field
+                if (mobileNumDays) {
+                    mobileNumDays.value = numDays;
+                }
+            }
+        }
+
+        // Mobile form event listeners
+        if (mobileStartDate) {
+            mobileStartDate.addEventListener('change', function() {
+                updateMobileFormPrice();
+                syncMainForm();
+            });
+        }
+        if (mobileEndDate) {
+            mobileEndDate.addEventListener('change', function() {
+                updateMobileFormPrice();
+                syncMainForm();
+            });
+        }
+
+        // Mobile booking form submission
+        if (mobileBookingForm) {
+            mobileBookingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                syncMainForm();
+                // Submit the main form
+                if (bookingForm) {
+                    bookingForm.dispatchEvent(new Event('submit'));
+                }
+                // Close modal
+                const modalInstance = bootstrap.Modal.getInstance(mobileBookingModal);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+            });
+        }
+
+        // Sticky reserve button and dates click handler
+        function handleStickyBarClick() {
+            if (isMobileScreen()) {
+                // On mobile, open booking modal
+                syncMobileForm();
+                const modal = new bootstrap.Modal(mobileBookingModal);
+                modal.show();
+            } else {
+                // On desktop, scroll to booking form or submit
+                if (!startDateInput.value || !endDateInput.value) {
+                    bookingFormContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    if (!startDateInput.value) {
+                        startDateInput.focus();
+                    } else if (!endDateInput.value) {
+                        endDateInput.focus();
+                    }
+                } else {
+                    bookingForm.dispatchEvent(new Event('submit'));
+                }
+            }
+        }
+
+        if (stickyReserveBtn) {
+            stickyReserveBtn.addEventListener('click', handleStickyBarClick);
+        }
+
+        // Make dates section clickable on mobile
+        if (stickyBookingDates) {
+            stickyBookingDates.addEventListener('click', function() {
+                if (isMobileScreen()) {
+                    handleStickyBarClick();
+                }
+            });
+        }
+
+        // Handle scroll events with throttling
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(function() {
+                handleStickyBarVisibility();
+            }, 10);
+        }, { passive: true });
+
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                handleStickyBarVisibility();
+                updateStickyBookingBar();
+            }, 250);
+        });
+
+        // Message Owner Form Handler
+        const messageOwnerForm = document.getElementById('messageOwnerForm');
+        const messageSubject = document.getElementById('messageSubject');
+        const messageContent = document.getElementById('messageContent');
+        const includeBookingDetails = document.getElementById('includeBookingDetails');
+
+        if (messageOwnerForm) {
+            messageOwnerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const subject = messageSubject.value.trim();
+                const content = messageContent.value.trim();
+                
+                if (!subject || !content) {
+                    alert('Please fill in both subject and message fields.');
+                    return;
+                }
+
+                // Build message with optional booking details
+                let fullMessage = content;
+                
+                if (includeBookingDetails.checked && startDateInput && endDateInput) {
+                    const startDate = startDateInput.value;
+                    const endDate = endDateInput.value;
+                    
+                    if (startDate && endDate) {
+                        const start = new Date(startDate);
+                        const end = new Date(endDate);
+                        const options = { month: 'long', day: 'numeric', year: 'numeric' };
+                        const startStr = start.toLocaleDateString('en-US', options);
+                        const endStr = end.toLocaleDateString('en-US', options);
+                        const numDays = parseInt(numDaysInput.value) || 1;
+                        const totalPrice = dailyPrice * numDays;
+                        
+                        fullMessage += '\n\n--- Booking Details ---\n';
+                        fullMessage += `Start Date: ${startStr}\n`;
+                        fullMessage += `End Date: ${endStr}\n`;
+                        fullMessage += `Number of Days: ${numDays}\n`;
+                        fullMessage += `Total Price: $${totalPrice} CAD`;
+                    }
+                }
+
+                // Here you would typically send this to your backend
+                // For now, we'll just show a success message
+                console.log('Message to owner:', {
+                    subject: subject,
+                    message: fullMessage,
+                    owner: 'John Doe',
+                    item: '<%= item.title %>'
+                });
+
+                // Show success message
+                alert('Your message has been sent to the owner! They will respond soon.');
+                
+                // Reset form and close modal
+                messageOwnerForm.reset();
+                const modalInstance = bootstrap.Modal.getInstance(document.getElementById('messageOwnerModal'));
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+            });
+        }
+    });
+</script>
 <%- include('partials/footer') %> 

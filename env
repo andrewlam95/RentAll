@@ -1,0 +1,13 @@
+#replace the values with real values for your database
+# and generate your own secret keys from random GUIDs
+#
+# IMPORTANT!!  .env files should NOT go into your git repo!
+#  REMEMBER to add .env to your .gitignore file.
+MONGODB_HOST=cluster0.lh5wsou.mongodb.net
+MONGODB_USER=n
+MONGODB_PASSWORD=OAUmbAKPkQ9v3PHt
+MONGODB_DATABASE=RentAll
+MONGODB_SESSION_SECRET=b7c73c03-dc21-4567-b9cc-102b83f95feb
+NODE_SESSION_SECRET=26961200-a40b-4e2f-a48e-1bc66037e721
+
+XANO_BASE_URL=https://x8ki-letl-twmt.n7.xano.io/api:Yp2SK9d9
