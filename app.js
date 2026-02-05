@@ -187,8 +187,8 @@ const categories = [
 // Routes
 app.get('/', (req, res) => {
     res.render('index', {
-        title: 'RentAll - Community Rentals',
-        featuredItems: sampleItems,
+        title: 'RentAll - Community Rentals', // tab text for homepage
+        featuredItems: sampleItems, // shows all hardcoded sample items as featured
         categories: categories.slice(0, 4), // Show only first 4 categories on homepage
         user: null, // Will be replaced with actual user data later
         path: '/'
@@ -403,6 +403,8 @@ app.get('/user/:userId', (req, res) => {
         path: '/user'
     });
 });
+
+
 
 // 404 handler
 app.use((req, res) => {
