@@ -7,16 +7,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form action="postSubmit" method="POST">
+                <form action="itemSubmit" method="POST">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label for="itemTitle" class="form-label">Item Title</label>
-                                <input type="text" class="form-control" id="itemTitle" placeholder="e.g., Professional Camera Kit" required>
+                                <input type="text" name="itemTitle" class="form-control" id="itemTitle" placeholder="e.g., Professional Camera Kit" required>
                             </div>
                             <div class="mb-3">
                                 <label for="itemDescription" class="form-label">Description</label>
-                                <textarea class="form-control" id="itemDescription" rows="4" placeholder="Describe your item, its condition, and what's included..." required></textarea>
+                                <textarea name="itemDescription" class="form-control" id="itemDescription" rows="4" placeholder="Describe your item, its condition, and what's included..." required></textarea>
                             </div>
                             <!-- Upload Images Section -->
                             <div class="mb-3">
@@ -24,11 +24,11 @@
                                 <div class="border rounded p-3 text-center" style="border-style: dashed !important;">
                                     <i class="bi bi-cloud-upload fs-1 text-muted"></i>
                                     <p class="mt-2 mb-0">Drag and drop images here or click to browse</p>
-                                    <input type="file" class="form-control mt-2" id="itemImages" multiple accept="image/*">
+                                    <input type="file" name="image" class="form-control mt-2" id="itemImages" multiple accept="image/*">
                                 </div>
                             </div>
                             <!-- Categories Section -->
-                            <div class="mb-3">
+                            <div class="mb-3"> <!-- determine if we want to change category selection to drop down ??? **********************-->
                                 <label class="form-label">Categories</label>
                                 <div class="mb-2">
                                     <small class="text-muted fw-medium">Click to select/deselect categories that best describe your item</small>
@@ -134,13 +134,13 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="location" class="form-label">Location</label>
-                                        <input type="text" class="form-control" id="location" placeholder="City, Province" required>
+                                        <input type="text" name="location" class="form-control" id="location" placeholder="City, Province" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="contactPhone" class="form-label">Contact Phone</label>
-                                        <input type="tel" class="form-control" id="contactPhone" required>
+                                        <input type="tel" name="contactPhone" class="form-control" id="contactPhone" required>
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +149,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="dailyRate" class="form-label">Daily Rate ($)</label>
-                                        <input type="number" class="form-control" id="dailyRate" min="1" step="0.01" required>
+                                        <input type="number" name="dailyRate" class="form-control" id="dailyRate" min="1" step="0.01" required>
                                     </div>
                                 </div>
                             </div>
@@ -160,13 +160,13 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="minRentalDays" class="form-label">Minimum Rental Days</label>
-                                            <input type="number" class="form-control" id="minRentalDays" min="1" value="1">
+                                            <input type="number" name="minRentalDays" class="form-control" id="minRentalDays" min="1" value="1">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="maxRentalDays" class="form-label">Maximum Rental Days</label>
-                                            <input type="number" class="form-control" id="maxRentalDays" min="1" value="30">
+                                            <input type="number" name="maxRentalDays" class="form-control" id="maxRentalDays" min="1" value="30">
                                         </div>
                                     </div>
                                 </div>
@@ -247,3 +247,4 @@
         </div>
     </div>
 </div> 
+<script src="/js/createListing.js"></script>

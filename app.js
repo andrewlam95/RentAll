@@ -3,30 +3,33 @@ require("./utils.js");
 require('dotenv').config();
 
 const express = require('express');
-
-// DB test
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-
 const path = require('path');
 const bodyParser = require('body-parser');
+const uploadRoute = require('./routes/uploadRoute');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-/* secret information section */
-const mongodb_host = process.env.MONGODB_HOST;
-const mongodb_user = process.env.MONGODB_USER;
-const mongodb_password = process.env.MONGODB_PASSWORD;
-const mongodb_database = process.env.MONGODB_DATABASE;
-const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 
-const node_session_secret = process.env.NODE_SESSION_SECRET;
-/* END secret section */
+// DB test
+// const session = require('express-session');
+// const MongoStore = require('connect-mongo');
 
-// DB TEST
-var {database} = include('databaseConnection');
-const userCollection = database.db(mongodb_database).collection('users');
+
+
+// /* secret information section */
+// const mongodb_host = process.env.MONGODB_HOST;
+// const mongodb_user = process.env.MONGODB_USER;
+// const mongodb_password = process.env.MONGODB_PASSWORD;
+// const mongodb_database = process.env.MONGODB_DATABASE;
+// const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
+
+// const node_session_secret = process.env.NODE_SESSION_SECRET;
+// /* END secret section */
+
+// // DB TEST
+// var {database} = include('databaseConnection');
+// const userCollection = database.db(mongodb_database).collection('users');
 
 // Set EJS as templating engine
 app.set('view engine', 'ejs');
@@ -40,22 +43,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 // DB test
 app.use(express.urlencoded({extended: true}));
 
-// DB test
-var mongoStore = MongoStore.create({
-	mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
-	crypto: {
-		secret: mongodb_session_secret
-	}
-})
+app.use('/api', uploadRoute);
 
-// DB test
-app.use(session({ 
-    secret: node_session_secret,
-	store: mongoStore, //default is memory store 
-	saveUninitialized: false, 
-	resave: true
-}
-));
+// // DB test
+// var mongoStore = MongoStore.create({
+// 	mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
+// 	crypto: {
+// 		secret: mongodb_session_secret
+// 	}
+// })
+
+// // DB test
+// app.use(session({ 
+//     secret: node_session_secret,
+// 	store: mongoStore, //default is memory store 
+// 	saveUninitialized: false, 
+// 	resave: true
+// }
+// ));
 
 // Sample data (replace with database later)
 const sampleItems = [
@@ -282,6 +287,73 @@ app.post('/loginSubmit', async (req, res) => {
     }
 });
 
+// // Item posting route
+// app.use('/itemSubmit', async (req, res) => {
+//     try {
+//         const {
+//             itemTitle,
+//             itemDescription,
+//             itemImages,
+//             itemCategory,
+//             location,
+//             contactPhone,
+//             dailyRate,
+//             minRentalDays,
+//             maxRentalDays
+//         } = req.body;
+
+//         // Fetch category ID from Xano based on category name
+//         const categoryRes =  await fetch(`${process.env.XANO_BASE_URL}/category?name=${encodeURIComponent(itemCategory)}`, {
+//             method: 'GET',
+//             headers: {'Content-Type': 'application/json'},
+//         });
+
+//         // Parse category response
+//         const categoryData = await categoryRes.json().catch(() => ({}));
+
+//         // Check if category exists
+//         if (!categoryData || categoryData.length === 0) {
+//             return res.status(404).json({error: "Category not found"});
+//         }
+
+//         // Get category ID for the given category name
+//         const categoryId = categoryData[0].id;
+
+//         // Call Xano item creation endpoint
+//         const xanoRes = await fetch(`${process.env.XANO_BASE_URL}/rental_item`, {
+//             method: 'POST',
+//             headers: {'Content-Type': 'application/json'},
+//             body: JSON.stringify({
+//                 title: itemTitle,
+//                 description: itemDescription,
+//                 image: itemImages,
+//                 category_id: categoryId,
+//                 location: location,
+//                 contactPhone: contactPhone, // get phone number from user table?
+//                 price: dailyRate,
+//                 min_days: minRentalDays,
+//                 max_days: maxRentalDays
+//             })
+//         });
+
+//         // Parse response from Xano
+//         const data = await xanoRes.json().catch(() => ({}));
+
+//         // If Xano returns an error, forward it to the client
+//         if (!xanoRes.ok) {
+//             console.log("Xano status:", xanoRes.status);
+//             console.log("Xano body:", data);
+//             return res.status(xanoRes.status).send(data.message || data.error || 'Item submission failed.');
+//         }
+
+//         // On success, redirect to homepage
+//         return res.redirect('/');
+//     } catch (err) {
+//         console.error('Item submission error:', err);
+//         return res.status(500).send('Server error during item submission.');
+//     }
+// });
+
 app.get('/categories', (req, res) => {
     res.render('categories', {
         title: 'Categories - RentAll',
@@ -403,8 +475,6 @@ app.get('/user/:userId', (req, res) => {
         path: '/user'
     });
 });
-
-
 
 // 404 handler
 app.use((req, res) => {
