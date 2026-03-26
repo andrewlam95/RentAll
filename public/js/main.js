@@ -41,6 +41,8 @@ class RentalCalendar {
         this.currentDate = new Date();
         this.selectedDates = new Set();
         this.unavailableDates = new Set();
+        this.startDate = null;
+        this.endDate = null;
         this.init();
     }
 
@@ -64,7 +66,6 @@ class RentalCalendar {
 
         // Get first day of month and number of days
         const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
         const startDate = new Date(firstDay);
         startDate.setDate(startDate.getDate() - firstDay.getDay());
 
@@ -100,9 +101,26 @@ class RentalCalendar {
             } else if (date.getMonth() === month) {
                 dayElement.classList.add('available');
             }
-
-            // Check if selected
-            if (this.selectedDates.has(date.toISOString().split('T')[0])) {
+            
+            // Check if date is in selected range
+            const dateStr = date.toISOString().split('T')[0];
+            if (this.startDate && this.endDate) {
+                const start = new Date(this.startDate);
+                const end = new Date(this.endDate);
+                const current = new Date(dateStr);
+                
+                if (current >= start && current <= end) {
+                    dayElement.classList.add('in-range');
+                }
+                if (dateStr === this.startDate || dateStr === this.endDate) {
+                    dayElement.classList.add('selected');
+                }
+            } else if (this.startDate && dateStr === this.startDate) {
+                dayElement.classList.add('selected');
+            }
+            
+            // Legacy support for individual selected dates
+            if (this.selectedDates.has(dateStr)) {
                 dayElement.classList.add('selected');
             }
 
@@ -130,18 +148,41 @@ class RentalCalendar {
             });
         }
 
-        // Day selection
+        // Day selection with range support
         if (calendarDays) {
             calendarDays.addEventListener('click', (e) => {
                 if (e.target.classList.contains('calendar-day') && e.target.classList.contains('available')) {
                     const date = e.target.dataset.date;
-                    if (this.selectedDates.has(date)) {
-                        this.selectedDates.delete(date);
-                        e.target.classList.remove('selected');
-                    } else {
+                    const clickedDate = new Date(date);
+                    
+                    // Range selection logic
+                    if (!this.startDate || (this.startDate && this.endDate)) {
+                        // Start a new selection
+                        this.startDate = date;
+                        this.endDate = null;
+                        this.selectedDates.clear();
                         this.selectedDates.add(date);
-                        e.target.classList.add('selected');
+                    } else if (this.startDate && !this.endDate) {
+                        // Set end date
+                        const start = new Date(this.startDate);
+                        if (clickedDate < start) {
+                            this.endDate = this.startDate;
+                            this.startDate = date;
+                        } else {
+                            this.endDate = date;
+                        }
+                        
+                        // Add all dates in range to selectedDates
+                        this.selectedDates.clear();
+                        const rangeStart = new Date(this.startDate);
+                        const rangeEnd = new Date(this.endDate);
+                        for (let d = new Date(rangeStart); d <= rangeEnd; d.setDate(d.getDate() + 1)) {
+                            this.selectedDates.add(d.toISOString().split('T')[0]);
+                        }
                     }
+                    
+                    // Re-render calendar to show the range
+                    this.renderCalendar();
                 }
             });
         }
@@ -204,55 +245,6 @@ function applyFilters() {
 // ============================================================================
 // FORM HANDLING AND VALIDATION
 // ============================================================================
-
-function handleCreateListingForm() {
-    const form = document.querySelector('#createListingModal form');
-    if (!form) return;
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get selected categories
-        const selectedCategories = [];
-        const categoryButtons = document.querySelectorAll('.category-btn');
-        categoryButtons.forEach(button => {
-            if (button.classList.contains('btn-primary')) {
-                selectedCategories.push(button.dataset.category);
-            }
-        });
-        
-        // Validate that at least one category is selected
-        if (selectedCategories.length === 0) {
-            alert('Please select at least one category for your item.');
-            return;
-        }
-        
-        if (window.rentalCalendar) {
-            const bookingData = window.rentalCalendar.getBookingData();
-            const formData = {
-                title: document.getElementById('itemTitle')?.value,
-                description: document.getElementById('itemDescription')?.value,
-                categories: selectedCategories,
-                dailyRate: document.getElementById('dailyRate')?.value,
-                location: document.getElementById('location')?.value,
-                contactPhone: document.getElementById('contactPhone')?.value,
-                bookingData: bookingData
-            };
-            
-            console.log('Form Data:', formData);
-            console.log('Selected Categories:', selectedCategories);
-            
-            // Here you would typically send the data to your backend
-            alert(`Listing created successfully! Categories: ${selectedCategories.join(', ')}`);
-            
-            // Close modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('createListingModal'));
-            if (modal) {
-                modal.hide();
-            }
-        }
-    });
-}
 
 // ============================================================================
 // CATEGORY SELECTION FUNCTIONALITY
@@ -382,11 +374,10 @@ function setupInteractiveFeatures() {
 function initializeCalendar() {
     const modal = document.getElementById('createListingModal');
     if (modal) {
-        // Remove any existing listeners to avoid duplicates
-        const newModal = modal.cloneNode(true);
-        modal.parentNode.replaceChild(newModal, modal);
-        
-        newModal.addEventListener('shown.bs.modal', function () {
+        // Use { once: false } - attach to the modal that stays in DOM (no clone/replace)
+        modal.addEventListener('shown.bs.modal', function initCalendarOnShow() {
+            const calendarDays = document.getElementById('calendarDays');
+            if (!calendarDays) return;
             if (!window.rentalCalendar) {
                 window.rentalCalendar = new RentalCalendar();
             } else {
@@ -408,9 +399,6 @@ function initializeCalendar() {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize calendar functionality
     initializeCalendar();
-    
-    // Setup form handling
-    handleCreateListingForm();
     
     // Setup category selection
     setupCategorySelection();

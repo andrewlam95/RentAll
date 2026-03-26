@@ -181,17 +181,9 @@ if (!window.rentalCalendarInitialized) {
     if (createListingForm) {
         createListingForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            // Get selected categories
-            const selectedCategories = [];
-            const categoryButtons = document.querySelectorAll('.category-btn');
-            categoryButtons.forEach(button => {
-                if (button.classList.contains('btn-primary')) {
-                    selectedCategories.push(button.dataset.category);
-                }
-            });
-            // Validate that at least one category is selected
-            if (selectedCategories.length === 0) {
-                alert('Please select at least one category for your item.');
+            const categorySelect = document.getElementById('itemCategory');
+            if (!categorySelect || !categorySelect.value) {
+                alert('Please select a category for your item.');
                 return;
             }
             if (window.rentalCalendar) {
@@ -199,84 +191,19 @@ if (!window.rentalCalendarInitialized) {
                 const formData = {
                     title: document.getElementById('itemTitle').value,
                     description: document.getElementById('itemDescription').value,
-                    categories: selectedCategories,
+                    itemCategory: categorySelect.value,
                     dailyRate: document.getElementById('dailyRate').value,
                     location: document.getElementById('location').value,
                     contactPhone: document.getElementById('contactPhone').value,
                     bookingData: bookingData
                 };
                 console.log('Form Data:', formData);
-                alert(`Listing created successfully! Categories: ${selectedCategories.join(', ')}`);
+                alert(`Listing created successfully! Category: ${categorySelect.value}`);
                 // Close modal
                 const modalInstance = bootstrap.Modal.getInstance(document.getElementById('createListingModal'));
                 modalInstance.hide();
             }
         });
-    }
-    // Add category button functionality
-    const categoryButtons = document.querySelectorAll('.category-btn');
-    categoryButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Toggle button state
-            if (this.classList.contains('btn-outline-primary')) {
-                this.classList.remove('btn-outline-primary');
-                this.classList.add('btn-primary');
-            } else {
-                this.classList.remove('btn-primary');
-                this.classList.add('btn-outline-primary');
-            }
-            updateCategorySelectionFeedback();
-        });
-    });
-    // Add "Select All" and "Clear All" functionality
-    const categoriesContainer = document.querySelector('.categories-container');
-    if (categoriesContainer) {
-        const selectAllBtn = document.createElement('button');
-        selectAllBtn.type = 'button';
-        selectAllBtn.className = 'btn btn-sm btn-outline-primary me-2';
-        selectAllBtn.textContent = 'Select All';
-        selectAllBtn.addEventListener('click', function() {
-            categoryButtons.forEach(button => {
-                button.classList.remove('btn-outline-primary');
-                button.classList.add('btn-primary');
-            });
-            updateCategorySelectionFeedback();
-        });
-        const clearAllBtn = document.createElement('button');
-        clearAllBtn.type = 'button';
-        clearAllBtn.className = 'btn btn-sm btn-outline-secondary';
-        clearAllBtn.textContent = 'Clear All';
-        clearAllBtn.addEventListener('click', function() {
-            categoryButtons.forEach(button => {
-                button.classList.remove('btn-primary');
-                button.classList.add('btn-outline-primary');
-            });
-            updateCategorySelectionFeedback();
-        });
-        // Insert buttons before the categories container
-        const label = categoriesContainer.previousElementSibling;
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'mb-2';
-        buttonContainer.appendChild(selectAllBtn);
-        buttonContainer.appendChild(clearAllBtn);
-        label.parentNode.insertBefore(buttonContainer, label.nextSibling);
-    }
-    // Function to update visual feedback
-    function updateCategorySelectionFeedback() {
-        const selectedCategories = [];
-        categoryButtons.forEach(button => {
-            if (button.classList.contains('btn-primary')) {
-                selectedCategories.push(button.dataset.category);
-            }
-        });
-        const container = document.querySelector('.categories-container');
-        if (selectedCategories.length > 0) {
-            container.style.borderColor = '#198754';
-            container.style.backgroundColor = '#f8fff9';
-        } else {
-            container.style.borderColor = '#dee2e6';
-            container.style.backgroundColor = 'transparent';
-        }
     }
     });
 } 
