@@ -7,6 +7,8 @@ const cloudinary = require('../config/cloudinary');
 router.post('/itemSubmit', upload.single('image'), async (req, res) => {
     try {
         // Get the uploaded file from multer
+        // File includes all data from the form, including text fields and the image file. 
+        // Multer parses the multipart/form-data request and makes the file available in req.file, while text fields are available in req.body.
         const file = req.file;
 
         // Check if a file was uploaded
@@ -14,10 +16,10 @@ router.post('/itemSubmit', upload.single('image'), async (req, res) => {
             return res.status(400).json({ error: 'No file uploaded' });
         }
 
+        // Must match the 'name' field in the form input element for each field in the create listing form
         const {
             itemTitle,
             itemDescription,
-            itemImages,
             itemCategory,
             location,
             contactPhone,
@@ -35,22 +37,28 @@ router.post('/itemSubmit', upload.single('image'), async (req, res) => {
         const imageUrl = cloudinaryResult.secure_url;
         const publicId = cloudinaryResult.public_id; // store public ID for future reference (e.g., image deletion)?
 
-        // Fetch category ID from Xano based on category name
-        const categoryRes =  await fetch(`${process.env.XANO_BASE_URL}/category?name=${encodeURIComponent(itemCategory)}`, {
+        // Fetch category ID from Xano based on category name 'itemCategory' from req.body
+        const categoryRes = await fetch(`${process.env.XANO_BASE_URL}/category?name=${encodeURIComponent(itemCategory)}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
         });
 
         // Parse category response
-        const categoryData = await categoryRes.json().catch(() => ({}));
+        const categoryData = await categoryRes.json().catch(() => []);
 
-        // Check if category exists
-        if (!categoryData || categoryData.length === 0) {
-            return res.status(404).json({error: "Category not found"});
+        // Check if array is empty or if no matching category was found
+        const matchedCategory = categoryData.find(cat =>
+            cat.name.toLowerCase() === itemCategory.toLowerCase()
+        )
+
+        if (!matchedCategory) {
+            return res.status(404).json({
+                error: `The category "${itemCategory}" does not exist in the database.`
+            });
         }
 
         // Get category ID for the given category name
-        const categoryId = categoryData[0].id;
+        const categoryId = matchedCategory.id;
 
         // Call Xano item creation endpoint
         const xanoRes = await fetch(`${process.env.XANO_BASE_URL}/rental_item`, {
@@ -70,6 +78,7 @@ router.post('/itemSubmit', upload.single('image'), async (req, res) => {
             })
         });
 
+        // Parse Xano response
         const data = await xanoRes.json().catch(() => ({}));
 
          // If Xano returns an error, forward it to the client
