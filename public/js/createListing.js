@@ -1,13 +1,83 @@
-// Submit create-listing modal to /api/itemSubmit (multipart: fields + image).
+// Array to hold selected files for preview and submission
+let selectedFiles = [];
 
+// Image preview functionality for create listing modal
+const imageInput = document.getElementById('itemImages');
+const previewContainer = document.getElementById('imagePreviewContainer');
 const form = document.querySelector('#createListingModal form');
+const myModalEl = document.getElementById('createListingModal');
 
+if (myModalEl) {
+    myModalEl.addEventListener('hidden.bs.modal', function () {
+        selectedFiles = [];
+        renderPreviews();
+        if (imageInput) imageInput.value = '';
+        if (form) form.reset();
+    });
+}
+
+// Image selection logic
+if (imageInput && previewContainer) {
+    imageInput.addEventListener('change', function(event) {
+        // Get new files selected by user for this specific 'change' event
+        const newFiles = Array.from(event.target.files);
+
+        // Append new files to the existing selectedFiles array to allow multiple selections across different 'change' events
+        selectedFiles = selectedFiles.concat(newFiles);
+
+        // Clear and rebuild the preview container to show all selected images
+        renderPreviews();
+
+        // Clear the file input value to allow re-selection of the same file if needed
+        imageInput.value = '';
+    });
+}
+
+// Function to render image previews in the preview container and remove button for each selected image
+function renderPreviews() {
+    previewContainer.innerHTML = '';
+
+    selectedFiles.forEach((file, index) => {
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgWrapper = document.createElement('div');
+                imgWrapper.className = 'position-relative';
+                imgWrapper.innerHTML = `
+                    <img src="${e.target.result}" class="rounded border" style="width: 80px; height: 80px; object-fit: cover;">
+                    <button type="button" 
+                            class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 15px; height: 15px; padding: 0; font-size: 12px;" 
+                            onclick="removeFile(${index})">×</button>
+                    `;
+                    previewContainer.appendChild(imgWrapper);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+// Global fucntion to remove a file form the list
+window.removeFile = function(index) {
+    selectedFiles.splice(index, 1);
+    renderPreviews();
+}
+
+// Submit create-listing modal to /api/itemSubmit (multipart: fields + image).
 if (form) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         // Create FormData object from the form, which will handle both text fields and file uploads.
         const formData = new FormData(form);
+
+        // Remove the old'images' field from FormData input and add the master list instead for current entry
+        formData.delete('images');
+
+        // Append all selected files to the FormData object under the same 'images' key, which matches the multer field name expected by the server.
+        selectedFiles.forEach(file => {
+            formData.append('images', file);
+        });
 
         const categoryValue = formData.get('itemCategory');
         if (!categoryValue) {

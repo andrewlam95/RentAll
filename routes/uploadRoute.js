@@ -4,16 +4,16 @@ const router = express.Router();
 const upload = require('../middleware/upload');
 const cloudinary = require('../config/cloudinary');
 
-router.post('/itemSubmit', upload.single('image'), async (req, res) => {
+router.post('/itemSubmit', upload.array('images', 5), async (req, res) => {
     try {
-        // Get the uploaded file from multer
-        // File includes all data from the form, including text fields and the image file. 
-        // Multer parses the multipart/form-data request and makes the file available in req.file, while text fields are available in req.body.
-        const file = req.file;
+        // Get the uploaded files from multer
+        // Files includes all data from the form, including text fields and the image files. 
+        // Multer parses the multipart/form-data request and makes the file available in req.files, while text fields are available in req.body.
+        const files = req.files;
 
         // Check if a file was uploaded
-        if (!file) {
-            return res.status(400).json({ error: 'No file uploaded' });
+        if (!files || files.length === 0) {
+            return res.status(400).json({ error: 'No files uploaded' });
         }
 
         // Must match the 'name' field in the form input element for each field in the create listing form
@@ -28,14 +28,18 @@ router.post('/itemSubmit', upload.single('image'), async (req, res) => {
             maxRentalDays
         } = req.body;
 
+        // Convert the file buffer to a base64 string to upload all images to Cloudinary in parallel
+        const uploadPromises = files.map(file => {
+            const base64 = file.buffer.toString('base64');
+            const dataURI = `data:${file.mimetype};base64,${base64}`;
+            return cloudinary.uploader.upload(dataURI);
+        })
 
-        // Convert the file buffer to a base64 string to upload to Cloudinary
-        const base64 = file.buffer.toString('base64');
-        const dataURI = `data:${file.mimetype};base64,${base64}`;
-        const cloudinaryResult = await cloudinary.uploader.upload(dataURI);
+        const cloudinaryResults = await Promise.all(uploadPromises);
 
-        const imageUrl = cloudinaryResult.secure_url;
-        const publicId = cloudinaryResult.public_id; // store public ID for future reference (e.g., image deletion)?
+        // Extract the secure URLs and public IDs from the Cloudinary results
+        const imageUrls = cloudinaryResults.map(result => result.secure_url);
+        const publicIds = cloudinaryResults.map(result => result.public_id);
 
         // Fetch category ID from Xano based on category name 'itemCategory' from req.body
         const categoryRes = await fetch(`${process.env.XANO_BASE_URL}/category?name=${encodeURIComponent(itemCategory)}`, {
@@ -68,8 +72,8 @@ router.post('/itemSubmit', upload.single('image'), async (req, res) => {
                 category_id: categoryId,
                 title: itemTitle,
                 description: itemDescription,
-                image_url: imageUrl, // image URL from Cloudinary
-                cloudinary_public_id: publicId, // store Cloudinary public ID for future reference
+                image_urls: imageUrls, // array of image URLs from Cloudinary
+                cloudinary_public_ids: publicIds, // array of Cloudinary public IDs for future reference
                 location: location,
                 contact_phone: contactPhone, // get phone number from user table?
                 price: dailyRate,
@@ -88,8 +92,8 @@ router.post('/itemSubmit', upload.single('image'), async (req, res) => {
             return res.status(xanoRes.status).send(data.message || data.error || 'Item submission failed.');
         }
 
-        // On success, redirect to homepage
-        return res.redirect('/');
+        // On success,send success response
+        return res.status(200).json({ message: 'Item created successfully' });
 
     } catch (err) {
         console.error('Item submission error:', err);

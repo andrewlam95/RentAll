@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form action="itemSubmit" method="POST">
+                <form action="itemSubmit" method="POST" enctype="multipart/form-data"> <!-- enctype="multipart/form-data" is necessary for file uploads -->
                     <div class="row">
                         <div class="col-md-8">
                             <div class="mb-3">
@@ -18,15 +18,17 @@
                                 <label for="itemDescription" class="form-label">Description</label>
                                 <textarea name="itemDescription" class="form-control" id="itemDescription" rows="4" placeholder="Describe your item, its condition, and what's included..." required></textarea>
                             </div>
-                            <!-- Upload Images Section -->
+                            <!-- Upload Multiple Images Section -->
                             <div class="mb-3">
                                 <label for="itemImages" class="form-label">Upload Images</label>
                                 <div class="border rounded p-3 text-center" style="border-style: dashed !important;">
                                     <i class="bi bi-cloud-upload fs-1 text-muted"></i>
                                     <p class="mt-2 mb-0">Drag and drop images here or click to browse</p>
-                                    <input type="file" name="image" class="form-control mt-2" id="itemImages" multiple accept="image/*">
+                                    <input type="file" name="images" class="form-control mt-2" id="itemImages" multiple accept="image/*">
                                 </div>
                             </div>
+                            <!-- Image Preview Container -->
+                             <div id="imagePreviewContainer" class="d-flex flex-wrap gap-2 mt-3"></div>
                             <!-- Categories Section -->
                             <div class="mb-3">
                                 <label for="itemCategory" class="form-label">Category</label>
