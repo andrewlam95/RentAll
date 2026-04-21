@@ -25,7 +25,9 @@ router.post('/itemSubmit', upload.array('images', 5), async (req, res) => {
             contactPhone,
             dailyRate,
             minRentalDays,
-            maxRentalDays
+            maxRentalDays,
+            startDate,
+            endDate
         } = req.body;
 
         // Convert the file buffer to a base64 string to upload all images to Cloudinary in parallel
@@ -78,7 +80,9 @@ router.post('/itemSubmit', upload.array('images', 5), async (req, res) => {
                 contact_phone: contactPhone, // get phone number from user table?
                 price: dailyRate,
                 min_days: minRentalDays,
-                max_days: maxRentalDays
+                max_days: maxRentalDays,
+                start_date: startDate,
+                end_date: endDate
             })
         });
 

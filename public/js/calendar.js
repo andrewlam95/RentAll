@@ -271,43 +271,43 @@ if (!window.rentalCalendarInitialized) {
             });
         }
     // Handle form submission
-    const createListingForm = document.querySelector('#createListingModal form');
-    if (createListingForm) {
-        createListingForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const categorySelect = document.getElementById('itemCategory');
-            if (!categorySelect || !categorySelect.value) {
-                alert('Please select a category for your item.');
-                return;
-            }
-            if (window.rentalCalendar) {
-                const bookingData = window.rentalCalendar.getBookingData();
+    // const createListingForm = document.querySelector('#createListingModal form');
+    // if (createListingForm) {
+    //     createListingForm.addEventListener('submit', function(e) {
+    //         e.preventDefault();
+    //         const categorySelect = document.getElementById('itemCategory');
+    //         if (!categorySelect || !categorySelect.value) {
+    //             alert('Please select a category for your item.');
+    //             return;
+    //         }
+    //         if (window.rentalCalendar) {
+    //             const bookingData = window.rentalCalendar.getBookingData();
 
-                // Validate that both start and end dates are selected
-                if (!window.rentalCalendar.startDate || !window.rentalCalendar.endDate) {
-                    alert('Please select both a start and end date on the calendar.');
-                    return;
-                }
+    //             // Validate that both start and end dates are selected
+    //             if (!window.rentalCalendar.startDate || !window.rentalCalendar.endDate) {
+    //                 alert('Please select both a start and end date on the calendar.');
+    //                 return;
+    //             }
 
-                const formData = {
-                    title: document.getElementById('itemTitle').value,
-                    description: document.getElementById('itemDescription').value,
-                    itemCategory: categorySelect.value,
-                    dailyRate: document.getElementById('dailyRate').value,
-                    location: document.getElementById('location').value,
-                    contactPhone: document.getElementById('contactPhone').value,
-                    startDate: window.rentalCalendar.startDate,
-                    endDate: window.rentalCalendar.endDate,
-                    maxRentalDays: document.getElementById('maxRentalDays').value,
-                    bookingData: bookingData
-                };
-                console.log('Form Data:', formData);
-                alert(`Listing created successfully! Category: ${categorySelect.value}`);
-                // Close modal
-                const modalInstance = bootstrap.Modal.getInstance(document.getElementById('createListingModal'));
-                modalInstance.hide();
-            }
-        });
-    }
+    //             const formData = {
+    //                 title: document.getElementById('itemTitle').value,
+    //                 description: document.getElementById('itemDescription').value,
+    //                 itemCategory: categorySelect.value,
+    //                 dailyRate: document.getElementById('dailyRate').value,
+    //                 location: document.getElementById('location').value,
+    //                 contactPhone: document.getElementById('contactPhone').value,
+    //                 startDate: window.rentalCalendar.startDate,
+    //                 endDate: window.rentalCalendar.endDate,
+    //                 maxRentalDays: document.getElementById('maxRentalDays').value,
+    //                 bookingData: bookingData
+    //             };
+    //             console.log('Form Data:', formData);
+    //             alert(`Listing created successfully! Category: ${categorySelect.value}`);
+    //             // Close modal
+    //             const modalInstance = bootstrap.Modal.getInstance(document.getElementById('createListingModal'));
+    //             modalInstance.hide();
+    //         }
+    //     });
+    // }
     });
 } 

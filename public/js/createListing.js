@@ -68,8 +68,18 @@ if (form) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        // Validate that both start and end dates are selected on the calendar before allowing form submission
+        if (!window.rentalCalendar || !window.rentalCalendar.startDate || !window.rentalCalendar.endDate) {
+            alert('Please select both a start and end date on the calendar.');
+            return;
+        }
+
         // Create FormData object from the form, which will handle both text fields and file uploads.
         const formData = new FormData(form);
+
+        // Append the start and end dates from the calendar to the FormData object to ensure they are included in the submission.
+        formData.append('startDate', window.rentalCalendar.startDate);
+        formData.append('endDate', window.rentalCalendar.endDate);
 
         // Remove the old'images' field from FormData input and add the master list instead for current entry
         formData.delete('images');
@@ -92,7 +102,7 @@ if (form) {
 
             const response = await fetch('/api/itemSubmit', {
                 method: 'POST',
-                body: formData,
+                body: formData, // FormData sends dates + images 
             });
 
             // If server responds with a 200/201 JSON response
