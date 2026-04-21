@@ -14,6 +14,7 @@ class RentalCalendar {
         this.renderCalendar();
         this.bindEvents();
         this.setupBookingSettings();
+        this.setupMaxDaysValidation();
     }
 
     renderCalendar() {
@@ -116,6 +117,8 @@ class RentalCalendar {
                             // If clicked date is before start, make it the new start
                             this.endDate = this.startDate;
                             this.startDate = date;
+                        } else if (clickedDate.getTime() === start.getTime()) { // If clicked the same date, treat it as single day selection
+                            this.endDate = this.startDate;
                         } else {
                             // Set as end date
                             this.endDate = date;
@@ -132,6 +135,9 @@ class RentalCalendar {
                     
                     // Re-render calendar to show the range
                     this.renderCalendar();
+
+                    // Update max rental limit based on selected range
+                    this.updateMaxRentalLimit();
                 }
             });
         }
@@ -149,6 +155,8 @@ class RentalCalendar {
 
     getBookingData() {
         return {
+            startDate: this.startDate,
+            endDate: this.endDate,
             selectedDates: Array.from(this.selectedDates),
             unavailableDates: Array.from(this.unavailableDates),
             minRentalDays: parseInt(document.getElementById('minRentalDays').value) || 1,
@@ -156,6 +164,95 @@ class RentalCalendar {
             advanceBookingDays: parseInt(document.getElementById('advanceBookingDays').value) || 7,
             cancellationPolicy: document.getElementById('cancellationPolicy').value
         };
+    }
+
+    // Update the max rental days limit based on the selected range on the calendar
+    updateMaxRentalLimit() {
+        const maxDaysInput = document.getElementById('maxRentalDays');
+        if (!maxDaysInput || !this.startDate || !this.endDate) return;
+
+        const start = new Date(this.startDate);
+        const end = new Date(this.endDate);
+
+        // Calculate the difference in days between start and end date
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 to include both start and end date
+
+        // Update the max rental days input to reflect the selected range if it exceeds the current max
+        maxDaysInput.max = diffDays;
+
+        // Always set the max rental days input value to the max range after start/end date selection on calendar modal
+        maxDaysInput.value = diffDays;
+        // if (parseInt(maxDaysInput.value) > diffDays) {
+        //     maxDaysInput.value = diffDays;
+        // }
+
+        const limitLabel = document.getElementById('maxDaysHint');
+        if (limitLabel) {
+            limitLabel.textContent = `(Max rental days allowed: ${diffDays} days)`;
+        }
+    }
+
+    // Validate max rental days does not exceed selected range
+    setupMaxDaysValidation() {
+        const maxInput = document.getElementById('maxRentalDays');
+        const errorMsg = document.getElementById('maxDaysError');
+
+        if (!maxInput) return;
+
+        maxInput.addEventListener('input', () => {
+            const currentVal = parseInt(maxInput.value);
+            const limit = parseInt(maxInput.getAttribute('max'));
+
+            // Validate limit exists and if the current value exceeds the limit, show error and reset to max
+            if (limit && currentVal > limit) {
+                maxInput.value = limit; // Reset to max allowed value if user tries to exceed it
+
+                // Show error message for 2 seconds
+                errorMsg.classList.remove('d-none');
+                maxInput.classList.add('is-invalid'); // Adds red border to indicate error
+
+                setTimeout(() => {
+                    errorMsg.classList.add('d-none');
+                    maxInput.classList.remove('is-invalid');
+                }, 2000);
+            } else {
+                errorMsg.classList.add('d-none');
+                maxInput.classList.remove('is-invalid');
+            }
+        });
+    }
+
+    reset() {
+        // Reset Data State
+        this.startDate = null;
+        this.endDate = null;
+        this.selectedDates.clear();
+
+        // Reset calendar visuals
+        this.renderCalendar();
+
+        // Reset booking settings inputs
+        const hint = document.getElementById('maxDaysHint');
+        if (hint) {
+            hint.textContent = "Select a date range above to set limit.";
+        } 
+
+        // Reset max rental days input to default state of 1
+        const maxInput = document.getElementById('maxRentalDays');
+        if (maxInput) {
+            maxInput.value = 1;
+            maxInput.removeAttribute('max');
+        }
+
+        // Reset any error messages related to booking settings
+        const errorMsg = document.getElementById('maxDaysError');
+        if (errorMsg) {
+            errorMsg.classList.add('d-none');
+        }
+        if (maxInput) {
+            maxInput.classList.remove('is-invalid');
+        }
     }
 }
 
@@ -169,10 +266,7 @@ if (!window.rentalCalendarInitialized) {
                     window.rentalCalendar = new RentalCalendar();
                 } else {
                     // Reset calendar state when modal opens
-                    window.rentalCalendar.startDate = null;
-                    window.rentalCalendar.endDate = null;
-                    window.rentalCalendar.selectedDates.clear();
-                    window.rentalCalendar.renderCalendar();
+                    window.rentalCalendar.reset();
                 }
             });
         }
@@ -188,6 +282,13 @@ if (!window.rentalCalendarInitialized) {
             }
             if (window.rentalCalendar) {
                 const bookingData = window.rentalCalendar.getBookingData();
+
+                // Validate that both start and end dates are selected
+                if (!window.rentalCalendar.startDate || !window.rentalCalendar.endDate) {
+                    alert('Please select both a start and end date on the calendar.');
+                    return;
+                }
+
                 const formData = {
                     title: document.getElementById('itemTitle').value,
                     description: document.getElementById('itemDescription').value,
@@ -195,6 +296,9 @@ if (!window.rentalCalendarInitialized) {
                     dailyRate: document.getElementById('dailyRate').value,
                     location: document.getElementById('location').value,
                     contactPhone: document.getElementById('contactPhone').value,
+                    startDate: window.rentalCalendar.startDate,
+                    endDate: window.rentalCalendar.endDate,
+                    maxRentalDays: document.getElementById('maxRentalDays').value,
                     bookingData: bookingData
                 };
                 console.log('Form Data:', formData);

@@ -112,7 +112,11 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="maxRentalDays" class="form-label">Maximum Rental Days</label>
-                                            <input type="number" name="maxRentalDays" class="form-control" id="maxRentalDays" min="1" value="30">
+                                            <input type="number" name="maxRentalDays" class="form-control" id="maxRentalDays" min="1" value="1">
+                                            <small id="maxDaysHint" class="text-muted">Select a date range above to set limit.</small>
+                                            <div id="maxDaysError" class="text-danger small mt-1 d-none">
+                                                Value exceeds the selected availability range.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
