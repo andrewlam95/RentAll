@@ -124,3 +124,53 @@ if (form) {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dropZone = document.querySelector('.border.rounded.p-3.text-center');
+    const fileInput = document.getElementById('itemImages');
+
+    // Prevent default browser drag behaviour (open the file)
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        }, false);
+    });
+
+    // Add visual feedback when dragging over the drop zone
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => {
+            dropZone.classList.add('bg-light', 'border-primary');
+        }, false);
+    });
+
+    // Remove visual feedback when dragging leaves the drop zone or when files are dropped
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => {
+            dropZone.classList.remove('bg-light', 'border-primary');
+        }, false);
+    });
+
+    // Handle dropped files and update the file input and previews
+    dropZone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const newFiles = Array.from(dt.files);
+
+        if  (newFiles.length > 0) {
+            // Push dropped image files into exisiting global array
+            selectedFiles = selectedFiles.concat(newFiles);
+            // Trigger existing preview render function
+            renderPreviews();
+        }
+    });
+
+    fileInput.addEventListener('click', (e) => {
+        // Prevent the click event from "bubbling up" to the drop zone and triggering the file dialog twice
+        e.stopPropagation();
+    })
+
+    // Make the entire drop zone clickable to open the file browser dialog
+    dropZone.addEventListener('click', () => {
+        fileInput.click();
+    });
+});
