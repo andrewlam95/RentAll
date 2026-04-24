@@ -6,6 +6,7 @@ const imageInput = document.getElementById('itemImages');
 const previewContainer = document.getElementById('imagePreviewContainer');
 const form = document.querySelector('#createListingModal form');
 const myModalEl = document.getElementById('createListingModal');
+const fileUploadLabel = document.getElementById('fileUploadLabel')
 
 if (myModalEl) {
     myModalEl.addEventListener('hidden.bs.modal', function () {
@@ -37,12 +38,30 @@ if (imageInput && previewContainer) {
 function renderPreviews() {
     previewContainer.innerHTML = '';
 
+    // Update the label of the upload section
+    if (fileUploadLabel) {
+        if (selectedFiles.length > 0) {
+            fileUploadLabel.textContent = selectedFiles.length === 1 ? selectedFiles[0].name : `${selectedFiles.length} images selected`;
+            fileUploadLabel.classList.add('text-primary', 'fw-bold');
+        } else {
+            fileUploadLabel.textContent = "Drag and drop images here or click to browse";
+            fileUploadLabel.classList.remove('text-primary', 'fw-bold');
+        }
+    }
+
     selectedFiles.forEach((file, index) => {
         if (file.type.startsWith('image/')) {
+
+            // Create a wrapper for the given image
+            const imgWrapper = document.createElement('div');
+            imgWrapper.className = 'position-relative';
+
+            // Append empty wrapper to the container to preserve the order of uploaded images
+            previewContainer.appendChild(imgWrapper);
+
             const reader = new FileReader();
             reader.onload = function(e) {
-                const imgWrapper = document.createElement('div');
-                imgWrapper.className = 'position-relative';
+                // Update the contents of the wrapper only when data is ready
                 imgWrapper.innerHTML = `
                     <img src="${e.target.result}" class="rounded border" style="width: 80px; height: 80px; object-fit: cover;">
                     <button type="button" 
@@ -50,7 +69,6 @@ function renderPreviews() {
                             style="width: 15px; height: 15px; padding: 0; font-size: 12px;" 
                             onclick="removeFile(${index})">×</button>
                     `;
-                    previewContainer.appendChild(imgWrapper);
             };
             reader.readAsDataURL(file);
         }
