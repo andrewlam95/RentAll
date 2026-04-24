@@ -66,8 +66,10 @@ function renderPreviews() {
                     <img src="${e.target.result}" class="rounded border" style="width: 80px; height: 80px; object-fit: cover;">
                     <button type="button" 
                             class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle d-flex align-items-center justify-content-center"
-                            style="width: 15px; height: 15px; padding: 0; font-size: 12px;" 
-                            onclick="removeFile(${index})">×</button>
+                            style="width: 18px; height: 18px; padding: 0; font-size: 14px; line-height: 1 transform: translate(30%, -30%);" 
+                            onclick="removeFile(${index})">
+                        <span style="margin-bottom: 2px;">&times;</span>
+                    </button>
                     `;
             };
             reader.readAsDataURL(file);
