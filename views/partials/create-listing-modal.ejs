@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form action="itemSubmit" method="POST" enctype="multipart/form-data"> <!-- enctype="multipart/form-data" is necessary for file uploads -->
+                <form action="itemSubmit" method="POST">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="mb-3">
@@ -18,17 +18,15 @@
                                 <label for="itemDescription" class="form-label">Description</label>
                                 <textarea name="itemDescription" class="form-control" id="itemDescription" rows="4" placeholder="Describe your item, its condition, and what's included..." required></textarea>
                             </div>
-                            <!-- Upload Multiple Images Section -->
+                            <!-- Upload Images Section -->
                             <div class="mb-3">
                                 <label for="itemImages" class="form-label">Upload Images</label>
-                                <div class="border rounded p-3 text-center" style="border-style: dashed !important; cursor: pointer;">
+                                <div class="border rounded p-3 text-center" style="border-style: dashed !important;">
                                     <i class="bi bi-cloud-upload fs-1 text-muted"></i>
-                                    <p id="fileUploadLabel" class="mt-2 mb-0">Drag and drop images here or click to browse</p>
-                                    <input type="file" name="images" class="d-none" id="itemImages" multiple accept="image/*">
+                                    <p class="mt-2 mb-0">Drag and drop images here or click to browse</p>
+                                    <input type="file" name="image" class="form-control mt-2" id="itemImages" multiple accept="image/*">
                                 </div>
                             </div>
-                            <!-- Image Preview Container -->
-                             <div id="imagePreviewContainer" class="d-flex flex-wrap gap-2 mt-3"></div>
                             <!-- Categories Section -->
                             <div class="mb-3">
                                 <label for="itemCategory" class="form-label">Category</label>
@@ -85,7 +83,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="contactPhone" class="form-label">Contact Phone</label>
+                                        <label for="contactPhone" class="form-label">Contact Phone (Optional)</label>
                                         <input type="tel" name="contactPhone" class="form-control" id="contactPhone" required>
                                     </div>
                                 </div>
@@ -112,11 +110,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="maxRentalDays" class="form-label">Maximum Rental Days</label>
-                                            <input type="number" name="maxRentalDays" class="form-control" id="maxRentalDays" min="1" value="1">
-                                            <small id="maxDaysHint" class="text-muted">Select a date range above to set limit.</small>
-                                            <div id="maxDaysError" class="text-danger small mt-1 d-none">
-                                                Value exceeds the selected availability range.
-                                            </div>
+                                            <input type="number" name="maxRentalDays" class="form-control" id="maxRentalDays" min="1" value="30">
                                         </div>
                                     </div>
                                 </div>
@@ -154,7 +148,7 @@
                                             <i class="bi bi-chevron-right"></i>
                                         </button>
                                     </div>
-                                    <div class="calendar-weekdays d-flex">
+                                    <div class="calendar-weekdays">
                                         <div class="calendar-weekday">Sun</div>
                                         <div class="calendar-weekday">Mon</div>
                                         <div class="calendar-weekday">Tue</div>

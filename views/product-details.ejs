@@ -4,6 +4,7 @@
     <div class="row">
         <!-- Product Images Gallery -->
         <div class="col-md-6">
+            <h1 class="mb-3"><%= item.title %></h1>
             <div class="product-gallery">
                 <!-- Main Image Container -->
                 <div class="main-image-container position-relative">
@@ -65,7 +66,26 @@
                     </div>
                 </div>
             </div>
-            <!-- Owner Info moved here -->
+
+            <!-- Product Details moved below images -->
+            <div class="product-info mt-4">
+                <div class="mb-3">
+                    <span class="badge bg-primary fs-6"><%= item.category %></span>
+                    <span class="text-muted ms-2"><i class="bi bi-geo-alt"></i> <%= item.location %></span>
+                </div>
+
+                <div class="price-section mb-4">
+                    <h2 class="text-primary">$<%= item.price %>/day</h2>
+                    <p class="text-muted">Rental price per day</p>
+                </div>
+
+                <div class="description mb-0">
+                    <h5>Description</h5>
+                    <p><%= item.description %></p>
+                </div>
+            </div>
+
+            <!-- Owner Info -->
             <div class="owner-info mb-4 mt-4">
                 <h5>Owner</h5>
                 <div class="d-flex align-items-start justify-content-between">
@@ -103,34 +123,44 @@
 
         <!-- Product Info -->
         <div class="col-md-6">
-            <h1 class="mb-3"><%= item.title %></h1>
-            <div class="mb-3">
-                <span class="badge bg-primary fs-6"><%= item.category %></span>
-                <span class="text-muted ms-2"><i class="bi bi-geo-alt"></i> <%= item.location %></span>
-            </div>
-            
-            <div class="price-section mb-4">
-                <h2 class="text-primary">$<%= item.price %>/day</h2>
-                <p class="text-muted">Rental price per day</p>
-            </div>
-
-            <div class="description mb-4">
-                <h5>Description</h5>
-                <p><%= item.description %></p>
-            </div>
-
             <!-- Booking Form -->
             <div class="booking-form" id="bookingFormContainer">
-                <h5 class="mb-3">Book This Item</h5>
                 <form id="bookingForm">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Start Date</label>
-                            <input type="date" class="form-control" id="startDate" required>
+                    <div class="mb-3">
+                        <input type="hidden" id="startDate" required>
+                        <input type="hidden" id="endDate" required>
+                        <div class="calendar-section booking-calendar-compact">
+                            <div class="calendar-container">
+                                <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="bookingPrevMonth">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </button>
+                                    <h6 class="mb-0" id="bookingCurrentMonth">December 2024</h6>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="bookingNextMonth">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div class="calendar-weekdays">
+                                    <div class="calendar-weekday">Sun</div>
+                                    <div class="calendar-weekday">Mon</div>
+                                    <div class="calendar-weekday">Tue</div>
+                                    <div class="calendar-weekday">Wed</div>
+                                    <div class="calendar-weekday">Thu</div>
+                                    <div class="calendar-weekday">Fri</div>
+                                    <div class="calendar-weekday">Sat</div>
+                                </div>
+                                <div class="calendar-days" id="bookingCalendarDays">
+                                    <!-- Calendar days will be populated by JavaScript -->
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">End Date</label>
-                            <input type="date" class="form-control" id="endDate" required>
+                        <div class="row g-2 mt-3">
+                            <div class="col-6">
+                                <div class="form-control" id="startDateDisplay">Select start date</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-control" id="endDateDisplay">Select end date</div>
+                            </div>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -183,14 +213,42 @@
             </div>
             <div class="modal-body">
                 <form id="mobileBookingForm">
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <label class="form-label">Start Date</label>
-                            <input type="date" class="form-control" id="mobileStartDate" required>
+                    <div class="mb-3">
+                        <label class="form-label">Booking Dates</label>
+                        <input type="hidden" id="mobileStartDate" required>
+                        <input type="hidden" id="mobileEndDate" required>
+                        <div class="calendar-section booking-calendar-compact">
+                            <div class="calendar-container">
+                                <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="mobileBookingPrevMonth">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </button>
+                                    <h6 class="mb-0" id="mobileBookingCurrentMonth">December 2024</h6>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="mobileBookingNextMonth">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div class="calendar-weekdays">
+                                    <div class="calendar-weekday">Sun</div>
+                                    <div class="calendar-weekday">Mon</div>
+                                    <div class="calendar-weekday">Tue</div>
+                                    <div class="calendar-weekday">Wed</div>
+                                    <div class="calendar-weekday">Thu</div>
+                                    <div class="calendar-weekday">Fri</div>
+                                    <div class="calendar-weekday">Sat</div>
+                                </div>
+                                <div class="calendar-days" id="mobileBookingCalendarDays">
+                                    <!-- Calendar days will be populated by JavaScript -->
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-12 mb-3">
-                            <label class="form-label">End Date</label>
-                            <input type="date" class="form-control" id="mobileEndDate" required>
+                        <div class="row g-2 mt-3">
+                            <div class="col-6">
+                                <div class="form-control" id="mobileStartDateDisplay">Select start date</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-control" id="mobileEndDateDisplay">Select end date</div>
+                            </div>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -276,7 +334,14 @@
         const bookingForm = document.getElementById('bookingForm');
         const bookingFormContainer = document.getElementById('bookingFormContainer');
         const stickyBookingBar = document.getElementById('stickyBookingBar');
-        const dailyPrice = <%= item.price %>;
+        const startDateDisplay = document.getElementById('startDateDisplay');
+        const endDateDisplay = document.getElementById('endDateDisplay');
+        const bookingCurrentMonth = document.getElementById('bookingCurrentMonth');
+        const bookingCalendarDays = document.getElementById('bookingCalendarDays');
+        const bookingPrevMonth = document.getElementById('bookingPrevMonth');
+        const bookingNextMonth = document.getElementById('bookingNextMonth');
+        const dailyPrice = Number('<%= item.price %>');
+        let bookingCalendarMonth = new Date();
 
         // Check if screen is mobile/small
         function isMobileScreen() {
@@ -302,6 +367,114 @@
             
             // Add 1 to include both start and end days (inclusive)
             return diffDays + 1;
+        }
+
+        function formatDisplayDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr + 'T00:00:00');
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function updateCalendarDateDisplays() {
+            if (startDateDisplay) {
+                startDateDisplay.textContent = startDateInput && startDateInput.value
+                    ? formatDisplayDate(startDateInput.value)
+                    : 'Select start date';
+            }
+            if (endDateDisplay) {
+                endDateDisplay.textContent = endDateInput && endDateInput.value
+                    ? formatDisplayDate(endDateInput.value)
+                    : 'Select end date';
+            }
+        }
+
+        function renderBookingCalendar() {
+            if (!bookingCalendarDays || !bookingCurrentMonth) return;
+
+            const year = bookingCalendarMonth.getFullYear();
+            const month = bookingCalendarMonth.getMonth();
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
+            bookingCurrentMonth.textContent = `${monthNames[month]} ${year}`;
+
+            const firstDay = new Date(year, month, 1);
+            const gridStartDate = new Date(firstDay);
+            gridStartDate.setDate(gridStartDate.getDate() - firstDay.getDay());
+
+            bookingCalendarDays.innerHTML = '';
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            for (let i = 0; i < 42; i++) {
+                const date = new Date(gridStartDate);
+                date.setDate(gridStartDate.getDate() + i);
+                const dateStr = date.toISOString().split('T')[0];
+
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = date.getDate();
+                dayElement.dataset.date = dateStr;
+
+                if (date.getMonth() !== month) {
+                    dayElement.classList.add('other-month');
+                }
+
+                const normalizedDate = new Date(dateStr + 'T00:00:00');
+                if (normalizedDate.toDateString() === today.toDateString()) {
+                    dayElement.classList.add('today');
+                }
+
+                if (normalizedDate < today) {
+                    dayElement.classList.add('unavailable');
+                } else {
+                    dayElement.classList.add('available');
+                }
+
+                const selectedStart = startDateInput ? startDateInput.value : '';
+                const selectedEnd = endDateInput ? endDateInput.value : '';
+                if (selectedStart && selectedEnd) {
+                    const start = new Date(selectedStart + 'T00:00:00');
+                    const end = new Date(selectedEnd + 'T00:00:00');
+                    if (normalizedDate >= start && normalizedDate <= end) {
+                        dayElement.classList.add('in-range');
+                    }
+                    if (dateStr === selectedStart || dateStr === selectedEnd) {
+                        dayElement.classList.add('selected');
+                    }
+                } else if (selectedStart && dateStr === selectedStart) {
+                    dayElement.classList.add('selected');
+                }
+
+                bookingCalendarDays.appendChild(dayElement);
+            }
+        }
+
+        function handleBookingCalendarDateClick(dateStr) {
+            const clickedDate = new Date(dateStr + 'T00:00:00');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (clickedDate < today) return;
+
+            const selectedStart = startDateInput ? startDateInput.value : '';
+            const selectedEnd = endDateInput ? endDateInput.value : '';
+
+            if (!selectedStart || (selectedStart && selectedEnd)) {
+                startDateInput.value = dateStr;
+                endDateInput.value = '';
+            } else {
+                const start = new Date(selectedStart + 'T00:00:00');
+                if (clickedDate < start) {
+                    endDateInput.value = selectedStart;
+                    startDateInput.value = dateStr;
+                } else {
+                    endDateInput.value = dateStr;
+                }
+            }
+
+            updateNumberOfDays();
+            updateStickyBookingBar();
+            updateCalendarDateDisplays();
+            renderBookingCalendar();
         }
 
         // Update number of days based on selected dates
@@ -393,20 +566,46 @@
         }
 
         // Initialize
+        renderBookingCalendar();
+        updateCalendarDateDisplays();
         updateStickyBookingBar();
         handleStickyBarVisibility();
+
+        if (bookingPrevMonth) {
+            bookingPrevMonth.addEventListener('click', function() {
+                bookingCalendarMonth.setMonth(bookingCalendarMonth.getMonth() - 1);
+                renderBookingCalendar();
+            });
+        }
+        if (bookingNextMonth) {
+            bookingNextMonth.addEventListener('click', function() {
+                bookingCalendarMonth.setMonth(bookingCalendarMonth.getMonth() + 1);
+                renderBookingCalendar();
+            });
+        }
+        if (bookingCalendarDays) {
+            bookingCalendarDays.addEventListener('click', function(e) {
+                if (e.target.classList.contains('calendar-day') && e.target.dataset.date) {
+                    handleBookingCalendarDateClick(e.target.dataset.date);
+                }
+            });
+        }
 
         // Update when dates change (automatically calculate days)
         if (startDateInput) {
             startDateInput.addEventListener('change', function() {
                 updateNumberOfDays();
                 updateStickyBookingBar();
+                updateCalendarDateDisplays();
+                renderBookingCalendar();
             });
         }
         if (endDateInput) {
             endDateInput.addEventListener('change', function() {
                 updateNumberOfDays();
                 updateStickyBookingBar();
+                updateCalendarDateDisplays();
+                renderBookingCalendar();
             });
         }
 
@@ -414,9 +613,118 @@
         const mobileBookingModal = document.getElementById('mobileBookingModal');
         const mobileStartDate = document.getElementById('mobileStartDate');
         const mobileEndDate = document.getElementById('mobileEndDate');
+        const mobileStartDateDisplay = document.getElementById('mobileStartDateDisplay');
+        const mobileEndDateDisplay = document.getElementById('mobileEndDateDisplay');
+        const mobileBookingCurrentMonth = document.getElementById('mobileBookingCurrentMonth');
+        const mobileBookingCalendarDays = document.getElementById('mobileBookingCalendarDays');
+        const mobileBookingPrevMonth = document.getElementById('mobileBookingPrevMonth');
+        const mobileBookingNextMonth = document.getElementById('mobileBookingNextMonth');
         const mobileNumDays = document.getElementById('mobileNumDays');
         const mobileTotalPrice = document.getElementById('mobileTotalPrice');
         const mobileBookingForm = document.getElementById('mobileBookingForm');
+        let mobileBookingCalendarMonth = new Date();
+
+        function updateMobileCalendarDateDisplays() {
+            if (mobileStartDateDisplay) {
+                mobileStartDateDisplay.textContent = mobileStartDate && mobileStartDate.value
+                    ? formatDisplayDate(mobileStartDate.value)
+                    : 'Select start date';
+            }
+            if (mobileEndDateDisplay) {
+                mobileEndDateDisplay.textContent = mobileEndDate && mobileEndDate.value
+                    ? formatDisplayDate(mobileEndDate.value)
+                    : 'Select end date';
+            }
+        }
+
+        function renderMobileBookingCalendar() {
+            if (!mobileBookingCalendarDays || !mobileBookingCurrentMonth) return;
+
+            const year = mobileBookingCalendarMonth.getFullYear();
+            const month = mobileBookingCalendarMonth.getMonth();
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
+            mobileBookingCurrentMonth.textContent = `${monthNames[month]} ${year}`;
+
+            const firstDay = new Date(year, month, 1);
+            const gridStartDate = new Date(firstDay);
+            gridStartDate.setDate(gridStartDate.getDate() - firstDay.getDay());
+
+            mobileBookingCalendarDays.innerHTML = '';
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            for (let i = 0; i < 42; i++) {
+                const date = new Date(gridStartDate);
+                date.setDate(gridStartDate.getDate() + i);
+                const dateStr = date.toISOString().split('T')[0];
+
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = date.getDate();
+                dayElement.dataset.date = dateStr;
+
+                if (date.getMonth() !== month) {
+                    dayElement.classList.add('other-month');
+                }
+
+                const normalizedDate = new Date(dateStr + 'T00:00:00');
+                if (normalizedDate.toDateString() === today.toDateString()) {
+                    dayElement.classList.add('today');
+                }
+
+                if (normalizedDate < today) {
+                    dayElement.classList.add('unavailable');
+                } else {
+                    dayElement.classList.add('available');
+                }
+
+                const selectedStart = mobileStartDate ? mobileStartDate.value : '';
+                const selectedEnd = mobileEndDate ? mobileEndDate.value : '';
+                if (selectedStart && selectedEnd) {
+                    const start = new Date(selectedStart + 'T00:00:00');
+                    const end = new Date(selectedEnd + 'T00:00:00');
+                    if (normalizedDate >= start && normalizedDate <= end) {
+                        dayElement.classList.add('in-range');
+                    }
+                    if (dateStr === selectedStart || dateStr === selectedEnd) {
+                        dayElement.classList.add('selected');
+                    }
+                } else if (selectedStart && dateStr === selectedStart) {
+                    dayElement.classList.add('selected');
+                }
+
+                mobileBookingCalendarDays.appendChild(dayElement);
+            }
+        }
+
+        function handleMobileBookingCalendarDateClick(dateStr) {
+            const clickedDate = new Date(dateStr + 'T00:00:00');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (clickedDate < today) return;
+
+            const selectedStart = mobileStartDate ? mobileStartDate.value : '';
+            const selectedEnd = mobileEndDate ? mobileEndDate.value : '';
+
+            if (!selectedStart || (selectedStart && selectedEnd)) {
+                mobileStartDate.value = dateStr;
+                mobileEndDate.value = '';
+            } else {
+                const start = new Date(selectedStart + 'T00:00:00');
+                if (clickedDate < start) {
+                    mobileEndDate.value = selectedStart;
+                    mobileStartDate.value = dateStr;
+                } else {
+                    mobileEndDate.value = dateStr;
+                }
+            }
+
+            updateMobileFormPrice();
+            updateMobileCalendarDateDisplays();
+            renderMobileBookingCalendar();
+            syncMainForm();
+        }
 
         // Sync mobile form with main form
         function syncMobileForm() {
@@ -432,6 +740,13 @@
             if (totalPriceInput && mobileTotalPrice) {
                 mobileTotalPrice.value = totalPriceInput.value;
             }
+            if (startDateInput && startDateInput.value) {
+                mobileBookingCalendarMonth = new Date(startDateInput.value + 'T00:00:00');
+            } else {
+                mobileBookingCalendarMonth = new Date();
+            }
+            updateMobileCalendarDateDisplays();
+            renderMobileBookingCalendar();
         }
 
         // Sync main form with mobile form
@@ -445,6 +760,9 @@
             // Calculate and update days automatically
             updateNumberOfDays();
             updateStickyBookingBar();
+            updateCalendarDateDisplays();
+            renderBookingCalendar();
+            updateMobileCalendarDateDisplays();
         }
 
         // Update mobile form total price
@@ -460,17 +778,25 @@
             }
         }
 
-        // Mobile form event listeners
-        if (mobileStartDate) {
-            mobileStartDate.addEventListener('change', function() {
-                updateMobileFormPrice();
-                syncMainForm();
+        if (mobileBookingPrevMonth) {
+            mobileBookingPrevMonth.addEventListener('click', function() {
+                mobileBookingCalendarMonth.setMonth(mobileBookingCalendarMonth.getMonth() - 1);
+                renderMobileBookingCalendar();
             });
         }
-        if (mobileEndDate) {
-            mobileEndDate.addEventListener('change', function() {
-                updateMobileFormPrice();
-                syncMainForm();
+
+        if (mobileBookingNextMonth) {
+            mobileBookingNextMonth.addEventListener('click', function() {
+                mobileBookingCalendarMonth.setMonth(mobileBookingCalendarMonth.getMonth() + 1);
+                renderMobileBookingCalendar();
+            });
+        }
+
+        if (mobileBookingCalendarDays) {
+            mobileBookingCalendarDays.addEventListener('click', function(e) {
+                if (e.target.classList.contains('calendar-day') && e.target.dataset.date) {
+                    handleMobileBookingCalendarDateClick(e.target.dataset.date);
+                }
             });
         }
 

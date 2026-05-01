@@ -17,6 +17,18 @@ body {
     animation: subtleBackgroundShift 20s ease-in-out infinite;
 }
 
+/* Use more horizontal space on desktop-sized screens */
+@media (min-width: 992px) {
+    .container,
+    .container-sm,
+    .container-md,
+    .container-lg,
+    .container-xl,
+    .container-xxl {
+        max-width: 90% !important;
+    }
+}
+
 @keyframes subtleBackgroundShift {
     0%, 100% {
         background: linear-gradient(135deg, #f8f9fa 0%, #fff5f0 25%, #fff9f5 50%, #f8f9fa 75%, #fff5f0 100%);
@@ -681,13 +693,14 @@ body {
 }
 
 .calendar-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 2px;
     margin-bottom: 0.5rem;
 }
 
 .calendar-weekday {
+    min-width: 0;
     text-align: center;
     font-weight: 600;
     font-size: 0.8rem;
@@ -696,8 +709,8 @@ body {
 }
 
 .calendar-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 2px;
 }
 
@@ -782,6 +795,35 @@ body {
 .calendar-day.today {
     border: 2px solid var(--primary-color);
     font-weight: bold;
+}
+
+/* Compact calendar variant for booking forms */
+.booking-calendar-compact {
+    padding: 0.9rem;
+}
+
+.booking-calendar-compact .calendar-container {
+    padding: 0.3rem;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.booking-calendar-compact .calendar-header {
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.5rem !important;
+}
+
+.booking-calendar-compact .calendar-weekday {
+    font-size: 1.2rem;
+    padding: 0.35rem 0;
+}
+
+.booking-calendar-compact .calendar-day {
+    font-size: 1.2rem;
+}
+
+.booking-calendar-compact .btn.btn-sm {
+    padding: 0.15rem 0.35rem;
 }
 
 .calendar-legend {
@@ -1833,5 +1875,112 @@ body {
     
     .sticky-booking-actions {
         gap: 8px;
+    }
+}
+
+/* Product details mobile responsiveness improvements */
+@media (max-width: 991.98px) {
+    .owner-info .d-flex.align-items-start.justify-content-between {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .message-owner-wrapper {
+        width: 100%;
+        margin-left: 0 !important;
+    }
+
+    .message-owner-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #mobileBookingModal .modal-dialog {
+        margin: 0.75rem;
+    }
+
+    #mobileBookingModal .modal-content {
+        border-radius: 14px;
+    }
+
+    #mobileBookingModal .calendar-section {
+        padding: 0.9rem;
+    }
+
+    #mobileBookingModal .calendar-container {
+        padding: 0.65rem;
+    }
+
+    #mobileBookingModal #mobileStartDateDisplay,
+    #mobileBookingModal #mobileEndDateDisplay {
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        font-size: 0.82rem;
+        padding: 0.45rem 0.6rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-image {
+        height: 240px;
+    }
+
+    .thumbnail {
+        width: 64px;
+        height: 46px;
+    }
+
+    .owner-info {
+        padding: 14px;
+    }
+
+    .rating {
+        flex-wrap: wrap;
+    }
+
+    .sticky-booking-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .sticky-booking-info {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .sticky-booking-actions {
+        width: 100%;
+    }
+
+    .sticky-reserve-btn {
+        width: 100%;
+    }
+
+    .sticky-dates-text {
+        white-space: normal;
+        line-height: 1.2;
+    }
+
+    #mobileBookingModal .modal-body {
+        padding: 0.85rem;
+    }
+
+    #mobileBookingModal .calendar-weekday {
+        font-size: 0.72rem;
+        padding: 0.35rem 0;
+    }
+
+    #mobileBookingModal .calendar-day {
+        font-size: 0.72rem;
+    }
+
+    .booking-calendar-compact {
+        padding: 0.7rem;
+    }
+
+    .booking-calendar-compact .calendar-container {
+        padding: 0.5rem;
     }
 }
