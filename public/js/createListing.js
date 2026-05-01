@@ -122,6 +122,7 @@ if (form) {
 
             const response = await fetch('/api/itemSubmit', {
                 method: 'POST',
+                credentials: 'include',
                 body: formData, // FormData sends dates + images 
             });
 

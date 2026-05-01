@@ -1,11 +1,12 @@
-// DB test
-require("./utils.js");
 require('dotenv').config();
+require("./utils.js");
 
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const uploadRoute = require('./routes/uploadRoute');
+const session =  require('express-session');
+const { fetchUser } = require('./middleware/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -43,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // DB test
 app.use(express.urlencoded({extended: true}));
 
-app.use('/api', uploadRoute);
+
 
 // // DB test
 // var mongoStore = MongoStore.create({
@@ -61,6 +62,21 @@ app.use('/api', uploadRoute);
 // 	resave: true
 // }
 // ));
+
+app.use(session({
+    secret: process.env.NODE_SESSION_SECRET || 'your_secret_key',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        secure: false, // Set to true if using HTTPS
+        httpOnly: true
+    } 
+}))
+
+// Auth middleware to fetch user data on each request
+app.use(fetchUser);
+
+app.use('/api', uploadRoute);
 
 // Sample data (replace with database later)
 const sampleItems = [
@@ -195,7 +211,6 @@ app.get('/', (req, res) => {
         title: 'RentAll - Community Rentals', // tab text for homepage
         featuredItems: sampleItems, // shows all hardcoded sample items as featured
         categories: categories.slice(0, 4), // Show only first 4 categories on homepage
-        user: null, // Will be replaced with actual user data later
         path: '/'
     });
 });
@@ -258,7 +273,7 @@ app.post('/loginSubmit', async (req, res) => {
         // Extract login credentials
         const { loginEmail, loginPassword } = req.body;
 
-        console.log("req.body:", req.body);
+        // console.log("req.body:", req.body);
         
         // Call Xano login endpoint
         const xanoRes = await fetch(`${process.env.XANO_BASE_URL}/auth/login`, {
@@ -279,8 +294,24 @@ app.post('/loginSubmit', async (req, res) => {
             console.log("Xano body:", data);
             return res.status(xanoRes.status).send(data.message || data.error || 'Login failed.');
         }
-        // On success, redirect to homepage
-        return res.redirect('/');
+
+        // Store auth token in session (handle common token field variants)
+        const authToken = data.authToken || data.auth_token || data.token;
+        if (!authToken) {
+            console.error('Login succeeded but no auth token was returned:', data);
+            return res.status(502).send('Login failed: auth token missing from auth provider response.');
+        }
+        req.session.authToken = authToken;
+        req.session.userId = data.user_id || data.userId || data.user?.id || null;
+
+        req.session.save((err) => {
+            if (err) {
+                console.error("Session save error:", err);
+                return res.status(500).send("Login failed due to session error.");
+            }
+            return res.redirect('/categories');
+        });
+
     } catch (err) {
         console.error('Login error:', err);
         return res.status(500).send('Server error during login.');
@@ -358,7 +389,6 @@ app.get('/categories', (req, res) => {
     res.render('categories', {
         title: 'Categories - RentAll',
         categories: categories,
-        user: null,
         path: '/categories'
     });
 });
@@ -412,7 +442,6 @@ app.get('/search', (req, res) => {
         categories: categories,
         subcategories: subcategories,
         featuredItems: currentFeaturedItems,
-        user: null,
         path: '/search'
     });
 });
@@ -423,14 +452,12 @@ app.get('/product/:id', (req, res) => {
         return res.status(404).render('404', { 
             title: 'Item Not Found - RentAll',
             path: req.path,
-            user: null
         });
     }
     
     res.render('product-details', {
         title: `${item.title} - RentAll`,
         item: item,
-        user: null,
         path: '/product'
     });
 });
@@ -438,7 +465,6 @@ app.get('/product/:id', (req, res) => {
 app.get('/contact', (req, res) => {
     res.render('contact', {
         title: 'Contact Us - RentAll',
-        user: null,
         path: '/contact'
     });
 });
@@ -446,7 +472,6 @@ app.get('/contact', (req, res) => {
 app.get('/profile', (req, res) => {
     res.render('profile', {
         title: 'Profile - RentAll',
-        user: null,
         path: '/profile'
     });
 });

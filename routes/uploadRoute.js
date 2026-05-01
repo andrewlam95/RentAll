@@ -5,7 +5,15 @@ const upload = require('../middleware/upload');
 const cloudinary = require('../config/cloudinary');
 
 router.post('/itemSubmit', upload.array('images', 5), async (req, res) => {
+    // console.log("Session Token:", req.session.authToken);
+    // console.log("User Object:", req.user);
+
     try {
+        // Check for a valid session token before allowing listing creation.
+        if (!req.session || !req.session.authToken) {
+            return res.status(401).json({ error: 'You must be logged in to create a listing.' });
+        }
+
         // Get the uploaded files from multer
         // Files includes all data from the form, including text fields and the image files. 
         // Multer parses the multipart/form-data request and makes the file available in req.files, while text fields are available in req.body.
@@ -69,8 +77,12 @@ router.post('/itemSubmit', upload.array('images', 5), async (req, res) => {
         // Call Xano item creation endpoint
         const xanoRes = await fetch(`${process.env.XANO_BASE_URL}/rental_item`, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${req.session.authToken}` // Pass the user's auth token from the session to authenticate with Xano
+            },
             body: JSON.stringify({
+                user_id: req.user?.id || req.session.userId,
                 category_id: categoryId,
                 title: itemTitle,
                 description: itemDescription,
