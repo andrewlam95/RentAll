@@ -11,27 +11,6 @@ const { fetchUser } = require('./middleware/auth');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
-// DB test
-// const session = require('express-session');
-// const MongoStore = require('connect-mongo');
-
-
-
-// /* secret information section */
-// const mongodb_host = process.env.MONGODB_HOST;
-// const mongodb_user = process.env.MONGODB_USER;
-// const mongodb_password = process.env.MONGODB_PASSWORD;
-// const mongodb_database = process.env.MONGODB_DATABASE;
-// const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
-
-// const node_session_secret = process.env.NODE_SESSION_SECRET;
-// /* END secret section */
-
-// // DB TEST
-// var {database} = include('databaseConnection');
-// const userCollection = database.db(mongodb_database).collection('users');
-
 // Set EJS as templating engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -43,25 +22,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // DB test
 app.use(express.urlencoded({extended: true}));
-
-
-
-// // DB test
-// var mongoStore = MongoStore.create({
-// 	mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
-// 	crypto: {
-// 		secret: mongodb_session_secret
-// 	}
-// })
-
-// // DB test
-// app.use(session({ 
-//     secret: node_session_secret,
-// 	store: mongoStore, //default is memory store 
-// 	saveUninitialized: false, 
-// 	resave: true
-// }
-// ));
 
 app.use(session({
     secret: process.env.NODE_SESSION_SECRET || 'your_secret_key',
@@ -205,6 +165,22 @@ const categories = [
     { name: 'Music & Audio', icon: 'bi-music-note', slug: 'music' }
 ];
 
+// Define subcategories mapping - switch to pulling from db later ********
+const subcategories = {
+    tools: ['Power Tools', 'Gardening', 'Construction', 'Hand Tools', 'Automotive', 'Cleaning', 'Painting', 'Plumbing'],
+    sports: ['Bikes', 'Camping', 'Fitness', 'Water Sports', 'Winter Sports', 'Team Sports', 'Hiking', 'Yoga'],
+    electronics: ['Cameras', 'Audio', 'Gadgets', 'Computers', 'Gaming', 'Mobile Devices', 'Home Theater', 'Smart Home'],
+    entertainment: ['Games', 'Movies', 'Party', 'Musical Instruments', 'Board Games', 'VR Equipment', 'Karaoke', 'DJ Equipment'],
+    home: ['Furniture', 'Appliances', 'Decor', 'Garden Tools', 'Kitchen Equipment', 'Cleaning Supplies', 'Storage', 'Lighting'],
+    vehicles: ['Cars', 'Trucks', 'Motorcycles', 'Scooters', 'Trailers', 'Bikes', 'Boats', 'Recreational Vehicles'],
+    fashion: ['Formal Wear', 'Costumes', 'Jewelry', 'Handbags', 'Accessories', 'Shoes', 'Watches', 'Sunglasses'],
+    baby: ['Strollers', 'Car Seats', 'Baby Gear', 'Toys', 'Educational Materials', 'Nursery Equipment', 'Safety Items', 'Feeding Supplies'],
+    business: ['Office Equipment', 'Presentation Tools', 'Meeting Furniture', 'Business Supplies', 'Computers', 'Printers', 'Conference Equipment', 'Office Decor'],
+    health: ['Exercise Equipment', 'Yoga Mats', 'Fitness Trackers', 'Massage Chairs', 'Wellness Products', 'Medical Equipment', 'Rehabilitation', 'Sports Medicine'],
+    photography: ['Professional Cameras', 'Lenses', 'Lighting Equipment', 'Tripods', 'Video Production', 'Studio Equipment', 'Accessories', 'Editing Tools'],
+    music: ['Musical Instruments', 'Sound Systems', 'Microphones', 'Amplifiers', 'Recording Equipment', 'DJ Equipment', 'Studio Gear', 'Accessories']
+};
+
 // Routes
 app.get('/', (req, res) => {
     res.render('index', {
@@ -318,73 +294,6 @@ app.post('/loginSubmit', async (req, res) => {
     }
 });
 
-// // Item posting route
-// app.use('/itemSubmit', async (req, res) => {
-//     try {
-//         const {
-//             itemTitle,
-//             itemDescription,
-//             itemImages,
-//             itemCategory,
-//             location,
-//             contactPhone,
-//             dailyRate,
-//             minRentalDays,
-//             maxRentalDays
-//         } = req.body;
-
-//         // Fetch category ID from Xano based on category name
-//         const categoryRes =  await fetch(`${process.env.XANO_BASE_URL}/category?name=${encodeURIComponent(itemCategory)}`, {
-//             method: 'GET',
-//             headers: {'Content-Type': 'application/json'},
-//         });
-
-//         // Parse category response
-//         const categoryData = await categoryRes.json().catch(() => ({}));
-
-//         // Check if category exists
-//         if (!categoryData || categoryData.length === 0) {
-//             return res.status(404).json({error: "Category not found"});
-//         }
-
-//         // Get category ID for the given category name
-//         const categoryId = categoryData[0].id;
-
-//         // Call Xano item creation endpoint
-//         const xanoRes = await fetch(`${process.env.XANO_BASE_URL}/rental_item`, {
-//             method: 'POST',
-//             headers: {'Content-Type': 'application/json'},
-//             body: JSON.stringify({
-//                 title: itemTitle,
-//                 description: itemDescription,
-//                 image: itemImages,
-//                 category_id: categoryId,
-//                 location: location,
-//                 contactPhone: contactPhone, // get phone number from user table?
-//                 price: dailyRate,
-//                 min_days: minRentalDays,
-//                 max_days: maxRentalDays
-//             })
-//         });
-
-//         // Parse response from Xano
-//         const data = await xanoRes.json().catch(() => ({}));
-
-//         // If Xano returns an error, forward it to the client
-//         if (!xanoRes.ok) {
-//             console.log("Xano status:", xanoRes.status);
-//             console.log("Xano body:", data);
-//             return res.status(xanoRes.status).send(data.message || data.error || 'Item submission failed.');
-//         }
-
-//         // On success, redirect to homepage
-//         return res.redirect('/');
-//     } catch (err) {
-//         console.error('Item submission error:', err);
-//         return res.status(500).send('Server error during item submission.');
-//     }
-// });
-
 app.get('/categories', (req, res) => {
     res.render('categories', {
         title: 'Categories - RentAll',
@@ -393,59 +302,65 @@ app.get('/categories', (req, res) => {
     });
 });
 
-app.get('/search', (req, res) => {
+// Route for category pages
+app.get('/search', async (req, res) => {
     const { category, query } = req.query;
-    let filteredItems = sampleItems;
     
-    if (category) {
-        filteredItems = sampleItems.filter(item => 
-            item.category.toLowerCase() === category.toLowerCase()
-        );
-    }
-    
-    if (query) {
-        filteredItems = filteredItems.filter(item =>
-            item.title.toLowerCase().includes(query.toLowerCase()) ||
-            item.description.toLowerCase().includes(query.toLowerCase())
-        );
-    }
-    
-    // Define subcategories mapping
-    const subcategories = {
-        tools: ['Power Tools', 'Gardening', 'Construction', 'Hand Tools', 'Automotive', 'Cleaning', 'Painting', 'Plumbing'],
-        sports: ['Bikes', 'Camping', 'Fitness', 'Water Sports', 'Winter Sports', 'Team Sports', 'Hiking', 'Yoga'],
-        electronics: ['Cameras', 'Audio', 'Gadgets', 'Computers', 'Gaming', 'Mobile Devices', 'Home Theater', 'Smart Home'],
-        entertainment: ['Games', 'Movies', 'Party', 'Musical Instruments', 'Board Games', 'VR Equipment', 'Karaoke', 'DJ Equipment'],
-        home: ['Furniture', 'Appliances', 'Decor', 'Garden Tools', 'Kitchen Equipment', 'Cleaning Supplies', 'Storage', 'Lighting'],
-        vehicles: ['Cars', 'Trucks', 'Motorcycles', 'Scooters', 'Trailers', 'Bikes', 'Boats', 'Recreational Vehicles'],
-        fashion: ['Formal Wear', 'Costumes', 'Jewelry', 'Handbags', 'Accessories', 'Shoes', 'Watches', 'Sunglasses'],
-        baby: ['Strollers', 'Car Seats', 'Baby Gear', 'Toys', 'Educational Materials', 'Nursery Equipment', 'Safety Items', 'Feeding Supplies'],
-        business: ['Office Equipment', 'Presentation Tools', 'Meeting Furniture', 'Business Supplies', 'Computers', 'Printers', 'Conference Equipment', 'Office Decor'],
-        health: ['Exercise Equipment', 'Yoga Mats', 'Fitness Trackers', 'Massage Chairs', 'Wellness Products', 'Medical Equipment', 'Rehabilitation', 'Sports Medicine'],
-        photography: ['Professional Cameras', 'Lenses', 'Lighting Equipment', 'Tripods', 'Video Production', 'Studio Equipment', 'Accessories', 'Editing Tools'],
-        music: ['Musical Instruments', 'Sound Systems', 'Microphones', 'Amplifiers', 'Recording Equipment', 'DJ Equipment', 'Studio Gear', 'Accessories']
-    };
-    
-    // Get featured items for the selected category
-    const currentFeaturedItems = sampleItems.filter(item => {
+    try {
+        const XANO_BASE_URL = process.env.XANO_BASE_URL;
+
+        let xanoUrl = `${XANO_BASE_URL}/rental_item?`;
+
+        const params = new URLSearchParams();
         if (category) {
-            return item.category.toLowerCase() === category.toLowerCase();
+            params.append('category_slug', category);
         }
-        return true; // Show all items if no category selected
-    }).slice(0, 6); // Limit to 6 featured items
+
+        if (query) {
+            params.append('search', query);
+        }
+
+        xanoUrl += params.toString();
+
+        // debug testing for dynamic loading of items per category
+        // const xanoUrl = `${XANO_BASE_URL}/rental_item?${params.toString()}`;
+        // console.log("FULL URL BEING SENT TO XANO:", xanoUrl);
+
+        const [itemRes, categoriesRes] = await Promise.all([
+            fetch(xanoUrl),
+            fetch(`${XANO_BASE_URL}/category`)
+        ]);
+
+        const filteredItems = await itemRes.json();
+        // console.log("Items found for category:", category, "Counts:", filteredItems.length); // debug log to category slug and item count
+        const allCategories = await categoriesRes.json();
+
+        res.render('search-view', {
+            title: category ? `${category.charAt(0).toUpperCase() + category.slice(1)} - RentAll` : 'Search Results',
+            items: filteredItems,
+            searchQuery: query || '',
+            selectedCategory: category || '',
+            categories: allCategories,
+            subcategories: typeof subcategories !== 'undefined' ? subcategories : {}, // Using the hardcoded subcategories mapping for now, change to dynamic once DB is set up
+            featuredItems: filteredItems.slice(0,6),
+            path: '/search'
+        });
+    } catch (err) {
+        console.error("Search error:", err);
+        res.status(500).send("Error performing search");
+    }
     
-    res.render('search-view', {
-        title: 'Search Results - RentAll',
-        items: filteredItems,
-        searchQuery: query || '',
-        selectedCategory: category || '',
-        categories: categories,
-        subcategories: subcategories,
-        featuredItems: currentFeaturedItems,
-        path: '/search'
-    });
+    // ******* ADD FEATURED ITEMS LOGIC HERE - need to add is_featured boolean field to each item in DB and adjust flag accordingly *******
+    // // Get featured items for the selected category
+    // const currentFeaturedItems = sampleItems.filter(item => {
+    //     if (category) {
+    //         return item.category.toLowerCase() === category.toLowerCase();
+    //     }
+    //     return true; // Show all items if no category selected
+    // }).slice(0, 6); // Limit to 6 featured items
 });
 
+// Route for product details page
 app.get('/product/:id', (req, res) => {
     const item = sampleItems.find(item => item.id == req.params.id);
     if (!item) {

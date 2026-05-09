@@ -114,6 +114,7 @@
 <div class="container rental-container search-map-container">
     <div class="results-grid">
         <!-- Subcategory Buttons -->
+        <% if (false) { %> <!-- Placeholder for future subcategory implementation, remove the if (false) wrapper later -->
         <div id="subcategory-row" class="mb-3">
             <% if (selectedCategory && subcategories && subcategories[selectedCategory]) { %>
                 <% subcategories[selectedCategory].forEach(sub => { %>
@@ -123,7 +124,8 @@
                 <% }); %>
             <% } %>
         </div>
-        
+        <% } %> <!-- remove this wrapper later -->
+
         <!-- Featured Items Slider -->
         <% if (featuredItems && featuredItems.length > 0) { %>
         <div class="mb-4">
