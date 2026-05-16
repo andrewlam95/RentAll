@@ -1,9 +1,12 @@
 // Product Gallery JavaScript
 let currentImageIndex = 0;
-const totalImages = 12; // Total number of images in the gallery
 
 // Initialize gallery
 document.addEventListener('DOMContentLoaded', function() {
+    // Dynamically determine total images count based on thumbnails
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    totalImages = thumbnails.length;
+
     updateImageCounter();
     setupKeyboardNavigation();
     setupFullscreenView();

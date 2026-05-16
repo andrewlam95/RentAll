@@ -361,20 +361,35 @@ app.get('/search', async (req, res) => {
 });
 
 // Route for product details page
-app.get('/product/:id', (req, res) => {
-    const item = sampleItems.find(item => item.id == req.params.id);
-    if (!item) {
-        return res.status(404).render('404', { 
+app.get('/product/:id', async (req, res) => {
+    const productId = req.params.id;
+
+    // URL used to fetch details for a specific item from database using id
+    const xanoUrl = `${process.env.XANO_BASE_URL}/rental_item/${productId}`;
+
+    try {
+        const response = await fetch(xanoUrl);
+
+        if (!response.ok) {
+            throw new Error('Item not found in database');
+        }
+
+        // Parse item details from response
+        const item = await response.json();
+
+        // Pass item details to the view
+        res.render('product-details', {
+            title: `${item.title} - RentAll`,
+            item: item,
+            path: '/product'
+        });
+    } catch (error) {
+        console.error("Fetch error:", error.message);
+        res.status(404).render('404', {
             title: 'Item Not Found - RentAll',
             path: req.path,
         });
-    }
-    
-    res.render('product-details', {
-        title: `${item.title} - RentAll`,
-        item: item,
-        path: '/product'
-    });
+    }  
 });
 
 app.get('/contact', (req, res) => {
